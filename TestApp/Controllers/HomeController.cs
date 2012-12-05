@@ -10,11 +10,9 @@ namespace TestApp.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "This is a test to make GitHub and AppHarbor working together.";
-
             return View();
         }
-
+        /*
         public ActionResult About()
         {
             ViewBag.Message = "I don't know why it hasn't been working so far.";
@@ -28,5 +26,6 @@ namespace TestApp.Controllers
 
             return View();
         }
+         */
     }
 }

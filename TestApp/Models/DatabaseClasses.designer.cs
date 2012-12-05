@@ -69,6 +69,14 @@ namespace TestApp.Models
 				return this.GetTable<Name>();
 			}
 		}
+		
+		public System.Data.Linq.Table<Time> Times
+		{
+			get
+			{
+				return this.GetTable<Time>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Names")]
@@ -111,6 +119,51 @@ namespace TestApp.Models
 				if ((this._name1 != value))
 				{
 					this._name1 = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Times")]
+	public partial class Time
+	{
+		
+		private System.DateTime _time1;
+		
+		private int _id;
+		
+		public Time()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="time", Storage="_time1", DbType="DateTime2 NOT NULL")]
+		public System.DateTime time1
+		{
+			get
+			{
+				return this._time1;
+			}
+			set
+			{
+				if ((this._time1 != value))
+				{
+					this._time1 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this._id = value;
 				}
 			}
 		}
