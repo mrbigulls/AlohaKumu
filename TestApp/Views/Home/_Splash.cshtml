@@ -1,0 +1,56 @@
+﻿@using AlohaKumu.Models;
+@model AlohaKumu.Models.User
+
+<script src='Scripts/code.js'></script>
+<div id="instructions" class="overlay">
+    @Settings.SeeSelectInstructions
+    <br />
+    <br />
+    <button id="gobutton">Go</button>
+</div>
+@{
+    Random random = new Random();
+    List<Word> words = DataAccessor.testList(Model);
+    for (int wordcount = 0; wordcount < words.Count; wordcount++ )
+    {
+        int position = random.Next(0, 3);
+        List<Word> otherWords = new List<Word>(words);
+        otherWords.Remove(words[wordcount]);
+        Word[] options = new Word[3];
+        for(int x = 0; x < options.Length; x++)
+        {
+            if (x == position)
+            {
+                options[x] = words[wordcount];
+            }
+            else
+            {
+                options[x] = otherWords[random.Next(0, otherWords.Count)];
+                otherWords.Remove(options[x]);
+            }
+        }
+        String trialLabel = "trial-" + wordcount;
+        String optionsLabel = "options-" + wordcount;
+        String optionLabel1 = "option-" + wordcount + "-1";
+        String optionLabel2 = "option-" + wordcount + "-2";
+        String optionLabel3 = "option-" + wordcount + "-3";
+        String[] optionData = new String[3];
+        optionData[0] = "false";
+        optionData[1] = "false";
+        optionData[2] = "false";
+        optionData[position] = "true";
+        String firstID = "id1-" + wordcount;
+        String secondID = "id2-" + wordcount;
+        String idPic = Settings.ImagePath + words[wordcount].Picture;
+        <div class="trial overlay" id="@trialLabel">
+            <div class="display id1" id="@firstID">@words[wordcount].English</div>
+            <div class="display id2" id="@secondID"><img src="@idPic" /></div>
+            <div class="display" id="@optionsLabel">
+                <div class="option" id="@optionLabel1" data-index="1" data-wordID="@options[0].ID" data-correct="@optionData[0]">@options[0].Hawaiian</div>
+                <div class="option" id="@optionLabel2" data-index="2" data-wordID="@options[1].ID" data-correct="@optionData[1]">@options[1].Hawaiian</div>
+                <div class="option" id="@optionLabel3" data-index="3" data-wordID="@options[2].ID" data-correct="@optionData[2]">@options[2].Hawaiian</div>
+            </div>
+        </div>
+    }
+}
+

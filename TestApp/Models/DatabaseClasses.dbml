@@ -1,15 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="db48660631ac154a67865da117016c2257" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=48660631-ac15-4a67-865d-a117016c2257.sqlserver.sequelizer.com;Initial Catalog=db48660631ac154a67865da117016c2257;Persist Security Info=True;User ID=jqaneriqhafcnove" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="db48660631ac154a67865da117016c2257ConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Names" Member="Names">
-    <Type Name="Name">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Member="name1" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+  <Table Name="dbo.Trial" Member="Trials">
+    <Type Name="Trial">
+      <Column Name="WordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TrialBlockID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FirstIDpresented" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FirstIDclicked" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SecondIDpresented" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SecondIDclicked" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OptionsPresented" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OptionClicked" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Option1ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Option2ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Option3ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TrialTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="TrialBlock_Trial" Member="TrialBlock" ThisKey="TrialBlockID" OtherKey="ID" Type="TrialBlock" IsForeignKey="true" />
+      <Association Name="TrialType_Trial" Member="TrialType" ThisKey="TrialTypeID" OtherKey="ID" Type="TrialType" IsForeignKey="true" />
+      <Association Name="Word_Trial" Member="Word" ThisKey="WordID" OtherKey="ID" Type="Word" IsForeignKey="true" />
+      <Association Name="Word_Trial1" Member="Word1" ThisKey="Option1ID" OtherKey="ID" Type="Word" IsForeignKey="true" />
+      <Association Name="Word_Trial2" Member="Word2" ThisKey="Option2ID" OtherKey="ID" Type="Word" IsForeignKey="true" />
+      <Association Name="Word_Trial3" Member="Word3" ThisKey="Option3ID" OtherKey="ID" Type="Word" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Times" Member="Times">
-    <Type Name="Time">
-      <Column Name="time" Member="time1" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+  <Table Name="dbo.TrialBlock" Member="TrialBlocks">
+    <Type Name="TrialBlock">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="TrialBlock_Trial" Member="Trials" ThisKey="ID" OtherKey="TrialBlockID" Type="Trial" />
+      <Association Name="User_TrialBlock" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrialType" Member="TrialTypes">
+    <Type Name="TrialType">
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="TrialType_Trial" Member="Trials" ThisKey="ID" OtherKey="TrialTypeID" Type="Trial" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Word" Member="Words">
+    <Type Name="Word">
+      <Column Name="English" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Hawaiian" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="HawaiianSpoken" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Picture" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Consequence" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="WordListID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="Word_Trial" Member="Trials" ThisKey="ID" OtherKey="WordID" Type="Trial" />
+      <Association Name="Word_Trial1" Member="Trials1" ThisKey="ID" OtherKey="Option1ID" Type="Trial" />
+      <Association Name="Word_Trial2" Member="Trials2" ThisKey="ID" OtherKey="Option2ID" Type="Trial" />
+      <Association Name="Word_Trial3" Member="Trials3" ThisKey="ID" OtherKey="Option3ID" Type="Trial" />
+      <Association Name="WordList_Word" Member="WordList" ThisKey="WordListID" OtherKey="ID" Type="WordList" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WordList" Member="WordLists">
+    <Type Name="WordList">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="WordList_Word" Member="Words" ThisKey="ID" OtherKey="WordListID" Type="Word" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="Username" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Association Name="User_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="UserID" Type="TrialBlock" />
     </Type>
   </Table>
 </Database>

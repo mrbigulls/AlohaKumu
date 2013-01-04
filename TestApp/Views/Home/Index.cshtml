@@ -1,21 +1,11 @@
-﻿<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+﻿@using AlohaKumu.Models;
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="Scripts/timer.js"></script>
 <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h2>Let's time some Hawaiian learn'</h2>
-            </hgroup>
-            <p>
-                This is a demo page for recording reaction times for clicks.
-                  Times are not yet recorded in a database for persistence across sessions.
-            </p>
-        </div>
+    <div class="content-wrapper">
+        @if (Session["User"] == null) { Html.RenderPartial("_LoginPartial"); }
+        else if (DataAccessor.allowTrial( (User)Session["User"]) ) { Html.RenderPartial("_Splash", Session["User"]); }
+        else { Html.RenderPartial("_tooSoon"); }
+    </div>
 </section>
-<h3>Click to record times:</h3>
-<div class="float-left">
-    <div id="timer"></div>
-    <br />
-    <button id="clicker" name="clicker">Now!</button>
-</div>
-<div class="float-right" id="click-times">
-</div>

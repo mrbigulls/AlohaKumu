@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TestApp.Models
+namespace AlohaKumu.Models
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -30,6 +30,24 @@ namespace TestApp.Models
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InsertTrial(Trial instance);
+    partial void UpdateTrial(Trial instance);
+    partial void DeleteTrial(Trial instance);
+    partial void InsertTrialBlock(TrialBlock instance);
+    partial void UpdateTrialBlock(TrialBlock instance);
+    partial void DeleteTrialBlock(TrialBlock instance);
+    partial void InsertTrialType(TrialType instance);
+    partial void UpdateTrialType(TrialType instance);
+    partial void DeleteTrialType(TrialType instance);
+    partial void InsertWord(Word instance);
+    partial void UpdateWord(Word instance);
+    partial void DeleteWord(Word instance);
+    partial void InsertWordList(WordList instance);
+    partial void UpdateWordList(WordList instance);
+    partial void DeleteWordList(WordList instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -62,110 +80,1576 @@ namespace TestApp.Models
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Name> Names
+		public System.Data.Linq.Table<Trial> Trials
 		{
 			get
 			{
-				return this.GetTable<Name>();
+				return this.GetTable<Trial>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Time> Times
+		public System.Data.Linq.Table<TrialBlock> TrialBlocks
 		{
 			get
 			{
-				return this.GetTable<Time>();
+				return this.GetTable<TrialBlock>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TrialType> TrialTypes
+		{
+			get
+			{
+				return this.GetTable<TrialType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Word> Words
+		{
+			get
+			{
+				return this.GetTable<Word>();
+			}
+		}
+		
+		public System.Data.Linq.Table<WordList> WordLists
+		{
+			get
+			{
+				return this.GetTable<WordList>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Names")]
-	public partial class Name
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Trial")]
+	public partial class Trial : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
-		private int _id;
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private string _name1;
+		private int _WordID;
 		
-		public Name()
+		private int _TrialBlockID;
+		
+		private int _FirstIDpresented;
+		
+		private int _FirstIDclicked;
+		
+		private int _SecondIDpresented;
+		
+		private int _SecondIDclicked;
+		
+		private int _OptionsPresented;
+		
+		private int _OptionClicked;
+		
+		private int _Option1ID;
+		
+		private int _Option2ID;
+		
+		private int _Option3ID;
+		
+		private int _TrialTypeID;
+		
+		private int _ID;
+		
+		private EntityRef<TrialBlock> _TrialBlock;
+		
+		private EntityRef<TrialType> _TrialType;
+		
+		private EntityRef<Word> _Word;
+		
+		private EntityRef<Word> _Word1;
+		
+		private EntityRef<Word> _Word2;
+		
+		private EntityRef<Word> _Word3;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnWordIDChanging(int value);
+    partial void OnWordIDChanged();
+    partial void OnTrialBlockIDChanging(int value);
+    partial void OnTrialBlockIDChanged();
+    partial void OnFirstIDpresentedChanging(int value);
+    partial void OnFirstIDpresentedChanged();
+    partial void OnFirstIDclickedChanging(int value);
+    partial void OnFirstIDclickedChanged();
+    partial void OnSecondIDpresentedChanging(int value);
+    partial void OnSecondIDpresentedChanged();
+    partial void OnSecondIDclickedChanging(int value);
+    partial void OnSecondIDclickedChanged();
+    partial void OnOptionsPresentedChanging(int value);
+    partial void OnOptionsPresentedChanged();
+    partial void OnOptionClickedChanging(int value);
+    partial void OnOptionClickedChanged();
+    partial void OnOption1IDChanging(int value);
+    partial void OnOption1IDChanged();
+    partial void OnOption2IDChanging(int value);
+    partial void OnOption2IDChanged();
+    partial void OnOption3IDChanging(int value);
+    partial void OnOption3IDChanged();
+    partial void OnTrialTypeIDChanging(int value);
+    partial void OnTrialTypeIDChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
+		public Trial()
 		{
+			this._TrialBlock = default(EntityRef<TrialBlock>);
+			this._TrialType = default(EntityRef<TrialType>);
+			this._Word = default(EntityRef<Word>);
+			this._Word1 = default(EntityRef<Word>);
+			this._Word2 = default(EntityRef<Word>);
+			this._Word3 = default(EntityRef<Word>);
+			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
-		public int id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WordID", DbType="Int NOT NULL")]
+		public int WordID
 		{
 			get
 			{
-				return this._id;
+				return this._WordID;
 			}
 			set
 			{
-				if ((this._id != value))
+				if ((this._WordID != value))
 				{
-					this._id = value;
+					if (this._Word.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnWordIDChanging(value);
+					this.SendPropertyChanging();
+					this._WordID = value;
+					this.SendPropertyChanged("WordID");
+					this.OnWordIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="name", Storage="_name1", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string name1
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrialBlockID", DbType="Int NOT NULL")]
+		public int TrialBlockID
 		{
 			get
 			{
-				return this._name1;
+				return this._TrialBlockID;
 			}
 			set
 			{
-				if ((this._name1 != value))
+				if ((this._TrialBlockID != value))
 				{
-					this._name1 = value;
+					if (this._TrialBlock.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTrialBlockIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrialBlockID = value;
+					this.SendPropertyChanged("TrialBlockID");
+					this.OnTrialBlockIDChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstIDpresented", DbType="Int NOT NULL")]
+		public int FirstIDpresented
+		{
+			get
+			{
+				return this._FirstIDpresented;
+			}
+			set
+			{
+				if ((this._FirstIDpresented != value))
+				{
+					this.OnFirstIDpresentedChanging(value);
+					this.SendPropertyChanging();
+					this._FirstIDpresented = value;
+					this.SendPropertyChanged("FirstIDpresented");
+					this.OnFirstIDpresentedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstIDclicked", DbType="Int NOT NULL")]
+		public int FirstIDclicked
+		{
+			get
+			{
+				return this._FirstIDclicked;
+			}
+			set
+			{
+				if ((this._FirstIDclicked != value))
+				{
+					this.OnFirstIDclickedChanging(value);
+					this.SendPropertyChanging();
+					this._FirstIDclicked = value;
+					this.SendPropertyChanged("FirstIDclicked");
+					this.OnFirstIDclickedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecondIDpresented", DbType="Int NOT NULL")]
+		public int SecondIDpresented
+		{
+			get
+			{
+				return this._SecondIDpresented;
+			}
+			set
+			{
+				if ((this._SecondIDpresented != value))
+				{
+					this.OnSecondIDpresentedChanging(value);
+					this.SendPropertyChanging();
+					this._SecondIDpresented = value;
+					this.SendPropertyChanged("SecondIDpresented");
+					this.OnSecondIDpresentedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecondIDclicked", DbType="Int NOT NULL")]
+		public int SecondIDclicked
+		{
+			get
+			{
+				return this._SecondIDclicked;
+			}
+			set
+			{
+				if ((this._SecondIDclicked != value))
+				{
+					this.OnSecondIDclickedChanging(value);
+					this.SendPropertyChanging();
+					this._SecondIDclicked = value;
+					this.SendPropertyChanged("SecondIDclicked");
+					this.OnSecondIDclickedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OptionsPresented", DbType="Int NOT NULL")]
+		public int OptionsPresented
+		{
+			get
+			{
+				return this._OptionsPresented;
+			}
+			set
+			{
+				if ((this._OptionsPresented != value))
+				{
+					this.OnOptionsPresentedChanging(value);
+					this.SendPropertyChanging();
+					this._OptionsPresented = value;
+					this.SendPropertyChanged("OptionsPresented");
+					this.OnOptionsPresentedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OptionClicked", DbType="Int NOT NULL")]
+		public int OptionClicked
+		{
+			get
+			{
+				return this._OptionClicked;
+			}
+			set
+			{
+				if ((this._OptionClicked != value))
+				{
+					this.OnOptionClickedChanging(value);
+					this.SendPropertyChanging();
+					this._OptionClicked = value;
+					this.SendPropertyChanged("OptionClicked");
+					this.OnOptionClickedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Option1ID", DbType="Int NOT NULL")]
+		public int Option1ID
+		{
+			get
+			{
+				return this._Option1ID;
+			}
+			set
+			{
+				if ((this._Option1ID != value))
+				{
+					if (this._Word1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOption1IDChanging(value);
+					this.SendPropertyChanging();
+					this._Option1ID = value;
+					this.SendPropertyChanged("Option1ID");
+					this.OnOption1IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Option2ID", DbType="Int NOT NULL")]
+		public int Option2ID
+		{
+			get
+			{
+				return this._Option2ID;
+			}
+			set
+			{
+				if ((this._Option2ID != value))
+				{
+					if (this._Word2.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOption2IDChanging(value);
+					this.SendPropertyChanging();
+					this._Option2ID = value;
+					this.SendPropertyChanged("Option2ID");
+					this.OnOption2IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Option3ID", DbType="Int NOT NULL")]
+		public int Option3ID
+		{
+			get
+			{
+				return this._Option3ID;
+			}
+			set
+			{
+				if ((this._Option3ID != value))
+				{
+					if (this._Word3.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnOption3IDChanging(value);
+					this.SendPropertyChanging();
+					this._Option3ID = value;
+					this.SendPropertyChanged("Option3ID");
+					this.OnOption3IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrialTypeID", DbType="Int NOT NULL")]
+		public int TrialTypeID
+		{
+			get
+			{
+				return this._TrialTypeID;
+			}
+			set
+			{
+				if ((this._TrialTypeID != value))
+				{
+					if (this._TrialType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnTrialTypeIDChanging(value);
+					this.SendPropertyChanging();
+					this._TrialTypeID = value;
+					this.SendPropertyChanged("TrialTypeID");
+					this.OnTrialTypeIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrialBlock_Trial", Storage="_TrialBlock", ThisKey="TrialBlockID", OtherKey="ID", IsForeignKey=true)]
+		public TrialBlock TrialBlock
+		{
+			get
+			{
+				return this._TrialBlock.Entity;
+			}
+			set
+			{
+				TrialBlock previousValue = this._TrialBlock.Entity;
+				if (((previousValue != value) 
+							|| (this._TrialBlock.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrialBlock.Entity = null;
+						previousValue.Trials.Remove(this);
+					}
+					this._TrialBlock.Entity = value;
+					if ((value != null))
+					{
+						value.Trials.Add(this);
+						this._TrialBlockID = value.ID;
+					}
+					else
+					{
+						this._TrialBlockID = default(int);
+					}
+					this.SendPropertyChanged("TrialBlock");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrialType_Trial", Storage="_TrialType", ThisKey="TrialTypeID", OtherKey="ID", IsForeignKey=true)]
+		public TrialType TrialType
+		{
+			get
+			{
+				return this._TrialType.Entity;
+			}
+			set
+			{
+				TrialType previousValue = this._TrialType.Entity;
+				if (((previousValue != value) 
+							|| (this._TrialType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TrialType.Entity = null;
+						previousValue.Trials.Remove(this);
+					}
+					this._TrialType.Entity = value;
+					if ((value != null))
+					{
+						value.Trials.Add(this);
+						this._TrialTypeID = value.ID;
+					}
+					else
+					{
+						this._TrialTypeID = default(int);
+					}
+					this.SendPropertyChanged("TrialType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Word_Trial", Storage="_Word", ThisKey="WordID", OtherKey="ID", IsForeignKey=true)]
+		public Word Word
+		{
+			get
+			{
+				return this._Word.Entity;
+			}
+			set
+			{
+				Word previousValue = this._Word.Entity;
+				if (((previousValue != value) 
+							|| (this._Word.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Word.Entity = null;
+						previousValue.Trials.Remove(this);
+					}
+					this._Word.Entity = value;
+					if ((value != null))
+					{
+						value.Trials.Add(this);
+						this._WordID = value.ID;
+					}
+					else
+					{
+						this._WordID = default(int);
+					}
+					this.SendPropertyChanged("Word");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Word_Trial1", Storage="_Word1", ThisKey="Option1ID", OtherKey="ID", IsForeignKey=true)]
+		public Word Word1
+		{
+			get
+			{
+				return this._Word1.Entity;
+			}
+			set
+			{
+				Word previousValue = this._Word1.Entity;
+				if (((previousValue != value) 
+							|| (this._Word1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Word1.Entity = null;
+						previousValue.Trials1.Remove(this);
+					}
+					this._Word1.Entity = value;
+					if ((value != null))
+					{
+						value.Trials1.Add(this);
+						this._Option1ID = value.ID;
+					}
+					else
+					{
+						this._Option1ID = default(int);
+					}
+					this.SendPropertyChanged("Word1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Word_Trial2", Storage="_Word2", ThisKey="Option2ID", OtherKey="ID", IsForeignKey=true)]
+		public Word Word2
+		{
+			get
+			{
+				return this._Word2.Entity;
+			}
+			set
+			{
+				Word previousValue = this._Word2.Entity;
+				if (((previousValue != value) 
+							|| (this._Word2.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Word2.Entity = null;
+						previousValue.Trials2.Remove(this);
+					}
+					this._Word2.Entity = value;
+					if ((value != null))
+					{
+						value.Trials2.Add(this);
+						this._Option2ID = value.ID;
+					}
+					else
+					{
+						this._Option2ID = default(int);
+					}
+					this.SendPropertyChanged("Word2");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Word_Trial3", Storage="_Word3", ThisKey="Option3ID", OtherKey="ID", IsForeignKey=true)]
+		public Word Word3
+		{
+			get
+			{
+				return this._Word3.Entity;
+			}
+			set
+			{
+				Word previousValue = this._Word3.Entity;
+				if (((previousValue != value) 
+							|| (this._Word3.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Word3.Entity = null;
+						previousValue.Trials3.Remove(this);
+					}
+					this._Word3.Entity = value;
+					if ((value != null))
+					{
+						value.Trials3.Add(this);
+						this._Option3ID = value.ID;
+					}
+					else
+					{
+						this._Option3ID = default(int);
+					}
+					this.SendPropertyChanged("Word3");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Times")]
-	public partial class Time
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrialBlock")]
+	public partial class TrialBlock : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
-		private System.DateTime _time1;
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _id;
+		private int _ID;
 		
-		public Time()
+		private int _UserID;
+		
+		private System.DateTime _StartTime;
+		
+		private EntitySet<Trial> _Trials;
+		
+		private EntityRef<User> _User;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnUserIDChanging(int value);
+    partial void OnUserIDChanged();
+    partial void OnStartTimeChanging(System.DateTime value);
+    partial void OnStartTimeChanged();
+    #endregion
+		
+		public TrialBlock()
 		{
+			this._Trials = new EntitySet<Trial>(new Action<Trial>(this.attach_Trials), new Action<Trial>(this.detach_Trials));
+			this._User = default(EntityRef<User>);
+			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="time", Storage="_time1", DbType="DateTime2 NOT NULL")]
-		public System.DateTime time1
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
 		{
 			get
 			{
-				return this._time1;
+				return this._ID;
 			}
 			set
 			{
-				if ((this._time1 != value))
+				if ((this._ID != value))
 				{
-					this._time1 = value;
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
-		public int id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserID", DbType="Int NOT NULL")]
+		public int UserID
 		{
 			get
 			{
-				return this._id;
+				return this._UserID;
 			}
 			set
 			{
-				if ((this._id != value))
+				if ((this._UserID != value))
 				{
-					this._id = value;
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIDChanging(value);
+					this.SendPropertyChanging();
+					this._UserID = value;
+					this.SendPropertyChanged("UserID");
+					this.OnUserIDChanged();
 				}
 			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartTime", DbType="DateTime NOT NULL")]
+		public System.DateTime StartTime
+		{
+			get
+			{
+				return this._StartTime;
+			}
+			set
+			{
+				if ((this._StartTime != value))
+				{
+					this.OnStartTimeChanging(value);
+					this.SendPropertyChanging();
+					this._StartTime = value;
+					this.SendPropertyChanged("StartTime");
+					this.OnStartTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrialBlock_Trial", Storage="_Trials", ThisKey="ID", OtherKey="TrialBlockID")]
+		public EntitySet<Trial> Trials
+		{
+			get
+			{
+				return this._Trials;
+			}
+			set
+			{
+				this._Trials.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrialBlock", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.TrialBlocks.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.TrialBlocks.Add(this);
+						this._UserID = value.ID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Trials(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrialBlock = this;
+		}
+		
+		private void detach_Trials(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrialBlock = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TrialType")]
+	public partial class TrialType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Name;
+		
+		private int _ID;
+		
+		private EntitySet<Trial> _Trials;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
+		public TrialType()
+		{
+			this._Trials = new EntitySet<Trial>(new Action<Trial>(this.attach_Trials), new Action<Trial>(this.detach_Trials));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TrialType_Trial", Storage="_Trials", ThisKey="ID", OtherKey="TrialTypeID")]
+		public EntitySet<Trial> Trials
+		{
+			get
+			{
+				return this._Trials;
+			}
+			set
+			{
+				this._Trials.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Trials(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrialType = this;
+		}
+		
+		private void detach_Trials(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.TrialType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Word")]
+	public partial class Word : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _English;
+		
+		private string _Hawaiian;
+		
+		private string _HawaiianSpoken;
+		
+		private string _Picture;
+		
+		private string _Consequence;
+		
+		private int _WordListID;
+		
+		private int _ID;
+		
+		private EntitySet<Trial> _Trials;
+		
+		private EntitySet<Trial> _Trials1;
+		
+		private EntitySet<Trial> _Trials2;
+		
+		private EntitySet<Trial> _Trials3;
+		
+		private EntityRef<WordList> _WordList;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnEnglishChanging(string value);
+    partial void OnEnglishChanged();
+    partial void OnHawaiianChanging(string value);
+    partial void OnHawaiianChanged();
+    partial void OnHawaiianSpokenChanging(string value);
+    partial void OnHawaiianSpokenChanged();
+    partial void OnPictureChanging(string value);
+    partial void OnPictureChanged();
+    partial void OnConsequenceChanging(string value);
+    partial void OnConsequenceChanged();
+    partial void OnWordListIDChanging(int value);
+    partial void OnWordListIDChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
+		public Word()
+		{
+			this._Trials = new EntitySet<Trial>(new Action<Trial>(this.attach_Trials), new Action<Trial>(this.detach_Trials));
+			this._Trials1 = new EntitySet<Trial>(new Action<Trial>(this.attach_Trials1), new Action<Trial>(this.detach_Trials1));
+			this._Trials2 = new EntitySet<Trial>(new Action<Trial>(this.attach_Trials2), new Action<Trial>(this.detach_Trials2));
+			this._Trials3 = new EntitySet<Trial>(new Action<Trial>(this.attach_Trials3), new Action<Trial>(this.detach_Trials3));
+			this._WordList = default(EntityRef<WordList>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_English", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string English
+		{
+			get
+			{
+				return this._English;
+			}
+			set
+			{
+				if ((this._English != value))
+				{
+					this.OnEnglishChanging(value);
+					this.SendPropertyChanging();
+					this._English = value;
+					this.SendPropertyChanged("English");
+					this.OnEnglishChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Hawaiian", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Hawaiian
+		{
+			get
+			{
+				return this._Hawaiian;
+			}
+			set
+			{
+				if ((this._Hawaiian != value))
+				{
+					this.OnHawaiianChanging(value);
+					this.SendPropertyChanging();
+					this._Hawaiian = value;
+					this.SendPropertyChanged("Hawaiian");
+					this.OnHawaiianChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HawaiianSpoken", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string HawaiianSpoken
+		{
+			get
+			{
+				return this._HawaiianSpoken;
+			}
+			set
+			{
+				if ((this._HawaiianSpoken != value))
+				{
+					this.OnHawaiianSpokenChanging(value);
+					this.SendPropertyChanging();
+					this._HawaiianSpoken = value;
+					this.SendPropertyChanged("HawaiianSpoken");
+					this.OnHawaiianSpokenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Picture", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Picture
+		{
+			get
+			{
+				return this._Picture;
+			}
+			set
+			{
+				if ((this._Picture != value))
+				{
+					this.OnPictureChanging(value);
+					this.SendPropertyChanging();
+					this._Picture = value;
+					this.SendPropertyChanged("Picture");
+					this.OnPictureChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Consequence", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Consequence
+		{
+			get
+			{
+				return this._Consequence;
+			}
+			set
+			{
+				if ((this._Consequence != value))
+				{
+					this.OnConsequenceChanging(value);
+					this.SendPropertyChanging();
+					this._Consequence = value;
+					this.SendPropertyChanged("Consequence");
+					this.OnConsequenceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WordListID", DbType="Int NOT NULL")]
+		public int WordListID
+		{
+			get
+			{
+				return this._WordListID;
+			}
+			set
+			{
+				if ((this._WordListID != value))
+				{
+					if (this._WordList.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnWordListIDChanging(value);
+					this.SendPropertyChanging();
+					this._WordListID = value;
+					this.SendPropertyChanged("WordListID");
+					this.OnWordListIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Word_Trial", Storage="_Trials", ThisKey="ID", OtherKey="WordID")]
+		public EntitySet<Trial> Trials
+		{
+			get
+			{
+				return this._Trials;
+			}
+			set
+			{
+				this._Trials.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Word_Trial1", Storage="_Trials1", ThisKey="ID", OtherKey="Option1ID")]
+		public EntitySet<Trial> Trials1
+		{
+			get
+			{
+				return this._Trials1;
+			}
+			set
+			{
+				this._Trials1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Word_Trial2", Storage="_Trials2", ThisKey="ID", OtherKey="Option2ID")]
+		public EntitySet<Trial> Trials2
+		{
+			get
+			{
+				return this._Trials2;
+			}
+			set
+			{
+				this._Trials2.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Word_Trial3", Storage="_Trials3", ThisKey="ID", OtherKey="Option3ID")]
+		public EntitySet<Trial> Trials3
+		{
+			get
+			{
+				return this._Trials3;
+			}
+			set
+			{
+				this._Trials3.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="WordList_Word", Storage="_WordList", ThisKey="WordListID", OtherKey="ID", IsForeignKey=true)]
+		public WordList WordList
+		{
+			get
+			{
+				return this._WordList.Entity;
+			}
+			set
+			{
+				WordList previousValue = this._WordList.Entity;
+				if (((previousValue != value) 
+							|| (this._WordList.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._WordList.Entity = null;
+						previousValue.Words.Remove(this);
+					}
+					this._WordList.Entity = value;
+					if ((value != null))
+					{
+						value.Words.Add(this);
+						this._WordListID = value.ID;
+					}
+					else
+					{
+						this._WordListID = default(int);
+					}
+					this.SendPropertyChanged("WordList");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Trials(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.Word = this;
+		}
+		
+		private void detach_Trials(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.Word = null;
+		}
+		
+		private void attach_Trials1(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.Word1 = this;
+		}
+		
+		private void detach_Trials1(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.Word1 = null;
+		}
+		
+		private void attach_Trials2(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.Word2 = this;
+		}
+		
+		private void detach_Trials2(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.Word2 = null;
+		}
+		
+		private void attach_Trials3(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.Word3 = this;
+		}
+		
+		private void detach_Trials3(Trial entity)
+		{
+			this.SendPropertyChanging();
+			entity.Word3 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.WordList")]
+	public partial class WordList : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+		private EntitySet<Word> _Words;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public WordList()
+		{
+			this._Words = new EntitySet<Word>(new Action<Word>(this.attach_Words), new Action<Word>(this.detach_Words));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="WordList_Word", Storage="_Words", ThisKey="ID", OtherKey="WordListID")]
+		public EntitySet<Word> Words
+		{
+			get
+			{
+				return this._Words;
+			}
+			set
+			{
+				this._Words.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Words(Word entity)
+		{
+			this.SendPropertyChanging();
+			entity.WordList = this;
+		}
+		
+		private void detach_Words(Word entity)
+		{
+			this.SendPropertyChanging();
+			entity.WordList = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Username;
+		
+		private string _Password;
+		
+		private bool _Active;
+		
+		private int _ID;
+		
+		private EntitySet<TrialBlock> _TrialBlocks;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUsernameChanging(string value);
+    partial void OnUsernameChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
+		public User()
+		{
+			this._TrialBlocks = new EntitySet<TrialBlock>(new Action<TrialBlock>(this.attach_TrialBlocks), new Action<TrialBlock>(this.detach_TrialBlocks));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Username
+		{
+			get
+			{
+				return this._Username;
+			}
+			set
+			{
+				if ((this._Username != value))
+				{
+					this.OnUsernameChanging(value);
+					this.SendPropertyChanging();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrialBlock", Storage="_TrialBlocks", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<TrialBlock> TrialBlocks
+		{
+			get
+			{
+				return this._TrialBlocks;
+			}
+			set
+			{
+				this._TrialBlocks.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TrialBlocks(TrialBlock entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_TrialBlocks(TrialBlock entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
 		}
 	}
 }

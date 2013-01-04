@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using AlohaKumu.Models;
+
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -15,9 +17,13 @@
                     <h2>Aloha Kumu</h2>
                 </div>
                 <div class="float-right">
-                    <section id="login">
-                        @*Html.Partial("_LoginPartial")
-                        *@
+                    <section id="user">
+                        @if (Session["User"] != null)
+                        {
+                            User current = (User)Session["User"];
+                            @Html.ActionLink("Log Off " + current.Username, "LogOff");
+                            //<a href="~/LogOff/">Log Off @current.Username</a>
+                        }
                     </section>
                 </div>
             </div>

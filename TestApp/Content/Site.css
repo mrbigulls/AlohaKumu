@@ -1,4 +1,39 @@
-﻿html {
+﻿.display
+{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 40%;
+}
+
+.overlay
+{
+    position: fixed;
+    top: 10%;
+    left: 5%;
+    width: 90%;
+    height: 60%;
+    background-color: lightgray;
+    text-align: center;
+    z-index: 100;
+}
+
+.option
+{
+    background: white;
+    padding: 20px;
+    margin: 4%;
+    width: 21%;
+    top: 40%;
+    border:2px solid;
+	border-color: #CAF2DE;
+	float: left;
+    text-align: center;
+}
+
+html {
     background-color: #e2e2e2;
     margin: 0;
     padding: 0;

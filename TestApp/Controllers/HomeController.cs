@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AlohaKumu.Models;
 
-namespace TestApp.Controllers
+namespace AlohaKumu.Controllers
 {
     public class HomeController : Controller
     {
@@ -12,20 +13,36 @@ namespace TestApp.Controllers
         {
             return View();
         }
-        /*
-        public ActionResult About()
-        {
-            ViewBag.Message = "I don't know why it hasn't been working so far.";
 
+        [HttpPost]
+        public ActionResult Index( FormCollection form )
+        {
+            String username = form["username"];
+            String password = form["password"];
+            if (!DataAccessor.isUser(username))
+            {
+                Session["Error"] = "No such user: " + username;
+                return RedirectToAction("Error");
+            }
+            User current = DataAccessor.login(username, password);
+            if (current == null)
+            {
+                Session["Error"] = "Invalid password";
+                return RedirectToAction("Error");
+            }
+            Session["User"] = current;
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult LogOff()
         {
-            ViewBag.Message = "Please, for the love of God, just deploy all the references with the project.";
+            Session["User"] = null;
+            return RedirectToAction("Index");
+        }
 
+        public ActionResult Error()
+        {
             return View();
         }
-         */
     }
 }
