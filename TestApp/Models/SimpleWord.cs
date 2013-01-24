@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AlohaKumu.Models;
+using TestApp.Models;
 
 namespace AlohaKumu.Models
 {

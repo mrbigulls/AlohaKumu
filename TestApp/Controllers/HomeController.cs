@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AlohaKumu.Models;
+using TestApp.Models;
 
 namespace AlohaKumu.Controllers
 {

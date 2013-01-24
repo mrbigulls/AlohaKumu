@@ -5,15 +5,21 @@ var consequences = [];
 var spoken = [];
 var startTime;
 var clickGo;
+var showID1s = [];
+var showID2s = [];
 var clickID1s = [];
 var clickID2s = [];
+var optionIDs = [];
+var showOptionTimes = [];
 var clickOptionTimes = [];
 var optionsClicked = [];
-var indicesClicked = [];
 var trialIndex;
+var trialSize;
 
 $(
 function () {
+
+    trialSize = $('#trialSize').val();
     $('#gobutton').click(start);
     $('.trial').hide();
 
@@ -28,8 +34,10 @@ function () {
 
     function stepOne() {
         console.log('Step one.');
+        words.push($('#trial-' + trialIndex + '-word').val());
         $('#trial-' + trialIndex).show();
         $('#id1-' + trialIndex).show();
+        showID1s.push(markTime());
         $('#id2-' + trialIndex).hide();
         $('.option').hide();
         $('#id1-' + trialIndex).click(stepTwo);
@@ -41,6 +49,7 @@ function () {
         $('#id1-' + trialIndex).hide();
         $('#id1-' + trialIndex).off('click');
         $('#id2-' + trialIndex).show();
+        showID2s.push(markTime());
         $('#id2-' + trialIndex).click( stepThree );
     }
 
@@ -53,6 +62,12 @@ function () {
         $('#option-' + trialIndex + '-1').show();
         $('#option-' + trialIndex + '-2').show();
         $('#option-' + trialIndex + '-3').show();
+        showOptionTimes.push(markTime());
+        var options = [];
+        options.push($('#option-' + trialIndex + '-1').data('wordid'));
+        options.push($('#option-' + trialIndex + '-2').data('wordid'));
+        options.push($('#option-' + trialIndex + '-3').data('wordid'));
+        optionIDs.push(options);
         $('#option-' + trialIndex + '-1').click( stepFour );
         $('#option-' + trialIndex + '-2').click( stepFour );
         $('#option-' + trialIndex + '-3').click( stepFour );
@@ -61,8 +76,8 @@ function () {
     function stepFour() {
         console.log('Step four.');
         clickOptionTimes.push(markTime());
-        optionsClicked.push($(this).data('wordID'));
-        indicesClicked.push($(this).data('index'));
+        console.log('Option ID clicked: ' + $(this).data('wordid'));
+        optionsClicked.push($(this).data('wordid'));
         if ($(this).data('correct') ) {
             alert('Correct!');
         }
@@ -72,40 +87,46 @@ function () {
         $('.option').off('click');
         $('.option').hide();
         trialIndex++;
-        if (trialIndex < 3) stepOne();
+        if (trialIndex < trialSize) stepOne();
         else end();
     }
 
     function end() {
+
         console.log('End trial block.');
-        alert('Upload data to server here.');
+
+        var block = {
+            timeStarted: JSON.stringify(startTime),
+            userID: $('#userID').val(),
+            goTime: clickGo,
+            wordOrder: JSON.stringify(words),
+            ID1shown: JSON.stringify(showID1s),
+            ID1times: JSON.stringify(clickID1s),
+            ID2shown: JSON.stringify(showID2s),
+            ID2times: JSON.stringify(clickID2s),
+            optionsPresented: JSON.stringify(showOptionTimes),
+            choiceIDs: JSON.stringify(optionIDs),
+            guessTimes: JSON.stringify(clickOptionTimes),
+            guessesMade: JSON.stringify(optionsClicked)
+        };
+
+        console.log(block);
+
+        $.ajax({
+            type: "POST",
+            url: "/Ajax/saveTrialBlock/",
+            dataType: "json",
+            data: block,
+            success: function (msg) {
+                alert('Finished reporting performance to server!');
+            }
+        });
     }
 
     function markTime() {
         console.log('Marking time.');
-        return (new Date()).getTime() - startTime;
+        return (new Date()).getTime() - startTime.getTime();
     }
-    //$("#instructions").hide();
-    
-    //var correct = Math.floor(Math.random() * 3) + 1;
-    //$('.option').click(mark);
-    /*
-    var start = (new Date()).getTime();
 
-    function mark() {
-        if ($(this).html() == correct) {
-            $(this).css({ "background-color": "green" });
-        }
-        else {
-            $(this).css({ "background-color": "red" });
-        }
-        alert(correct);
-        var end = (new Date()).getTime();
-        $('#timer').html(end - start);
-        $('.option').off('click');
-    }
-    */
-    //$.getJSON('Ajax/getWords/', 'listkey=1', function (data) { prep(data); } );
-
-    var startTime = (new Date()).getTime();
+    var startTime = new Date();
 });

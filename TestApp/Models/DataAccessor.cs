@@ -3,13 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using AlohaKumu.Models;
-//using TestApp.Models;
+using TestApp.Models;
 
 namespace AlohaKumu.Models
 {
     public class DataAccessor
     {
         private static readonly DataClasses1DataContext database = new DataClasses1DataContext();
+
+        public static void recordTrialBlock(TrialBlockData results)
+        {
+            TrialBlock newBlock = new TrialBlock();
+            newBlock.StartTime = results.taken;
+            newBlock.UserID = results.userID;
+            database.TrialBlocks.InsertOnSubmit(newBlock);
+            database.SubmitChanges();
+            int trialcount = results.clickID1s.Length;
+            for (int i = 0; i < trialcount; i++)
+            {
+                Trial newTrial = new Trial();
+                newTrial.TrialBlockID = newBlock.ID;
+                newTrial.WordID = results.words[i];
+                newTrial.TimeFirstIDpresented = results.showID1s[i];
+                newTrial.TimeFirstIDclicked = results.clickID1s[i];
+                newTrial.TimeSecondIDpresented = results.showID2s[i];
+                newTrial.TimeSecondIDclicked = results.clickID2s[i];
+                newTrial.TimeOptionsPresented = results.optionsShown[i];
+                newTrial.Option1ID = results.optionIDs[i][0];
+                newTrial.Option2ID = results.optionIDs[i][1];
+                newTrial.Option3ID = results.optionIDs[i][2];
+                newTrial.TimeOptionClicked = results.clickOptionTimes[i];
+                newTrial.OptionIDClicked = results.optionIDsClicked[i];
+                newTrial.TrialTypeID = 1;
+                //^ magic number marks this a SeeSelect trial, dev out later
+                database.Trials.InsertOnSubmit(newTrial);
+                database.SubmitChanges();
+            }
+        }
 
         public static bool isUser(String name)
         {
@@ -50,10 +80,10 @@ namespace AlohaKumu.Models
             return false;
         }
 
-        public static List<Word> getWordList(int listKey)
+        public static List<Word> getWordList(int listKey, int subListKey)
         {
             return (from w in database.Words
-                    where (w.WordListID == listKey)
+                    where (w.WordListID == listKey && w.WordSublistID == subListKey)
                     select w).ToList();
         }
 
@@ -73,7 +103,7 @@ namespace AlohaKumu.Models
         //define logic of choosing which list here later
         public static List<Word> testList(User requested)
         {
-            List<Word> list = getWordList(1);
+            List<Word> list = getWordList(1,1);
             list.Shuffle();
             return list;
         }

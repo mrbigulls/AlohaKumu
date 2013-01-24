@@ -222,9 +222,40 @@
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Models\SimpleWord.cs" />
+    <Compile Include="Models\TrialBlockData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\avocado.jpg" />
+    <Content Include="Images\bacon.jpg" />
+    <Content Include="Images\bird.jpg" />
+    <Content Include="Images\bones.gif" />
+    <Content Include="Images\button.jpg" />
+    <Content Include="Images\cabbage.jpg" />
+    <Content Include="Images\cat.jpg" />
+    <Content Include="Images\cow.jpg" />
+    <Content Include="Images\cream.jpg" />
+    <Content Include="Images\egg.jpg" />
+    <Content Include="Images\eyes.jpg" />
+    <Content Include="Images\fire.jpg" />
+    <Content Include="Images\fish.jpg" />
+    <Content Include="Images\flower.jpg" />
+    <Content Include="Images\frog.jpg" />
+    <Content Include="Images\goat.jpg" />
+    <Content Include="Images\gold.jpg" />
+    <Content Include="Images\gum.jpg" />
+    <Content Include="Images\horse.jpg" />
+    <Content Include="Images\island.jpg" />
+    <Content Include="Images\man.jpg" />
+    <Content Include="Images\money.jpg" />
+    <Content Include="Images\pudding.jpg" />
+    <Content Include="Images\radio.jpg" />
+    <Content Include="Images\rice.jpg" />
+    <Content Include="Images\rock.jpg" />
+    <Content Include="Images\sea.jpg" />
+    <Content Include="Images\shark.jpg" />
+    <Content Include="Images\star.jpg" />
+    <Content Include="Images\turtle.jpg" />
     <Content Include="Sounds\30161__herbertboland__belltinystrike.wav" />
     <Content Include="Sounds\33244__ljudman__dingding.wav" />
     <Content Include="Sounds\57743__3bagbrew__shop-door-bell.wav" />
@@ -233,15 +264,10 @@
     <Content Include="Sounds\99625__tec-studios__bell003mono.wav" />
     <Content Include="Images\apple.jpg" />
     <Content Include="Sounds\apple.wav" />
-    <Content Include="Images\maple.jpeg" />
     <Content Include="Sounds\maple.wav" />
-    <Content Include="Images\oak.jpg" />
     <Content Include="Sounds\oak.wav" />
-    <Content Include="Images\orange.jpg" />
     <Content Include="Sounds\orange.wav" />
-    <Content Include="Images\pear.jpg" />
     <Content Include="Sounds\pear.wav" />
-    <Content Include="Images\pine.png" />
     <Content Include="Sounds\pine.wav" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -320,7 +346,7 @@
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
-    <Content Include="Scripts\timer.js" />
+    <Content Include="Scripts\checkScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
