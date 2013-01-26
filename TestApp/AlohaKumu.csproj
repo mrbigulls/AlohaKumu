@@ -247,7 +247,7 @@
     <Content Include="Images\horse.jpg" />
     <Content Include="Images\island.jpg" />
     <Content Include="Images\man.jpg" />
-    <Content Include="Images\money.jpg" />
+    <Content Include="Images\money.png" />
     <Content Include="Images\pudding.jpg" />
     <Content Include="Images\radio.jpg" />
     <Content Include="Images\rice.jpg" />
@@ -256,19 +256,7 @@
     <Content Include="Images\shark.jpg" />
     <Content Include="Images\star.jpg" />
     <Content Include="Images\turtle.jpg" />
-    <Content Include="Sounds\30161__herbertboland__belltinystrike.wav" />
-    <Content Include="Sounds\33244__ljudman__dingding.wav" />
-    <Content Include="Sounds\57743__3bagbrew__shop-door-bell.wav" />
-    <Content Include="Sounds\74920__juskiddink__bell6.wav" />
-    <Content Include="Sounds\78506__joedeshon__desk-bell-one-time-01.wav" />
-    <Content Include="Sounds\99625__tec-studios__bell003mono.wav" />
     <Content Include="Images\apple.jpg" />
-    <Content Include="Sounds\apple.wav" />
-    <Content Include="Sounds\maple.wav" />
-    <Content Include="Sounds\oak.wav" />
-    <Content Include="Sounds\orange.wav" />
-    <Content Include="Sounds\pear.wav" />
-    <Content Include="Sounds\pine.wav" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -347,6 +335,21 @@
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\checkScript.js" />
+    <Content Include="Sounds\arab_flute.mp3" />
+    <Content Include="Sounds\bassoon.mp3" />
+    <Content Include="Sounds\blue_guitar_riff.mp3" />
+    <Content Include="Sounds\conga.mp3" />
+    <Content Include="Sounds\contrabass.mp3" />
+    <Content Include="Sounds\didgeridoo.mp3" />
+    <Content Include="Sounds\drum break.mp3" />
+    <Content Include="Sounds\Hammond_organ.mp3" />
+    <Content Include="Sounds\harmonica.mp3" />
+    <Content Include="Sounds\piano_glissando_loop.mp3" />
+    <Content Include="Sounds\reggae_guitar_loop.mp3" />
+    <Content Include="Sounds\saxophone.mp3" />
+    <Content Include="Sounds\sitar.mp3" />
+    <Content Include="Sounds\trumpet.mp3" />
+    <Content Include="Sounds\violin.mp3" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -378,6 +381,21 @@
     <Content Include="Views\Home\_Splash.cshtml" />
     <Content Include="Views\Home\_tooSoon.cshtml" />
     <Content Include="Views\Home\_LoginPartial.cshtml" />
+    <Content Include="Sounds\arab_flute.ogg" />
+    <Content Include="Sounds\bassoon.ogg" />
+    <Content Include="Sounds\blue_guitar_riff.ogg" />
+    <Content Include="Sounds\conga.ogg" />
+    <Content Include="Sounds\contrabass.ogg" />
+    <Content Include="Sounds\didgeridoo.ogg" />
+    <Content Include="Sounds\drum_break.ogg" />
+    <Content Include="Sounds\Hammond_organ.ogg" />
+    <Content Include="Sounds\harmonica.ogg" />
+    <Content Include="Sounds\piano_glissando_loop.ogg" />
+    <Content Include="Sounds\reggae_guitar_loop.ogg" />
+    <Content Include="Sounds\saxophone.ogg" />
+    <Content Include="Sounds\sitar.ogg" />
+    <Content Include="Sounds\trumpet.ogg" />
+    <Content Include="Sounds\violin.ogg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

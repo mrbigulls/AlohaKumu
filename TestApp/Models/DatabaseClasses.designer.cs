@@ -45,12 +45,15 @@ namespace TestApp.Models
     partial void InsertTrial(Trial instance);
     partial void UpdateTrial(Trial instance);
     partial void DeleteTrial(Trial instance);
-    partial void InsertWord(Word instance);
-    partial void UpdateWord(Word instance);
-    partial void DeleteWord(Word instance);
     partial void InsertWordSublist(WordSublist instance);
     partial void UpdateWordSublist(WordSublist instance);
     partial void DeleteWordSublist(WordSublist instance);
+    partial void InsertWord(Word instance);
+    partial void UpdateWord(Word instance);
+    partial void DeleteWord(Word instance);
+    partial void InsertConsequence(Consequence instance);
+    partial void UpdateConsequence(Consequence instance);
+    partial void DeleteConsequence(Consequence instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -123,6 +126,14 @@ namespace TestApp.Models
 			}
 		}
 		
+		public System.Data.Linq.Table<WordSublist> WordSublists
+		{
+			get
+			{
+				return this.GetTable<WordSublist>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Word> Words
 		{
 			get
@@ -131,11 +142,11 @@ namespace TestApp.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<WordSublist> WordSublists
+		public System.Data.Linq.Table<Consequence> Consequences
 		{
 			get
 			{
-				return this.GetTable<WordSublist>();
+				return this.GetTable<Consequence>();
 			}
 		}
 	}
@@ -1370,6 +1381,120 @@ namespace TestApp.Models
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.WordSublist")]
+	public partial class WordSublist : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Name;
+		
+		private int _ID;
+		
+		private EntitySet<Word> _Words;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    #endregion
+		
+		public WordSublist()
+		{
+			this._Words = new EntitySet<Word>(new Action<Word>(this.attach_Words), new Action<Word>(this.detach_Words));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="WordSublist_Word", Storage="_Words", ThisKey="ID", OtherKey="WordSublistID")]
+		public EntitySet<Word> Words
+		{
+			get
+			{
+				return this._Words;
+			}
+			set
+			{
+				this._Words.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Words(Word entity)
+		{
+			this.SendPropertyChanging();
+			entity.WordSublist = this;
+		}
+		
+		private void detach_Words(Word entity)
+		{
+			this.SendPropertyChanging();
+			entity.WordSublist = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Word")]
 	public partial class Word : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1384,7 +1509,7 @@ namespace TestApp.Models
 		
 		private string _Picture;
 		
-		private string _Consequence;
+		private int _ConsequenceID;
 		
 		private int _WordListID;
 		
@@ -1406,6 +1531,8 @@ namespace TestApp.Models
 		
 		private EntityRef<WordSublist> _WordSublist;
 		
+		private EntityRef<Consequence> _Consequence;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1418,8 +1545,8 @@ namespace TestApp.Models
     partial void OnHawaiianSpokenChanged();
     partial void OnPictureChanging(string value);
     partial void OnPictureChanged();
-    partial void OnConsequenceChanging(string value);
-    partial void OnConsequenceChanged();
+    partial void OnConsequenceIDChanging(int value);
+    partial void OnConsequenceIDChanged();
     partial void OnWordListIDChanging(int value);
     partial void OnWordListIDChanged();
     partial void OnWordSublistIDChanging(int value);
@@ -1437,6 +1564,7 @@ namespace TestApp.Models
 			this._Trials4 = new EntitySet<Trial>(new Action<Trial>(this.attach_Trials4), new Action<Trial>(this.detach_Trials4));
 			this._WordList = default(EntityRef<WordList>);
 			this._WordSublist = default(EntityRef<WordSublist>);
+			this._Consequence = default(EntityRef<Consequence>);
 			OnCreated();
 		}
 		
@@ -1520,22 +1648,26 @@ namespace TestApp.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Consequence", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Consequence
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConsequenceID", DbType="Int NOT NULL")]
+		public int ConsequenceID
 		{
 			get
 			{
-				return this._Consequence;
+				return this._ConsequenceID;
 			}
 			set
 			{
-				if ((this._Consequence != value))
+				if ((this._ConsequenceID != value))
 				{
-					this.OnConsequenceChanging(value);
+					if (this._Consequence.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnConsequenceIDChanging(value);
 					this.SendPropertyChanging();
-					this._Consequence = value;
-					this.SendPropertyChanged("Consequence");
-					this.OnConsequenceChanged();
+					this._ConsequenceID = value;
+					this.SendPropertyChanged("ConsequenceID");
+					this.OnConsequenceIDChanged();
 				}
 			}
 		}
@@ -1741,6 +1873,40 @@ namespace TestApp.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Consequence_Word", Storage="_Consequence", ThisKey="ConsequenceID", OtherKey="ID", IsForeignKey=true)]
+		public Consequence Consequence
+		{
+			get
+			{
+				return this._Consequence.Entity;
+			}
+			set
+			{
+				Consequence previousValue = this._Consequence.Entity;
+				if (((previousValue != value) 
+							|| (this._Consequence.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Consequence.Entity = null;
+						previousValue.Words.Remove(this);
+					}
+					this._Consequence.Entity = value;
+					if ((value != null))
+					{
+						value.Words.Add(this);
+						this._ConsequenceID = value.ID;
+					}
+					else
+					{
+						this._ConsequenceID = default(int);
+					}
+					this.SendPropertyChanged("Consequence");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1822,15 +1988,15 @@ namespace TestApp.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.WordSublist")]
-	public partial class WordSublist : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Consequence")]
+	public partial class Consequence : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private string _Name;
-		
 		private int _ID;
+		
+		private string _Filename;
 		
 		private EntitySet<Word> _Words;
 		
@@ -1838,36 +2004,16 @@ namespace TestApp.Models
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
     partial void OnIDChanging(int value);
     partial void OnIDChanged();
+    partial void OnFilenameChanging(string value);
+    partial void OnFilenameChanged();
     #endregion
 		
-		public WordSublist()
+		public Consequence()
 		{
 			this._Words = new EntitySet<Word>(new Action<Word>(this.attach_Words), new Action<Word>(this.detach_Words));
 			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
@@ -1890,7 +2036,27 @@ namespace TestApp.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="WordSublist_Word", Storage="_Words", ThisKey="ID", OtherKey="WordSublistID")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Filename", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Filename
+		{
+			get
+			{
+				return this._Filename;
+			}
+			set
+			{
+				if ((this._Filename != value))
+				{
+					this.OnFilenameChanging(value);
+					this.SendPropertyChanging();
+					this._Filename = value;
+					this.SendPropertyChanged("Filename");
+					this.OnFilenameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Consequence_Word", Storage="_Words", ThisKey="ID", OtherKey="ConsequenceID")]
 		public EntitySet<Word> Words
 		{
 			get
@@ -1926,13 +2092,13 @@ namespace TestApp.Models
 		private void attach_Words(Word entity)
 		{
 			this.SendPropertyChanging();
-			entity.WordSublist = this;
+			entity.Consequence = this;
 		}
 		
 		private void detach_Words(Word entity)
 		{
 			this.SendPropertyChanging();
-			entity.WordSublist = null;
+			entity.Consequence = null;
 		}
 	}
 }

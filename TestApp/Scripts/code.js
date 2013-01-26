@@ -1,24 +1,23 @@
-//move inside jQuery block after debuging
-var words = [];
-var images = [];
-var consequences = [];
-var spoken = [];
-var startTime;
-var clickGo;
-var showID1s = [];
-var showID2s = [];
-var clickID1s = [];
-var clickID2s = [];
-var optionIDs = [];
-var showOptionTimes = [];
-var clickOptionTimes = [];
-var optionsClicked = [];
-var trialIndex;
-var trialSize;
-
 $(
 function () {
+    var words = [];
+    var images = [];
+    var consequences = [];
+    var spoken = [];
+    var startTime;
+    var clickGo;
+    var showID1s = [];
+    var showID2s = [];
+    var clickID1s = [];
+    var clickID2s = [];
+    var optionIDs = [];
+    var showOptionTimes = [];
+    var clickOptionTimes = [];
+    var optionsClicked = [];
+    var trialIndex;
+    var trialSize;
 
+    $('#feedback').hide();
     trialSize = $('#trialSize').val();
     $('#gobutton').click(start);
     $('.trial').hide();
@@ -78,17 +77,28 @@ function () {
         clickOptionTimes.push(markTime());
         console.log('Option ID clicked: ' + $(this).data('wordid'));
         optionsClicked.push($(this).data('wordid'));
-        if ($(this).data('correct') ) {
-            alert('Correct!');
-        }
-        else {
-            alert('Wrong!');
-        }
         $('.option').off('click');
         $('.option').hide();
+        stepFive($(this).data('correct'));
+    }
+
+    function stepFive(correct) {
+        if (correct) {
+            document.getElementById('sound-' + trialIndex).play();
+            displayMessage('Correct!', 3000, stepSix);
+        }
+        else displayMessage('Wrong!', 3000, stepSix);
+    }
+
+    function stepSix() {
         trialIndex++;
         if (trialIndex < trialSize) stepOne();
         else end();
+    }
+
+    function displayMessage(message, duration, callback) {
+        $('#feedback').html(message);
+        $('#feedback').show().delay(duration).fadeOut(callback);
     }
 
     function end() {
@@ -118,7 +128,7 @@ function () {
             dataType: "json",
             data: block,
             success: function (msg) {
-                alert('Finished reporting performance to server!');
+                displayMessage('Finished reporting performance to server!', 3000);
             }
         });
     }

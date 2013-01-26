@@ -8,8 +8,16 @@
     @Settings.SeeSelectInstructions
     <br />
     <br />
+    <audio controls>
+        <source src="/Sounds/conga.mp3" type="audio/mpeg"/>
+        <source src="/Sounds/conga.ogg" type="audio/ogg"/>
+        YOUR BROWSER DOES NOT SUPPORT EMBEDDED AUDIO.  PLEASE UPDATE YOUR BROWSER BEFORE PARTICIPATING.
+    </audio>
+    <br />
+    <br />
     <button id="gobutton">Go</button>
 </div>
+<div id="feedback"></div>
 @{
     Random random = new Random();
     List<Word> words = DataAccessor.testList(Model);
@@ -37,6 +45,9 @@
         String optionLabel1 = "option-" + wordcount + "-1";
         String optionLabel2 = "option-" + wordcount + "-2";
         String optionLabel3 = "option-" + wordcount + "-3";
+        String soundLabel = "sound-" + wordcount;
+        String soundPath1 = "/Sounds/" + words[wordcount].Consequence.Filename + ".mp3";
+        String soundPath2 = "/Sounds/" + words[wordcount].Consequence.Filename + ".ogg";
         String[] optionData = new String[3];
         optionData[0] = "false";
         optionData[1] = "false";
@@ -55,7 +66,10 @@
                 <div class="option" id="@optionLabel3" data-wordid="@options[2].ID" data-correct="@optionData[2]">@options[2].Hawaiian</div>
             </div>
         </div>
+        <audio id="@soundLabel" hidden="hidden" preload="auto">
+            <source src="@soundPath1" type="audio/mpeg"/>
+            <source src="@soundPath2" type="audio/ogg"/>
+        </audio>
     }
     <input type="hidden" id="trialSize" value="@words.Count" />
 }
-

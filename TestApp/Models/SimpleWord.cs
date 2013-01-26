@@ -13,7 +13,7 @@ namespace AlohaKumu.Models
         public String hawaiian;
         public String spoken;
         public String picture;
-        public String consequence;
+        public int consequenceID;
         public int id;
         public int listID;
 
@@ -23,7 +23,7 @@ namespace AlohaKumu.Models
             hawaiian = complex.Hawaiian;
             spoken = complex.HawaiianSpoken;
             picture = complex.Picture;
-            consequence = complex.Consequence;
+            consequenceID = complex.Consequence.ID;
             id = complex.ID;
             listID = complex.WordListID;
         }

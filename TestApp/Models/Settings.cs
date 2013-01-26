@@ -8,8 +8,8 @@ namespace AlohaKumu.Models
     public class Settings
     {
         public static TimeSpan waitTime = new TimeSpan(12, 0, 0);
-        public static String SeeSelectInstructions = "See-Select instructions appear here.";
-        public static String HearSelectInstructions = "Hear-Select instructions appear here.";
+        public static String SeeSelectInstructions = "See-Select instructions appear here.  Please test your speakers with the audio clip below before participating.";
+        public static String HearSelectInstructions = "Hear-Select instructions appear here.  Please test your speakers with the audio clip below before participating.";
         public static String ImagePath = "/Images/";
     }
 }
