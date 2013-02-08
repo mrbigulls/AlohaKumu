@@ -11,7 +11,7 @@ namespace AlohaKumu.Models
     {
         public String english;
         public String hawaiian;
-        public String spoken;
+        //public String spoken;
         public String picture;
         public int consequenceID;
         public int id;
@@ -21,7 +21,7 @@ namespace AlohaKumu.Models
         {
             english = complex.English;
             hawaiian = complex.Hawaiian;
-            spoken = complex.HawaiianSpoken;
+            //spoken = complex.HawaiianSpoken;
             picture = complex.Picture;
             consequenceID = complex.Consequence.ID;
             id = complex.ID;

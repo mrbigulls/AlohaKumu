@@ -64,11 +64,17 @@
       <Association Name="WordSublist_Word" Member="Words" ThisKey="ID" OtherKey="WordSublistID" Type="Word" />
     </Type>
   </Table>
+  <Table Name="dbo.Consequence" Member="Consequences">
+    <Type Name="Consequence">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Filename" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Consequence_Word" Member="Words" ThisKey="ID" OtherKey="ConsequenceID" Type="Word" />
+    </Type>
+  </Table>
   <Table Name="dbo.Word" Member="Words">
     <Type Name="Word">
       <Column Name="English" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Hawaiian" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="HawaiianSpoken" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Picture" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="ConsequenceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="WordListID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -79,16 +85,9 @@
       <Association Name="Word_Trial2" Member="Trials2" ThisKey="ID" OtherKey="Option1ID" Type="Trial" />
       <Association Name="Word_Trial3" Member="Trials3" ThisKey="ID" OtherKey="Option2ID" Type="Trial" />
       <Association Name="Word_Trial4" Member="Trials4" ThisKey="ID" OtherKey="Option3ID" Type="Trial" />
+      <Association Name="Consequence_Word" Member="Consequence" ThisKey="ConsequenceID" OtherKey="ID" Type="Consequence" IsForeignKey="true" />
       <Association Name="WordList_Word" Member="WordList" ThisKey="WordListID" OtherKey="ID" Type="WordList" IsForeignKey="true" />
       <Association Name="WordSublist_Word" Member="WordSublist" ThisKey="WordSublistID" OtherKey="ID" Type="WordSublist" IsForeignKey="true" />
-      <Association Name="Consequence_Word" Member="Consequence" ThisKey="ConsequenceID" OtherKey="ID" Type="Consequence" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Consequence" Member="Consequences">
-    <Type Name="Consequence">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Filename" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="Consequence_Word" Member="Words" ThisKey="ID" OtherKey="ConsequenceID" Type="Word" />
     </Type>
   </Table>
 </Database>

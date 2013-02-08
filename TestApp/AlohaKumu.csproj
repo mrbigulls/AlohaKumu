@@ -319,7 +319,8 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
-    <Content Include="Scripts\code.js" />
+    <Content Include="Scripts\hear_code.js" />
+    <Content Include="Scripts\see_code.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -335,6 +336,7 @@
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.5.3.js" />
     <Content Include="Scripts\checkScript.js" />
+    <Content Include="Sounds\Aku.mp3" />
     <Content Include="Sounds\arab_flute.mp3" />
     <Content Include="Sounds\bassoon.mp3" />
     <Content Include="Sounds\blue_guitar_riff.mp3" />
@@ -344,7 +346,21 @@
     <Content Include="Sounds\drum break.mp3" />
     <Content Include="Sounds\Hammond_organ.mp3" />
     <Content Include="Sounds\harmonica.mp3" />
+    <Content Include="Sounds\Haupia.mp3" />
+    <Content Include="Sounds\Honu.mp3" />
+    <Content Include="Sounds\Iwi.mp3" />
+    <Content Include="Sounds\Kai.mp3" />
+    <Content Include="Sounds\Kala.mp3" />
+    <Content Include="Sounds\Kalima.mp3" />
+    <Content Include="Sounds\Kane.mp3" />
+    <Content Include="Sounds\Laiki.mp3" />
+    <Content Include="Sounds\Manu.mp3" />
+    <Content Include="Sounds\Moku.mp3" />
     <Content Include="Sounds\piano_glissando_loop.mp3" />
+    <Content Include="Sounds\Pihi.mp3" />
+    <Content Include="Sounds\Pohaku.mp3" />
+    <Content Include="Sounds\Popoki.mp3" />
+    <Content Include="Sounds\Pua.mp3" />
     <Content Include="Sounds\reggae_guitar_loop.mp3" />
     <Content Include="Sounds\saxophone.mp3" />
     <Content Include="Sounds\sitar.mp3" />
@@ -396,6 +412,23 @@
     <Content Include="Sounds\sitar.ogg" />
     <Content Include="Sounds\trumpet.ogg" />
     <Content Include="Sounds\violin.ogg" />
+    <Content Include="Views\Home\_SeeSelect.cshtml" />
+    <Content Include="Views\Home\_HearSelect.cshtml" />
+    <Content Include="Sounds\Aku.ogg" />
+    <Content Include="Sounds\Haupia.ogg" />
+    <Content Include="Sounds\Honu.ogg" />
+    <Content Include="Sounds\Iwi.ogg" />
+    <Content Include="Sounds\Kai.ogg" />
+    <Content Include="Sounds\Kala.ogg" />
+    <Content Include="Sounds\Kalima.ogg" />
+    <Content Include="Sounds\Kane.ogg" />
+    <Content Include="Sounds\Laiki.ogg" />
+    <Content Include="Sounds\Manu.ogg" />
+    <Content Include="Sounds\Moku.ogg" />
+    <Content Include="Sounds\Pihi.ogg" />
+    <Content Include="Sounds\Pohaku.ogg" />
+    <Content Include="Sounds\Popoki.ogg" />
+    <Content Include="Sounds\Pua.ogg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

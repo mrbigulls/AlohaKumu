@@ -59,72 +59,72 @@
         <elementListCompartment Id="f2644759-03e6-4dca-bbbe-5311d8295b0e" absoluteBounds="0.76500000000000012, 6.2100000000000009, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="0de8b23c-569c-4fe6-9c3e-b65554682644" absoluteBounds="5.75, 5.125, 2, 2.3478011067708335">
-      <DataClassMoniker Name="/DataClasses1DataContext/Word" />
-      <nestedChildShapes>
-        <elementListCompartment Id="16137ad8-c281-4633-9068-939c26c1585f" absoluteBounds="5.765, 5.585, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(6.8125 : 5.125); (6.8125 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial" />
-      <nodes>
-        <classShapeMoniker Id="0de8b23c-569c-4fe6-9c3e-b65554682644" />
-        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(7.34375 : 5.125); (7.34375 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial1" />
-      <nodes>
-        <classShapeMoniker Id="0de8b23c-569c-4fe6-9c3e-b65554682644" />
-        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(6.28125 : 5.125); (6.28125 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial2" />
-      <nodes>
-        <classShapeMoniker Id="0de8b23c-569c-4fe6-9c3e-b65554682644" />
-        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(6.546875 : 5.125); (6.546875 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial3" />
-      <nodes>
-        <classShapeMoniker Id="0de8b23c-569c-4fe6-9c3e-b65554682644" />
-        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(7.078125 : 5.125); (7.078125 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial4" />
-      <nodes>
-        <classShapeMoniker Id="0de8b23c-569c-4fe6-9c3e-b65554682644" />
-        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(2.5 : 4.5937475); (5.9843725 : 4.5937475); (5.9843725 : 5.125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/WordList/WordList_Word" />
-      <nodes>
-        <classShapeMoniker Id="b16b34e9-0ec7-4ff7-9900-00473d9a5040" />
-        <classShapeMoniker Id="0de8b23c-569c-4fe6-9c3e-b65554682644" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 6.34699625651042); (5.75 : 6.34699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/DataClasses1DataContext/WordSublist/WordSublist_Word" />
-      <nodes>
-        <classShapeMoniker Id="4e1a57b6-ab85-43bc-8212-ed89f3fa5b3a" />
-        <classShapeMoniker Id="0de8b23c-569c-4fe6-9c3e-b65554682644" />
-      </nodes>
-    </associationConnector>
     <classShape Id="4b0aa1e4-343b-4079-9b05-7dfe15acc8a9" absoluteBounds="0.875, 7.375, 2, 1.1939925130208333">
       <DataClassMoniker Name="/DataClasses1DataContext/Consequence" />
       <nestedChildShapes>
         <elementListCompartment Id="3b139266-c9bc-4d1f-9a7e-c21a4ede4189" absoluteBounds="0.88999999999999968, 7.8350000000000009, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.875 : 8.14589680989583); (6.07336288461538 : 8.14589680989583); (6.07336288461538 : 7.47280110677083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <classShape Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" absoluteBounds="5.625, 5.375, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/DataClasses1DataContext/Word" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5240b618-ae1f-4c8e-aae6-f67f6b9e49d5" absoluteBounds="5.64, 5.835, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.75 : 5.375); (6.75 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial" />
+      <nodes>
+        <classShapeMoniker Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" />
+        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(7.25 : 5.375); (7.25 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial1" />
+      <nodes>
+        <classShapeMoniker Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" />
+        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.25 : 5.375); (6.25 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial2" />
+      <nodes>
+        <classShapeMoniker Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" />
+        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.5 : 5.375); (6.5 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial3" />
+      <nodes>
+        <classShapeMoniker Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" />
+        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(7 : 5.375); (7 : 4.00160970052083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/Word/Word_Trial4" />
+      <nodes>
+        <classShapeMoniker Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" />
+        <classShapeMoniker Id="46de2e04-74ef-47bd-9b7f-e51171b4a264" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.875 : 8.04974659375); (6.625 : 8.04974659375); (6.625 : 7.53049967447917)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/DataClasses1DataContext/Consequence/Consequence_Word" />
       <nodes>
         <classShapeMoniker Id="4b0aa1e4-343b-4079-9b05-7dfe15acc8a9" />
-        <classShapeMoniker Id="0de8b23c-569c-4fe6-9c3e-b65554682644" />
+        <classShapeMoniker Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.5 : 4.72199625651042); (5.9062475 : 4.72199625651042); (5.9062475 : 5.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/WordList/WordList_Word" />
+      <nodes>
+        <classShapeMoniker Id="b16b34e9-0ec7-4ff7-9900-00473d9a5040" />
+        <classShapeMoniker Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 6.46027098983373); (5.625 : 6.46027098983373)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/WordSublist/WordSublist_Word" />
+      <nodes>
+        <classShapeMoniker Id="4e1a57b6-ab85-43bc-8212-ed89f3fa5b3a" />
+        <classShapeMoniker Id="d6ad4840-8abe-4931-8c58-2c4cf3ff6794" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

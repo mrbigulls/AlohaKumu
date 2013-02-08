@@ -1,0 +1,68 @@
+﻿@using AlohaKumu.Models;
+@using TestApp.Models;
+@model List<Word>
+<script src='Scripts/hear_code.js'></script>
+@{
+Random random = new Random();
+for (int wordcount = 0; wordcount < Model.Count; wordcount++ )
+{
+    int position = random.Next(0, 3);
+    List<Word> otherWords = new List<Word>(Model);
+    otherWords.Remove(Model[wordcount]);
+    Word[] options = new Word[3];
+    for(int x = 0; x < options.Length; x++)
+    {
+        if (x == position)
+        {
+            options[x] = Model[wordcount];
+        }
+        else
+        {
+            options[x] = otherWords[random.Next(0, otherWords.Count)];
+            otherWords.Remove(options[x]);
+        }
+    }
+    String trialLabel = "trial-" + wordcount;
+    String trialWordLabel = "trial-" + wordcount + "-word";
+    String trialSpokenLabel = "trial-" + wordcount + "-spoken";
+    String spokenSrc1 = "/Sounds/" + Model[wordcount].Hawaiian + ".mp3";
+    String spokenSrc2 = "/Sounds/" + Model[wordcount].Hawaiian + ".ogg";
+    String optionsLabel = "options-" + wordcount;
+    String optionLabel1 = "option-" + wordcount + "-1";
+    String optionLabel2 = "option-" + wordcount + "-2";
+    String optionLabel3 = "option-" + wordcount + "-3";
+    String soundLabel = "sound-" + wordcount;
+    String soundPath1 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".mp3";
+    String soundPath2 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".ogg";
+    String[] optionData = new String[3];
+    optionData[0] = "false";
+    optionData[1] = "false";
+    optionData[2] = "false";
+    optionData[position] = "true";
+    String firstID = "id1-" + wordcount;
+    String secondID = "id2-" + wordcount;
+    String pic1 = Settings.ImagePath + options[0].Picture;
+    String pic2 = Settings.ImagePath + options[1].Picture;
+    String pic3 = Settings.ImagePath + options[2].Picture;
+    <div class="trial overlay" id="@trialLabel">
+        <input type="hidden" id="@trialWordLabel" value="@options[position].ID" />
+        <div class="display id1" id="@firstID">@Model[wordcount].English</div>
+        <div class="display id2" id="@secondID">
+            <audio id="@trialSpokenLabel" hidden="hidden" preload="auto">
+                <source src="@spokenSrc1" type="audio/mpeg" />
+                <source src="@spokenSrc2" type="audio/ogg" />
+            </audio>
+        </div>
+        <div class="display" id="@optionsLabel">
+            <div class="option" id="@optionLabel1" data-wordid="@options[0].ID" data-correct="@optionData[0]"><img src="@pic1" /></div>
+            <div class="option" id="@optionLabel2" data-wordid="@options[1].ID" data-correct="@optionData[1]"><img src="@pic2" /></div>
+            <div class="option" id="@optionLabel3" data-wordid="@options[2].ID" data-correct="@optionData[2]"><img src="@pic3" /></div>
+        </div>
+    </div>
+    <audio id="@soundLabel" hidden="hidden" preload="auto">
+        <source src="@soundPath1" type="audio/mpeg"/>
+        <source src="@soundPath2" type="audio/ogg"/>
+    </audio>
+    <input type="hidden" id="trialSize" value="@Model.Count" />
+}
+}

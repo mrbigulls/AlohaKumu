@@ -107,5 +107,13 @@ namespace AlohaKumu.Models
             list.Shuffle();
             return list;
         }
+
+        public static String testType(User requested)
+        {
+            int key = 2; //magic number for See(1)/Hear(2) Select, replace this with lookup for user's progress
+            return (from t in database.TrialTypes
+                    where (t.ID == key)
+                    select t.Name).Single();
+        }
     }
 }
