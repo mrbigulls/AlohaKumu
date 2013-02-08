@@ -15,10 +15,11 @@ function () {
     var clickOptionTimes = [];
     var optionsClicked = [];
     var trialIndex;
-    var trialSize;
+    var trialSize = $('#trialSize').val();
+    var study = $('#sid').val();
+    var trialType = $('#trialTypeKey').val();
 
     $('#feedback').hide();
-    trialSize = $('#trialSize').val();
     $('#gobutton').click(start);
     $('.trial').hide();
 
@@ -108,6 +109,8 @@ function () {
         var block = {
             timeStarted: JSON.stringify(startTime),
             userID: $('#userID').val(),
+            studyID: study,
+            typeID: trialType,
             goTime: clickGo,
             wordOrder: JSON.stringify(words),
             ID1shown: JSON.stringify(showID1s),

@@ -319,6 +319,7 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Scripts\complete_code.js" />
     <Content Include="Scripts\hear_code.js" />
     <Content Include="Scripts\see_code.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
@@ -344,7 +345,7 @@
     <Content Include="Sounds\conga.mp3" />
     <Content Include="Sounds\contrabass.mp3" />
     <Content Include="Sounds\didgeridoo.mp3" />
-    <Content Include="Sounds\drum break.mp3" />
+    <Content Include="Sounds\drum_break.mp3" />
     <Content Include="Sounds\Hammond_organ.mp3" />
     <Content Include="Sounds\harmonica.mp3" />
     <Content Include="Sounds\Haupia.mp3" />
@@ -409,7 +410,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Home\_Splash.cshtml" />
     <Content Include="Views\Home\_tooSoon.cshtml" />
     <Content Include="Views\Home\_LoginPartial.cshtml" />
     <Content Include="Sounds\arab_flute.ogg" />
@@ -459,6 +459,7 @@
     <Content Include="Sounds\Pekona.ogg" />
     <Content Include="Sounds\Pipi.ogg" />
     <Content Include="Sounds\Poloka.ogg" />
+    <Content Include="Views\Home\_Completed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

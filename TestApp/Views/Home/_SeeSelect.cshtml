@@ -1,58 +1,93 @@
 ﻿@using AlohaKumu.Models;
 @using TestApp.Models;
 @model List<Word>
-<script src='Scripts/see_code.js'></script>
 @{
-Random random = new Random();
-for (int wordcount = 0; wordcount < Model.Count; wordcount++ )
-{
-    int position = random.Next(0, 3);
-    List<Word> otherWords = new List<Word>(Model);
-    otherWords.Remove(Model[wordcount]);
-    Word[] options = new Word[3];
-    for(int x = 0; x < options.Length; x++)
+    User loggedIn = (User)Session["User"];
+    <input type="hidden" id="userID" value="@loggedIn.ID" />
+    <div id="instructions" class="overlay">
+        @Settings.SeeSelectInstructions
+        <br />
+        <br />
+        <audio controls>
+            <source src="/Sounds/conga.mp3" type="audio/mpeg"/>
+            <source src="/Sounds/conga.ogg" type="audio/ogg"/>
+            YOUR BROWSER DOES NOT SUPPORT EMBEDDED AUDIO.  PLEASE UPDATE YOUR BROWSER BEFORE PARTICIPATING.
+        </audio>
+        <br />
+        <br />
+        <button id="gobutton">Go</button>
+    </div>
+    <input type="hidden" id="sid" value="@DataAccessor.studyIDFromUser(loggedIn)" />
+    <script src='Scripts/see_code.js'></script>
+    <input type="hidden" id="trialTypeKey" value="@DataAccessor.getTrialTypeKeyFromName("SeeSelect")" />
+    Random random = new Random();
+    int trialCount = Model.Count * Settings.wordDisplaysPerTrialBlock;
+    <input type="hidden" id="trialSize" value="@trialCount" />
+    <div id="feedback"></div>
+    for (int i = 0; i < Settings.wordDisplaysPerTrialBlock; i++)
     {
-        if (x == position)
+        Model.Shuffle();
+        for (int wordcount = 0; wordcount < Model.Count; wordcount++)
         {
-            options[x] = Model[wordcount];
-        }
-        else
-        {
-            options[x] = otherWords[random.Next(0, otherWords.Count)];
-            otherWords.Remove(options[x]);
+            int position = random.Next(0, 3);
+            List<Word> otherWords = new List<Word>(Model);
+            otherWords.Remove(Model[wordcount]);
+            Word[] options = new Word[3];
+            for (int x = 0; x < options.Length; x++)
+            {
+                if (x == position)
+                {
+                    options[x] = Model[wordcount];
+                }
+                else
+                {
+                    options[x] = otherWords[random.Next(0, otherWords.Count)];
+                    otherWords.Remove(options[x]);
+                }
+            }
+            int trialIndex = (i * Model.Count) + wordcount;
+            String trialLabel = "trial-" + trialIndex;
+            String trialWordLabel = "trial-" + trialIndex + "-word";
+            String optionsLabel = "options-" + trialIndex;
+            String optionLabel1 = "option-" + trialIndex + "-1";
+            String optionLabel2 = "option-" + trialIndex + "-2";
+            String optionLabel3 = "option-" + trialIndex + "-3";
+            String soundLabel = "sound-" + trialIndex;
+            String soundPath1;
+            String soundPath2;
+            if(DataAccessor.currentlyControlGroup(loggedIn))
+            {
+                String controlSound = DataAccessor.getUserControlSound(loggedIn);
+                soundPath1 = "/Sounds/" + controlSound + ".mp3";
+                soundPath2 = "/Sounds/" + controlSound + ".ogg";
+            }
+            else
+            {
+                soundPath1 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".mp3";
+                soundPath2 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".ogg";
+            }
+            String[] optionData = new String[3];
+            optionData[0] = "false";
+            optionData[1] = "false";
+            optionData[2] = "false";
+            optionData[position] = "true";
+            String firstID = "id1-" + trialIndex;
+            String secondID = "id2-" + trialIndex;
+            String idPic = Settings.ImagePath + Model[wordcount].Picture;
+            <div class="trial overlay" id="@trialLabel">
+                <input type="hidden" id="@trialWordLabel" value="@options[position].ID" />
+                <div class="display id1" id="@firstID">@Model[wordcount].English</div>
+                <div class="display id2" id="@secondID"><img src="@idPic" /></div>
+                <div class="display" id="@optionsLabel">
+                    <div class="option" id="@optionLabel1" data-wordid="@options[0].ID" data-correct="@optionData[0]">@options[0].Hawaiian</div>
+                    <div class="option" id="@optionLabel2" data-wordid="@options[1].ID" data-correct="@optionData[1]">@options[1].Hawaiian</div>
+                    <div class="option" id="@optionLabel3" data-wordid="@options[2].ID" data-correct="@optionData[2]">@options[2].Hawaiian</div>
+                </div>
+            </div>
+            <audio id="@soundLabel" hidden="hidden" preload="auto">
+                <source src="@soundPath1" type="audio/mpeg"/>
+                <source src="@soundPath2" type="audio/ogg"/>
+            </audio>
         }
     }
-    String trialLabel = "trial-" + wordcount;
-    String trialWordLabel = "trial-" + wordcount + "-word";
-    String optionsLabel = "options-" + wordcount;
-    String optionLabel1 = "option-" + wordcount + "-1";
-    String optionLabel2 = "option-" + wordcount + "-2";
-    String optionLabel3 = "option-" + wordcount + "-3";
-    String soundLabel = "sound-" + wordcount;
-    String soundPath1 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".mp3";
-    String soundPath2 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".ogg";
-    String[] optionData = new String[3];
-    optionData[0] = "false";
-    optionData[1] = "false";
-    optionData[2] = "false";
-    optionData[position] = "true";
-    String firstID = "id1-" + wordcount;
-    String secondID = "id2-" + wordcount;
-    String idPic = Settings.ImagePath + Model[wordcount].Picture;
-    <div class="trial overlay" id="@trialLabel">
-        <input type="hidden" id="@trialWordLabel" value="@options[position].ID" />
-        <div class="display id1" id="@firstID">@Model[wordcount].English</div>
-        <div class="display id2" id="@secondID"><img src="@idPic" /></div>
-        <div class="display" id="@optionsLabel">
-            <div class="option" id="@optionLabel1" data-wordid="@options[0].ID" data-correct="@optionData[0]">@options[0].Hawaiian</div>
-            <div class="option" id="@optionLabel2" data-wordid="@options[1].ID" data-correct="@optionData[1]">@options[1].Hawaiian</div>
-            <div class="option" id="@optionLabel3" data-wordid="@options[2].ID" data-correct="@optionData[2]">@options[2].Hawaiian</div>
-        </div>
-    </div>
-    <audio id="@soundLabel" hidden="hidden" preload="auto">
-        <source src="@soundPath1" type="audio/mpeg"/>
-        <source src="@soundPath2" type="audio/ogg"/>
-    </audio>
-    <input type="hidden" id="trialSize" value="@Model.Count" />
-}
 }

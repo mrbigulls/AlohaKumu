@@ -13,6 +13,8 @@ namespace AlohaKumu.Models
         public String timeStarted { get; set; }
         public int userID { get; set; }
         public int goTime { get; set; }
+        public int studyID { get; set; }
+        public int typeID { get; set; }
         public String wordOrder { get; set; }
         public String ID1shown { get; set; }
         public String ID1times { get; set; }

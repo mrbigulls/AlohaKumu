@@ -14,8 +14,10 @@ namespace AlohaKumu.Models
         public static void recordTrialBlock(TrialBlockData results)
         {
             TrialBlock newBlock = new TrialBlock();
+            newBlock.StudyID = results.studyID;
             newBlock.StartTime = results.taken;
             newBlock.UserID = results.userID;
+            newBlock.TrialTypeID = results.typeID;
             database.TrialBlocks.InsertOnSubmit(newBlock);
             database.SubmitChanges();
             int trialcount = results.clickID1s.Length;
@@ -34,11 +36,70 @@ namespace AlohaKumu.Models
                 newTrial.Option3ID = results.optionIDs[i][2];
                 newTrial.TimeOptionClicked = results.clickOptionTimes[i];
                 newTrial.OptionIDClicked = results.optionIDsClicked[i];
-                newTrial.TrialTypeID = 1;
-                //^ magic number marks this a SeeSelect trial, dev out later
                 database.Trials.InsertOnSubmit(newTrial);
                 database.SubmitChanges();
             }
+            evalPerformance(newBlock);
+        }
+
+        public static void evalPerformance(TrialBlock test)
+        {
+            double target = test.Study.TargetWordsPerMinute;
+            List<Trial> trials = blockTrials(test);
+            int correct = 0;
+            foreach (Trial t in trials)
+            {
+                if (t.OptionIDClicked == t.WordID) correct++;
+            }
+            double finish = trials[trials.Count - 1].TimeOptionClicked / 60000; //milliseconds to minutes
+            double rate = 0;
+            if(correct > 0) rate = correct / finish;
+            if(rate >= target) advanceUserInStudy(studiesUserFromUser(test.User));
+        }
+
+        public static List<Trial> blockTrials(TrialBlock block)
+        {
+            List<Trial> trials = (from t in database.Trials
+                                  where t.TrialBlockID == block.ID
+                                  select t).ToList();
+            return trials.OrderBy(x => x.TimeOptionClicked).ToList();
+        }
+
+        public static void advanceUserInStudy(StudiesUser u)
+        {
+            var subkeys = (from s in database.WordSublists
+                           select s.ID);
+            var typekeys = (from s in database.TrialTypes
+                            select s.ID);
+
+            int firstSublist = subkeys.Min();
+            int lastSublist = subkeys.Max();
+            int lastType = typekeys.Max();
+
+            if (u.WordSublistID < lastSublist)
+            {
+                u.WordSublist = getSublistByID(u.WordSublistID + 1);
+            }
+            else if (u.TrialTypeID < lastType)
+            {
+                u.WordSublist = getSublistByID(firstSublist);
+                u.TrialType = getTrialTypeByID(u.TrialTypeID + 1);
+            }
+            database.SubmitChanges();
+        }
+
+        public static WordSublist getSublistByID(int id)
+        {
+            return (from sl in database.WordSublists
+                    where sl.ID == id
+                    select sl).Single();
+        }
+
+        public static TrialType getTrialTypeByID(int id)
+        {
+            return (from tt in database.TrialTypes
+                    where tt.ID == id
+                    select tt).Single();
         }
 
         public static bool isUser(String name)
@@ -60,31 +121,39 @@ namespace AlohaKumu.Models
             return requested;
         }
 
-        public static IQueryable<TrialBlock> userBlocks(User current)
+        public static List<TrialBlock> userBlocks(User current)
         {
             return (from t in database.TrialBlocks
-                    where (t.User == current)
-                    select t);
+                    where (t.UserID == current.ID)
+                    select t).ToList();
         }
 
-        public static bool allowTrial(User current)
+        public static bool? allowTrial(User current)
         {
-            IQueryable<TrialBlock> blocks = userBlocks(current);
+            if (studiesUserFromUser(current).TrialType.Name == "Completed") return null;
+            List<TrialBlock> blocks = userBlocks(current);
             TrialBlock last = null;
             foreach (TrialBlock t in blocks)
             {
                 if (last == null) last = t;
-                else if (t.StartTime > last.StartTime) last = t;
+                else if ( DateTime.Compare(t.StartTime, last.StartTime) > 0 ) last = t;
             }
-            if (last == null || (DateTime.Now - last.StartTime) > Settings.waitTime) return true;
+            if (last == null || (DateTime.Compare(DateTime.Now.Date, last.StartTime.Date) > 0) || (DateTime.Now - last.StartTime) > Settings.waitTime) return true;
             return false;
         }
 
         public static List<Word> getWordList(int listKey, int subListKey)
         {
-            return (from w in database.Words
-                    where (w.WordListID == listKey && w.WordSublistID == subListKey)
-                    select w).ToList();
+            List<Word> fullList = Enumerable.Empty<Word>().ToList();
+            List<Word> subList;
+            for (int i = 1; i <= subListKey; i++)
+            {
+                subList = (from w in database.Words
+                           where (w.WordListID == listKey && w.WordSublistID == i)
+                           select w).ToList();
+                fullList = fullList.Concat(subList).ToList();
+            }
+            return fullList;
         }
 
         public static Word getWord(int key)
@@ -100,20 +169,63 @@ namespace AlohaKumu.Models
                     select n);
         }
 
-        //define logic of choosing which list here later
         public static List<Word> testList(User requested)
         {
-            List<Word> list = getWordList(1,1);
-            list.Shuffle();
+            StudiesUser current = studiesUserFromUser(requested);
+            List<Word> list = getWordList(current.WordListID, current.WordSublistID);
+            //List<Word> fullList = list.Concat(list).ToList();
+            //list.Shuffle();
             return list;
         }
 
         public static String testType(User requested)
         {
-            int key = 2; //magic number for See(1)/Hear(2) Select, replace this with lookup for user's progress
+            return studiesUserFromUser(requested).TrialType.Name;
+        }
+
+        public static StudiesUser studiesUserFromUser(User requested)
+        {
+            return (from su in database.StudiesUsers
+                    join s in database.Studies
+                    on su.StudyID equals s.ID
+                    where (su.UserID == requested.ID) && (s.Active)
+                    select su).Single();
+        }
+
+        public static int studyIDFromUser(User requested)
+        {
+            /*
+            IQueryable<Study> activeStudies = (from s in database.Studies
+                                               where s.Active
+                                               select s);*/
+            return (from su in requested.StudiesUsers
+                    join st in database.Studies
+                    on su.StudyID equals st.ID
+                    where st.Active
+                    select st.ID).Single();
+        }
+
+        public static int getTrialTypeKeyFromName(String name)
+        {
             return (from t in database.TrialTypes
-                    where (t.ID == key)
-                    select t.Name).Single();
+                    where (t.Name == name)
+                    select t.ID).Single();
+        }
+
+        public static List<String> getTrialTypeNames()
+        {
+            return (from t in database.TrialTypes
+                    select t.Name).ToList();
+        }
+
+        public static bool currentlyControlGroup(User current)
+        {
+            return studiesUserFromUser(current).ControlGroup;
+        }
+
+        public static String getUserControlSound(User current)
+        {
+            return studiesUserFromUser(current).Study.Consequence.Filename;
         }
     }
 }

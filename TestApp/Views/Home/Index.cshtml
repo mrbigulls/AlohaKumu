@@ -7,7 +7,16 @@
     <div class="overlay" id="checkScript">You're browser version/settings are not sufficient to use this website.  Please change your browser settings to enable JavaScript.  If this still doesn't work, you may need to upgrade your browser.</div>
     <div class="content-wrapper">
         @if (Session["User"] == null) { Html.RenderPartial("_LoginPartial"); }
-        else if (DataAccessor.allowTrial( (User)Session["User"]) ) { Html.RenderPartial("_Splash", Session["User"]); }
-        else { Html.RenderPartial("_tooSoon"); }
+        else
+        {
+            bool? allow = DataAccessor.allowTrial( (User)Session["User"]);
+            if ( allow == null ) { Html.RenderPartial("_Completed", null); }
+            else if (allow == true)
+            {
+                Html.RenderPartial("_" + DataAccessor.testType((User)Session["User"]), DataAccessor.testList((User)Session["User"]));
+                //{ Html.RenderPartial("_Splash", Session["User"]); }
+            }
+            else { Html.RenderPartial("_tooSoon"); }
+        }
     </div>
 </section>
