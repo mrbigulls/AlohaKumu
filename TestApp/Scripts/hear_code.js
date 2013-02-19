@@ -18,6 +18,7 @@ function () {
     var trialSize = $('#trialSize').val();
     var study = $('#sid').val();
     var trialType = $('#trialTypeKey').val();
+    var controlUser = $('#userInControlGroup').val();
 
     $('#feedback').hide();
     $('#gobutton').click(start);
@@ -87,7 +88,7 @@ function () {
 
     function stepFive(correct) {
         if (correct) {
-            document.getElementById('sound-' + trialIndex).play();
+            if (!controlUser) { document.getElementById('sound-' + trialIndex).play(); }
             displayMessage('Correct!', 3000, stepSix);
         }
         else displayMessage('Wrong!', 3000, stepSix);

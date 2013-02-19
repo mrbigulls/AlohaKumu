@@ -76,14 +76,20 @@ namespace AlohaKumu.Models
             int lastSublist = subkeys.Max();
             int lastType = typekeys.Max();
 
-            if (u.WordSublistID < lastSublist)
+            if (u.WordSublistID < lastSublist && u.Mix)
             {
                 u.WordSublist = getSublistByID(u.WordSublistID + 1);
+                u.Mix = false;
+            }
+            else if (u.WordSublistID < lastSublist)
+            {
+                u.Mix = true;
             }
             else if (u.TrialTypeID < lastType)
             {
                 u.WordSublist = getSublistByID(firstSublist);
                 u.TrialType = getTrialTypeByID(u.TrialTypeID + 1);
+                u.Mix = false;
             }
             database.SubmitChanges();
         }
@@ -112,9 +118,28 @@ namespace AlohaKumu.Models
             return false;
         }
 
+        public static bool isAdmin(String name)
+        {
+            IQueryable<Admin> admins = getAdmins();
+            foreach (Admin a in admins)
+            {
+                if (a.Username == name) return true;
+            }
+            return false;
+        }
+
         public static User login(String name, String pass)
         {
             User requested = (from u in database.Users
+                              where (u.Username == name)
+                              select u).Single();
+            if (requested == null || requested.Password != pass) return null;
+            return requested;
+        }
+
+        public static Admin loginAdmin(String name, String pass)
+        {
+            Admin requested = (from u in database.Admins
                               where (u.Username == name)
                               select u).Single();
             if (requested == null || requested.Password != pass) return null;
@@ -130,7 +155,8 @@ namespace AlohaKumu.Models
 
         public static bool? allowTrial(User current)
         {
-            if (studiesUserFromUser(current).TrialType.Name == "Completed") return null;
+            StudiesUser currentStudy = studiesUserFromUser(current);
+            if (currentStudy.TrialType.Name == "Completed") return null;
             List<TrialBlock> blocks = userBlocks(current);
             TrialBlock last = null;
             foreach (TrialBlock t in blocks)
@@ -138,20 +164,29 @@ namespace AlohaKumu.Models
                 if (last == null) last = t;
                 else if ( DateTime.Compare(t.StartTime, last.StartTime) > 0 ) last = t;
             }
-            if (last == null || (DateTime.Compare(DateTime.Now.Date, last.StartTime.Date) > 0) || (DateTime.Now - last.StartTime) > Settings.waitTime) return true;
+            if (last == null || (DateTime.Compare(DateTime.Now.Date, last.StartTime.Date) > 0) || (DateTime.Now - last.StartTime) > currentStudy.Study.getWaitTime() ) return true;
             return false;
         }
 
-        public static List<Word> getWordList(int listKey, int subListKey)
+        public static List<Word> getWordList(int listKey, int subListKey, bool mixed)
         {
             List<Word> fullList = Enumerable.Empty<Word>().ToList();
             List<Word> subList;
-            for (int i = 1; i <= subListKey; i++)
+            if (mixed)
             {
-                subList = (from w in database.Words
-                           where (w.WordListID == listKey && w.WordSublistID == i)
-                           select w).ToList();
-                fullList = fullList.Concat(subList).ToList();
+                for (int i = 1; i <= subListKey; i++)
+                {
+                    subList = (from w in database.Words
+                               where (w.WordListID == listKey && w.WordSublistID == i)
+                               select w).ToList();
+                    fullList = fullList.Concat(subList).ToList();
+                }
+            }
+            else
+            {
+                fullList = (from w in database.Words
+                            where (w.WordListID == listKey && w.WordSublistID == subListKey)
+                            select w).ToList();
             }
             return fullList;
         }
@@ -169,12 +204,16 @@ namespace AlohaKumu.Models
                     select n);
         }
 
+        public static IQueryable<Admin> getAdmins()
+        {
+            return (from n in database.Admins
+                    select n);
+        }
+
         public static List<Word> testList(User requested)
         {
             StudiesUser current = studiesUserFromUser(requested);
-            List<Word> list = getWordList(current.WordListID, current.WordSublistID);
-            //List<Word> fullList = list.Concat(list).ToList();
-            //list.Shuffle();
+            List<Word> list = getWordList(current.WordListID, current.WordSublistID, current.Mix);
             return list;
         }
 
@@ -194,10 +233,6 @@ namespace AlohaKumu.Models
 
         public static int studyIDFromUser(User requested)
         {
-            /*
-            IQueryable<Study> activeStudies = (from s in database.Studies
-                                               where s.Active
-                                               select s);*/
             return (from su in requested.StudiesUsers
                     join st in database.Studies
                     on su.StudyID equals st.ID
@@ -223,9 +258,20 @@ namespace AlohaKumu.Models
             return studiesUserFromUser(current).ControlGroup;
         }
 
-        public static String getUserControlSound(User current)
+        public static Study studyFromID(int sid)
         {
-            return studiesUserFromUser(current).Study.Consequence.Filename;
+            return (from s in database.Studies
+                    where (s.ID == sid)
+                    select s).Single();
+        }
+
+        public static List<Study> getStudiesByAdminID(int aid)
+        {
+            return (from sa in database.StudiesAdmins
+                    join s in database.Studies
+                    on sa.StudyID equals s.ID
+                    where sa.AdminID == aid
+                    select s).ToList();
         }
     }
 }

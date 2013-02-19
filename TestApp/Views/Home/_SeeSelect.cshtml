@@ -3,9 +3,11 @@
 @model List<Word>
 @{
     User loggedIn = (User)Session["User"];
+    int studyID = DataAccessor.studyIDFromUser(loggedIn);
+    Study thisStudy = DataAccessor.studyFromID(studyID);
     <input type="hidden" id="userID" value="@loggedIn.ID" />
     <div id="instructions" class="overlay">
-        @Settings.SeeSelectInstructions
+        @thisStudy.SeeInstructions
         <br />
         <br />
         <audio controls>
@@ -17,14 +19,15 @@
         <br />
         <button id="gobutton">Go</button>
     </div>
-    <input type="hidden" id="sid" value="@DataAccessor.studyIDFromUser(loggedIn)" />
+    <input type="hidden" id="sid" value="@studyID" />
     <script src='Scripts/see_code.js'></script>
     <input type="hidden" id="trialTypeKey" value="@DataAccessor.getTrialTypeKeyFromName("SeeSelect")" />
     Random random = new Random();
-    int trialCount = Model.Count * Settings.wordDisplaysPerTrialBlock;
+    int trialCount = Model.Count * thisStudy.WordTrialsPerBlock;
     <input type="hidden" id="trialSize" value="@trialCount" />
+    <input type="hidden" id="userInControlGroup" value="@DataAccessor.currentlyControlGroup(loggedIn)" />
     <div id="feedback"></div>
-    for (int i = 0; i < Settings.wordDisplaysPerTrialBlock; i++)
+    for (int i = 0; i < thisStudy.WordTrialsPerBlock; i++)
     {
         Model.Shuffle();
         for (int wordcount = 0; wordcount < Model.Count; wordcount++)
@@ -53,19 +56,8 @@
             String optionLabel2 = "option-" + trialIndex + "-2";
             String optionLabel3 = "option-" + trialIndex + "-3";
             String soundLabel = "sound-" + trialIndex;
-            String soundPath1;
-            String soundPath2;
-            if(DataAccessor.currentlyControlGroup(loggedIn))
-            {
-                String controlSound = DataAccessor.getUserControlSound(loggedIn);
-                soundPath1 = "/Sounds/" + controlSound + ".mp3";
-                soundPath2 = "/Sounds/" + controlSound + ".ogg";
-            }
-            else
-            {
-                soundPath1 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".mp3";
-                soundPath2 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".ogg";
-            }
+            String soundPath1 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".mp3";
+            String soundPath2 = "/Sounds/" + Model[wordcount].Consequence.Filename + ".ogg";
             String[] optionData = new String[3];
             optionData[0] = "false";
             optionData[1] = "false";

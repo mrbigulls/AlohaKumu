@@ -31,7 +31,6 @@
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Filename" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Association Name="Consequence_Word" Member="Words" ThisKey="ID" OtherKey="ConsequenceID" Type="Word" />
-      <Association Name="Consequence_Study" Member="Studies" ThisKey="ID" OtherKey="ControlConsequenceID" Type="Study" />
     </Type>
   </Table>
   <Table Name="dbo.Word" Member="Words">
@@ -94,7 +93,7 @@
       <Association Name="TrialBlock_Trial" Member="Trials" ThisKey="ID" OtherKey="TrialBlockID" Type="Trial" />
       <Association Name="TrialType_TrialBlock" Member="TrialType" ThisKey="TrialTypeID" OtherKey="ID" Type="TrialType" IsForeignKey="true" />
       <Association Name="User_TrialBlock" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
-      <Association Name="StudiesUser_TrialBlock" Member="StudiesUser" ThisKey="UserID,StudyID" OtherKey="StudyID,UserID" Type="StudiesUser" IsForeignKey="true" />
+      <Association Name="StudiesUser_TrialBlock" Member="StudiesUser" ThisKey="StudyID,UserID" OtherKey="StudyID,UserID" Type="StudiesUser" IsForeignKey="true" />
       <Association Name="Study_TrialBlock" Member="Study" ThisKey="StudyID" OtherKey="ID" Type="Study" IsForeignKey="true" />
     </Type>
   </Table>
@@ -104,9 +103,10 @@
       <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="WordListID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="WordSublistID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Mix" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="TrialTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ControlGroup" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="StudiesUser_TrialBlock" Member="TrialBlocks" ThisKey="StudyID,UserID" OtherKey="UserID,StudyID" Type="TrialBlock" />
+      <Association Name="StudiesUser_TrialBlock" Member="TrialBlocks" ThisKey="StudyID,UserID" OtherKey="StudyID,UserID" Type="TrialBlock" />
       <Association Name="TrialType_StudiesUser" Member="TrialType" ThisKey="TrialTypeID" OtherKey="ID" Type="TrialType" IsForeignKey="true" />
       <Association Name="User_StudiesUser" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
       <Association Name="WordList_StudiesUser" Member="WordList" ThisKey="WordListID" OtherKey="ID" Type="WordList" IsForeignKey="true" />
@@ -120,10 +120,31 @@
       <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="TargetWordsPerMinute" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ControlConsequenceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WaitHours" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WaitMins" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WaitSecs" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SeeInstructions" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="HearInstructions" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="WordTrialsPerBlock" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Study_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="StudyID" Type="TrialBlock" />
       <Association Name="Study_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="StudyID" Type="StudiesUser" />
-      <Association Name="Consequence_Study" Member="Consequence" ThisKey="ControlConsequenceID" OtherKey="ID" Type="Consequence" IsForeignKey="true" />
+      <Association Name="Study_StudiesAdmin" Member="StudiesAdmins" ThisKey="ID" OtherKey="StudyID" Type="StudiesAdmin" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Admin" Member="Admins">
+    <Type Name="Admin">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Admin_StudiesAdmin" Member="StudiesAdmins" ThisKey="ID" OtherKey="AdminID" Type="StudiesAdmin" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StudiesAdmins" Member="StudiesAdmins">
+    <Type Name="StudiesAdmin">
+      <Column Name="StudyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AdminID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Admin_StudiesAdmin" Member="Admin" ThisKey="AdminID" OtherKey="ID" Type="Admin" IsForeignKey="true" />
+      <Association Name="Study_StudiesAdmin" Member="Study" ThisKey="StudyID" OtherKey="ID" Type="Study" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

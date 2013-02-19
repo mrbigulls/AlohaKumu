@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using AlohaKumu.Models;
+using TestApp.Models;
 
 namespace AlohaKumu.Models
 {
@@ -19,6 +21,11 @@ namespace AlohaKumu.Models
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static TimeSpan getWaitTime(this Study s)
+        {
+            return new TimeSpan(s.WaitHours, s.WaitMins, s.WaitSecs);
         }
     }
 }

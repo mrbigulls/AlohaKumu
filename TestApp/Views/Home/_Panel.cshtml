@@ -1,0 +1,34 @@
+﻿@using AlohaKumu.Models;
+@using TestApp.Models;
+@{
+    Admin loggedIn = (Admin)Session["User"];
+    List<Study> studiesRun = DataAccessor.getStudiesByAdminID(loggedIn.ID);
+    <p>Studies</p>
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>Target Words/Minute</td>
+            <td>Active</td>
+            <td>Wait Hours</td>
+            <td>Wait Mins</td>
+            <td>Wait Secs</td>
+            <td>See Instructions</td>
+            <td>Hear Instructions</td>
+            <td>Trials per Word per Session</td>
+        </tr>
+        @foreach (Study s in studiesRun)
+        {
+            <tr>
+                <td>@s.Name</td>
+                <td>@s.TargetWordsPerMinute</td>
+                <td>@s.Active</td>
+                <td>@s.WaitHours</td>
+                <td>@s.WaitMins</td>
+                <td>@s.WaitSecs</td>
+                <td>@s.SeeInstructions</td>
+                <td>@s.HearInstructions</td>
+                <td>@s.WordTrialsPerBlock</td>
+            </tr>
+        }
+    </table>
+}

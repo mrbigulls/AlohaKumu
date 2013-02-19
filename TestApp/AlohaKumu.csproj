@@ -460,6 +460,8 @@
     <Content Include="Sounds\Pipi.ogg" />
     <Content Include="Sounds\Poloka.ogg" />
     <Content Include="Views\Home\_Completed.cshtml" />
+    <Content Include="Views\Home\Admin.cshtml" />
+    <Content Include="Views\Home\_Panel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

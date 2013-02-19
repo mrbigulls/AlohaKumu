@@ -35,6 +35,31 @@ namespace AlohaKumu.Controllers
             return View();
         }
 
+        public ActionResult Admin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Admin(FormCollection form)
+        {
+            String username = form["username"];
+            String password = form["password"];
+            if (!DataAccessor.isAdmin(username))
+            {
+                Session["Error"] = "No such user: " + username;
+                return RedirectToAction("Error");
+            }
+            Admin current = DataAccessor.loginAdmin(username, password);
+            if (current == null)
+            {
+                Session["Error"] = "Invalid password";
+                return RedirectToAction("Error");
+            }
+            Session["User"] = current;
+            return View();
+        }
+
         public ActionResult LogOff()
         {
             Session["User"] = null;
