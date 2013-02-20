@@ -157,6 +157,8 @@ namespace AlohaKumu.Models
         {
             StudiesUser currentStudy = studiesUserFromUser(current);
             if (currentStudy.TrialType.Name == "Completed") return null;
+            return true; //for rapid testing
+            /*
             List<TrialBlock> blocks = userBlocks(current);
             TrialBlock last = null;
             foreach (TrialBlock t in blocks)
@@ -166,6 +168,7 @@ namespace AlohaKumu.Models
             }
             if (last == null || (DateTime.Compare(DateTime.Now.Date, last.StartTime.Date) > 0) || (DateTime.Now - last.StartTime) > currentStudy.Study.getWaitTime() ) return true;
             return false;
+            */
         }
 
         public static List<Word> getWordList(int listKey, int subListKey, bool mixed)
@@ -272,6 +275,18 @@ namespace AlohaKumu.Models
                     on sa.StudyID equals s.ID
                     where sa.AdminID == aid
                     select s).ToList();
+        }
+
+        public static List<WordList> getWordLists()
+        {
+            return (from wl in database.WordLists
+                    select wl).ToList();
+        }
+
+        public static List<WordSublist> getWordSublists()
+        {
+            return (from wl in database.WordSublists
+                    select wl).ToList();
         }
     }
 }

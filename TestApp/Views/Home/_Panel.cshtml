@@ -3,6 +3,10 @@
 @{
     Admin loggedIn = (Admin)Session["User"];
     List<Study> studiesRun = DataAccessor.getStudiesByAdminID(loggedIn.ID);
+    List<User> users = DataAccessor.getUsers().ToList();
+    List<WordList> wordLists = DataAccessor.getWordLists();
+    List<WordSublist> wordSublists = DataAccessor.getWordSublists();
+
     <p>Studies</p>
     <table>
         <tr>
@@ -29,6 +33,49 @@
                 <td>@s.HearInstructions</td>
                 <td>@s.WordTrialsPerBlock</td>
             </tr>
+        }
+    </table>
+    <p>Users</p>
+    <table>
+        <tr>
+            <td>Username</td>
+            <td>Active</td>
+        </tr>
+        @foreach (User u in users)
+        {
+            <tr>
+                <td>@u.Username</td>
+                <td>@u.Active</td>
+            </tr>
+        }
+    </table>
+    <p>Word Lists</p>
+    <table>
+        @foreach (WordList wl in wordLists)
+        {
+            foreach (WordSublist sl in wordSublists)
+            {
+                List<Word> words = DataAccessor.getWordList(wl.ID, sl.ID, false);
+
+                <tr>
+                    <td colspan="4">@wl.Name@sl.Name</td>
+                </tr>
+                <tr>
+                    <td>English</td>
+                    <td>Hawaiian</td>
+                    <td>Picture</td>
+                    <td>Sound</td>
+                </tr>
+                foreach (Word w in words)
+                {
+                    <tr>
+                        <td>@w.English</td>
+                        <td>@w.Hawaiian</td>
+                        <td>THUMBNAIL HERE</td>
+                        <td>SOUND PLAY HERE</td>
+                    </tr>    
+                }
+            }
         }
     </table>
 }
