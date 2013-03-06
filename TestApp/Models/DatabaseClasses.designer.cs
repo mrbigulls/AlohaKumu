@@ -33,9 +33,6 @@ namespace TestApp.Models
     partial void InsertWordList(WordList instance);
     partial void UpdateWordList(WordList instance);
     partial void DeleteWordList(WordList instance);
-    partial void InsertUser(User instance);
-    partial void UpdateUser(User instance);
-    partial void DeleteUser(User instance);
     partial void InsertWordSublist(WordSublist instance);
     partial void UpdateWordSublist(WordSublist instance);
     partial void DeleteWordSublist(WordSublist instance);
@@ -60,12 +57,15 @@ namespace TestApp.Models
     partial void InsertStudy(Study instance);
     partial void UpdateStudy(Study instance);
     partial void DeleteStudy(Study instance);
-    partial void InsertAdmin(Admin instance);
-    partial void UpdateAdmin(Admin instance);
-    partial void DeleteAdmin(Admin instance);
     partial void InsertStudiesAdmin(StudiesAdmin instance);
     partial void UpdateStudiesAdmin(StudiesAdmin instance);
     partial void DeleteStudiesAdmin(StudiesAdmin instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
+    partial void InsertAdmin(Admin instance);
+    partial void UpdateAdmin(Admin instance);
+    partial void DeleteAdmin(Admin instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -103,14 +103,6 @@ namespace TestApp.Models
 			get
 			{
 				return this.GetTable<WordList>();
-			}
-		}
-		
-		public System.Data.Linq.Table<User> Users
-		{
-			get
-			{
-				return this.GetTable<User>();
 			}
 		}
 		
@@ -178,19 +170,27 @@ namespace TestApp.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Admin> Admins
-		{
-			get
-			{
-				return this.GetTable<Admin>();
-			}
-		}
-		
 		public System.Data.Linq.Table<StudiesAdmin> StudiesAdmins
 		{
 			get
 			{
 				return this.GetTable<StudiesAdmin>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Admin> Admins
+		{
+			get
+			{
+				return this.GetTable<Admin>();
 			}
 		}
 	}
@@ -334,196 +334,6 @@ namespace TestApp.Models
 		{
 			this.SendPropertyChanging();
 			entity.WordList = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
-	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _Username;
-		
-		private string _Password;
-		
-		private bool _Active;
-		
-		private int _ID;
-		
-		private EntitySet<TrialBlock> _TrialBlocks;
-		
-		private EntitySet<StudiesUser> _StudiesUsers;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnUsernameChanging(string value);
-    partial void OnUsernameChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    partial void OnActiveChanging(bool value);
-    partial void OnActiveChanged();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    #endregion
-		
-		public User()
-		{
-			this._TrialBlocks = new EntitySet<TrialBlock>(new Action<TrialBlock>(this.attach_TrialBlocks), new Action<TrialBlock>(this.detach_TrialBlocks));
-			this._StudiesUsers = new EntitySet<StudiesUser>(new Action<StudiesUser>(this.attach_StudiesUsers), new Action<StudiesUser>(this.detach_StudiesUsers));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Username
-		{
-			get
-			{
-				return this._Username;
-			}
-			set
-			{
-				if ((this._Username != value))
-				{
-					this.OnUsernameChanging(value);
-					this.SendPropertyChanging();
-					this._Username = value;
-					this.SendPropertyChanged("Username");
-					this.OnUsernameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
-		public bool Active
-		{
-			get
-			{
-				return this._Active;
-			}
-			set
-			{
-				if ((this._Active != value))
-				{
-					this.OnActiveChanging(value);
-					this.SendPropertyChanging();
-					this._Active = value;
-					this.SendPropertyChanged("Active");
-					this.OnActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrialBlock", Storage="_TrialBlocks", ThisKey="ID", OtherKey="UserID")]
-		public EntitySet<TrialBlock> TrialBlocks
-		{
-			get
-			{
-				return this._TrialBlocks;
-			}
-			set
-			{
-				this._TrialBlocks.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_StudiesUser", Storage="_StudiesUsers", ThisKey="ID", OtherKey="UserID")]
-		public EntitySet<StudiesUser> StudiesUsers
-		{
-			get
-			{
-				return this._StudiesUsers;
-			}
-			set
-			{
-				this._StudiesUsers.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_TrialBlocks(TrialBlock entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_TrialBlocks(TrialBlock entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
-		}
-		
-		private void attach_StudiesUsers(StudiesUser entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = this;
-		}
-		
-		private void detach_StudiesUsers(StudiesUser entity)
-		{
-			this.SendPropertyChanging();
-			entity.User = null;
 		}
 	}
 	
@@ -2010,11 +1820,11 @@ namespace TestApp.Models
 		
 		private EntityRef<TrialType> _TrialType;
 		
-		private EntityRef<User> _User;
-		
 		private EntityRef<StudiesUser> _StudiesUser;
 		
 		private EntityRef<Study> _Study;
+		
+		private EntityRef<User> _User;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2036,9 +1846,9 @@ namespace TestApp.Models
 		{
 			this._Trials = new EntitySet<Trial>(new Action<Trial>(this.attach_Trials), new Action<Trial>(this.detach_Trials));
 			this._TrialType = default(EntityRef<TrialType>);
-			this._User = default(EntityRef<User>);
 			this._StudiesUser = default(EntityRef<StudiesUser>);
 			this._Study = default(EntityRef<Study>);
+			this._User = default(EntityRef<User>);
 			OnCreated();
 		}
 		
@@ -2073,7 +1883,7 @@ namespace TestApp.Models
 			{
 				if ((this._UserID != value))
 				{
-					if ((this._User.HasLoadedOrAssignedValue || this._StudiesUser.HasLoadedOrAssignedValue))
+					if ((this._StudiesUser.HasLoadedOrAssignedValue || this._User.HasLoadedOrAssignedValue))
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -2201,40 +2011,6 @@ namespace TestApp.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrialBlock", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.TrialBlocks.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.TrialBlocks.Add(this);
-						this._UserID = value.ID;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StudiesUser_TrialBlock", Storage="_StudiesUser", ThisKey="StudyID,UserID", OtherKey="StudyID,UserID", IsForeignKey=true)]
 		public StudiesUser StudiesUser
 		{
@@ -2305,6 +2081,40 @@ namespace TestApp.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrialBlock", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.TrialBlocks.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.TrialBlocks.Add(this);
+						this._UserID = value.ID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -2362,13 +2172,13 @@ namespace TestApp.Models
 		
 		private EntityRef<TrialType> _TrialType;
 		
-		private EntityRef<User> _User;
-		
 		private EntityRef<WordList> _WordList;
 		
 		private EntityRef<WordSublist> _WordSublist;
 		
 		private EntityRef<Study> _Study;
+		
+		private EntityRef<User> _User;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2394,10 +2204,10 @@ namespace TestApp.Models
 		{
 			this._TrialBlocks = new EntitySet<TrialBlock>(new Action<TrialBlock>(this.attach_TrialBlocks), new Action<TrialBlock>(this.detach_TrialBlocks));
 			this._TrialType = default(EntityRef<TrialType>);
-			this._User = default(EntityRef<User>);
 			this._WordList = default(EntityRef<WordList>);
 			this._WordSublist = default(EntityRef<WordSublist>);
 			this._Study = default(EntityRef<Study>);
+			this._User = default(EntityRef<User>);
 			OnCreated();
 		}
 		
@@ -2608,40 +2418,6 @@ namespace TestApp.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_StudiesUser", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
-		public User User
-		{
-			get
-			{
-				return this._User.Entity;
-			}
-			set
-			{
-				User previousValue = this._User.Entity;
-				if (((previousValue != value) 
-							|| (this._User.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._User.Entity = null;
-						previousValue.StudiesUsers.Remove(this);
-					}
-					this._User.Entity = value;
-					if ((value != null))
-					{
-						value.StudiesUsers.Add(this);
-						this._UserID = value.ID;
-					}
-					else
-					{
-						this._UserID = default(int);
-					}
-					this.SendPropertyChanged("User");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="WordList_StudiesUser", Storage="_WordList", ThisKey="WordListID", OtherKey="ID", IsForeignKey=true)]
 		public WordList WordList
 		{
@@ -2740,6 +2516,40 @@ namespace TestApp.Models
 						this._StudyID = default(int);
 					}
 					this.SendPropertyChanged("Study");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_StudiesUser", Storage="_User", ThisKey="UserID", OtherKey="ID", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.StudiesUsers.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.StudiesUsers.Add(this);
+						this._UserID = value.ID;
+					}
+					else
+					{
+						this._UserID = default(int);
+					}
+					this.SendPropertyChanged("User");
 				}
 			}
 		}
@@ -3139,144 +2949,6 @@ namespace TestApp.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Admin")]
-	public partial class Admin : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _Username;
-		
-		private string _Password;
-		
-		private EntitySet<StudiesAdmin> _StudiesAdmins;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnUsernameChanging(string value);
-    partial void OnUsernameChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    #endregion
-		
-		public Admin()
-		{
-			this._StudiesAdmins = new EntitySet<StudiesAdmin>(new Action<StudiesAdmin>(this.attach_StudiesAdmins), new Action<StudiesAdmin>(this.detach_StudiesAdmins));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Username
-		{
-			get
-			{
-				return this._Username;
-			}
-			set
-			{
-				if ((this._Username != value))
-				{
-					this.OnUsernameChanging(value);
-					this.SendPropertyChanging();
-					this._Username = value;
-					this.SendPropertyChanged("Username");
-					this.OnUsernameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Admin_StudiesAdmin", Storage="_StudiesAdmins", ThisKey="ID", OtherKey="AdminID")]
-		public EntitySet<StudiesAdmin> StudiesAdmins
-		{
-			get
-			{
-				return this._StudiesAdmins;
-			}
-			set
-			{
-				this._StudiesAdmins.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_StudiesAdmins(StudiesAdmin entity)
-		{
-			this.SendPropertyChanging();
-			entity.Admin = this;
-		}
-		
-		private void detach_StudiesAdmins(StudiesAdmin entity)
-		{
-			this.SendPropertyChanging();
-			entity.Admin = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.StudiesAdmins")]
 	public partial class StudiesAdmin : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -3287,9 +2959,9 @@ namespace TestApp.Models
 		
 		private int _AdminID;
 		
-		private EntityRef<Admin> _Admin;
-		
 		private EntityRef<Study> _Study;
+		
+		private EntityRef<Admin> _Admin;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -3303,8 +2975,8 @@ namespace TestApp.Models
 		
 		public StudiesAdmin()
 		{
-			this._Admin = default(EntityRef<Admin>);
 			this._Study = default(EntityRef<Study>);
+			this._Admin = default(EntityRef<Admin>);
 			OnCreated();
 		}
 		
@@ -3356,40 +3028,6 @@ namespace TestApp.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Admin_StudiesAdmin", Storage="_Admin", ThisKey="AdminID", OtherKey="ID", IsForeignKey=true)]
-		public Admin Admin
-		{
-			get
-			{
-				return this._Admin.Entity;
-			}
-			set
-			{
-				Admin previousValue = this._Admin.Entity;
-				if (((previousValue != value) 
-							|| (this._Admin.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Admin.Entity = null;
-						previousValue.StudiesAdmins.Remove(this);
-					}
-					this._Admin.Entity = value;
-					if ((value != null))
-					{
-						value.StudiesAdmins.Add(this);
-						this._AdminID = value.ID;
-					}
-					else
-					{
-						this._AdminID = default(int);
-					}
-					this.SendPropertyChanged("Admin");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Study_StudiesAdmin", Storage="_Study", ThisKey="StudyID", OtherKey="ID", IsForeignKey=true)]
 		public Study Study
 		{
@@ -3424,6 +3062,40 @@ namespace TestApp.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Admin_StudiesAdmin", Storage="_Admin", ThisKey="AdminID", OtherKey="ID", IsForeignKey=true)]
+		public Admin Admin
+		{
+			get
+			{
+				return this._Admin.Entity;
+			}
+			set
+			{
+				Admin previousValue = this._Admin.Entity;
+				if (((previousValue != value) 
+							|| (this._Admin.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Admin.Entity = null;
+						previousValue.StudiesAdmins.Remove(this);
+					}
+					this._Admin.Entity = value;
+					if ((value != null))
+					{
+						value.StudiesAdmins.Add(this);
+						this._AdminID = value.ID;
+					}
+					else
+					{
+						this._AdminID = default(int);
+					}
+					this.SendPropertyChanged("Admin");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3442,6 +3114,382 @@ namespace TestApp.Models
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[User]")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Username;
+		
+		private bool _Active;
+		
+		private string _Salt;
+		
+		private string _PassHash;
+		
+		private EntitySet<TrialBlock> _TrialBlocks;
+		
+		private EntitySet<StudiesUser> _StudiesUsers;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnUsernameChanging(string value);
+    partial void OnUsernameChanged();
+    partial void OnActiveChanging(bool value);
+    partial void OnActiveChanged();
+    partial void OnSaltChanging(string value);
+    partial void OnSaltChanged();
+    partial void OnPassHashChanging(string value);
+    partial void OnPassHashChanged();
+    #endregion
+		
+		public User()
+		{
+			this._TrialBlocks = new EntitySet<TrialBlock>(new Action<TrialBlock>(this.attach_TrialBlocks), new Action<TrialBlock>(this.detach_TrialBlocks));
+			this._StudiesUsers = new EntitySet<StudiesUser>(new Action<StudiesUser>(this.attach_StudiesUsers), new Action<StudiesUser>(this.detach_StudiesUsers));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Username
+		{
+			get
+			{
+				return this._Username;
+			}
+			set
+			{
+				if ((this._Username != value))
+				{
+					this.OnUsernameChanging(value);
+					this.SendPropertyChanging();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit NOT NULL")]
+		public bool Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this.OnActiveChanging(value);
+					this.SendPropertyChanging();
+					this._Active = value;
+					this.SendPropertyChanged("Active");
+					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Salt", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Salt
+		{
+			get
+			{
+				return this._Salt;
+			}
+			set
+			{
+				if ((this._Salt != value))
+				{
+					this.OnSaltChanging(value);
+					this.SendPropertyChanging();
+					this._Salt = value;
+					this.SendPropertyChanged("Salt");
+					this.OnSaltChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PassHash", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string PassHash
+		{
+			get
+			{
+				return this._PassHash;
+			}
+			set
+			{
+				if ((this._PassHash != value))
+				{
+					this.OnPassHashChanging(value);
+					this.SendPropertyChanging();
+					this._PassHash = value;
+					this.SendPropertyChanged("PassHash");
+					this.OnPassHashChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_TrialBlock", Storage="_TrialBlocks", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<TrialBlock> TrialBlocks
+		{
+			get
+			{
+				return this._TrialBlocks;
+			}
+			set
+			{
+				this._TrialBlocks.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_StudiesUser", Storage="_StudiesUsers", ThisKey="ID", OtherKey="UserID")]
+		public EntitySet<StudiesUser> StudiesUsers
+		{
+			get
+			{
+				return this._StudiesUsers;
+			}
+			set
+			{
+				this._StudiesUsers.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TrialBlocks(TrialBlock entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_TrialBlocks(TrialBlock entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+		
+		private void attach_StudiesUsers(StudiesUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_StudiesUsers(StudiesUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Admin")]
+	public partial class Admin : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Username;
+		
+		private string _Salt;
+		
+		private string _PassHash;
+		
+		private EntitySet<StudiesAdmin> _StudiesAdmins;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnUsernameChanging(string value);
+    partial void OnUsernameChanged();
+    partial void OnSaltChanging(string value);
+    partial void OnSaltChanged();
+    partial void OnPassHashChanging(string value);
+    partial void OnPassHashChanged();
+    #endregion
+		
+		public Admin()
+		{
+			this._StudiesAdmins = new EntitySet<StudiesAdmin>(new Action<StudiesAdmin>(this.attach_StudiesAdmins), new Action<StudiesAdmin>(this.detach_StudiesAdmins));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Username
+		{
+			get
+			{
+				return this._Username;
+			}
+			set
+			{
+				if ((this._Username != value))
+				{
+					this.OnUsernameChanging(value);
+					this.SendPropertyChanging();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Salt", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Salt
+		{
+			get
+			{
+				return this._Salt;
+			}
+			set
+			{
+				if ((this._Salt != value))
+				{
+					this.OnSaltChanging(value);
+					this.SendPropertyChanging();
+					this._Salt = value;
+					this.SendPropertyChanged("Salt");
+					this.OnSaltChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PassHash", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string PassHash
+		{
+			get
+			{
+				return this._PassHash;
+			}
+			set
+			{
+				if ((this._PassHash != value))
+				{
+					this.OnPassHashChanging(value);
+					this.SendPropertyChanging();
+					this._PassHash = value;
+					this.SendPropertyChanged("PassHash");
+					this.OnPassHashChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Admin_StudiesAdmin", Storage="_StudiesAdmins", ThisKey="ID", OtherKey="AdminID")]
+		public EntitySet<StudiesAdmin> StudiesAdmins
+		{
+			get
+			{
+				return this._StudiesAdmins;
+			}
+			set
+			{
+				this._StudiesAdmins.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_StudiesAdmins(StudiesAdmin entity)
+		{
+			this.SendPropertyChanging();
+			entity.Admin = this;
+		}
+		
+		private void detach_StudiesAdmins(StudiesAdmin entity)
+		{
+			this.SendPropertyChanging();
+			entity.Admin = null;
 		}
 	}
 }

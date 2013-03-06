@@ -8,16 +8,6 @@
       <Association Name="WordList_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="WordListID" Type="StudiesUser" />
     </Type>
   </Table>
-  <Table Name="dbo.[User]" Member="Users">
-    <Type Name="User">
-      <Column Name="Username" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Association Name="User_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="UserID" Type="TrialBlock" />
-      <Association Name="User_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="UserID" Type="StudiesUser" />
-    </Type>
-  </Table>
   <Table Name="dbo.WordSublist" Member="WordSublists">
     <Type Name="WordSublist">
       <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
@@ -92,9 +82,9 @@
       <Column Name="TrialTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="TrialBlock_Trial" Member="Trials" ThisKey="ID" OtherKey="TrialBlockID" Type="Trial" />
       <Association Name="TrialType_TrialBlock" Member="TrialType" ThisKey="TrialTypeID" OtherKey="ID" Type="TrialType" IsForeignKey="true" />
-      <Association Name="User_TrialBlock" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
       <Association Name="StudiesUser_TrialBlock" Member="StudiesUser" ThisKey="StudyID,UserID" OtherKey="StudyID,UserID" Type="StudiesUser" IsForeignKey="true" />
       <Association Name="Study_TrialBlock" Member="Study" ThisKey="StudyID" OtherKey="ID" Type="Study" IsForeignKey="true" />
+      <Association Name="User_TrialBlock" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.StudiesUsers" Member="StudiesUsers">
@@ -108,10 +98,10 @@
       <Column Name="ControlGroup" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="StudiesUser_TrialBlock" Member="TrialBlocks" ThisKey="StudyID,UserID" OtherKey="StudyID,UserID" Type="TrialBlock" />
       <Association Name="TrialType_StudiesUser" Member="TrialType" ThisKey="TrialTypeID" OtherKey="ID" Type="TrialType" IsForeignKey="true" />
-      <Association Name="User_StudiesUser" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
       <Association Name="WordList_StudiesUser" Member="WordList" ThisKey="WordListID" OtherKey="ID" Type="WordList" IsForeignKey="true" />
       <Association Name="WordSublist_StudiesUser" Member="WordSublist" ThisKey="WordSublistID" OtherKey="ID" Type="WordSublist" IsForeignKey="true" />
       <Association Name="Study_StudiesUser" Member="Study" ThisKey="StudyID" OtherKey="ID" Type="Study" IsForeignKey="true" />
+      <Association Name="User_StudiesUser" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Study" Member="Studies">
@@ -131,20 +121,32 @@
       <Association Name="Study_StudiesAdmin" Member="StudiesAdmins" ThisKey="ID" OtherKey="StudyID" Type="StudiesAdmin" />
     </Type>
   </Table>
-  <Table Name="dbo.Admin" Member="Admins">
-    <Type Name="Admin">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Admin_StudiesAdmin" Member="StudiesAdmins" ThisKey="ID" OtherKey="AdminID" Type="StudiesAdmin" />
-    </Type>
-  </Table>
   <Table Name="dbo.StudiesAdmins" Member="StudiesAdmins">
     <Type Name="StudiesAdmin">
       <Column Name="StudyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="AdminID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="Admin_StudiesAdmin" Member="Admin" ThisKey="AdminID" OtherKey="ID" Type="Admin" IsForeignKey="true" />
       <Association Name="Study_StudiesAdmin" Member="Study" ThisKey="StudyID" OtherKey="ID" Type="Study" IsForeignKey="true" />
+      <Association Name="Admin_StudiesAdmin" Member="Admin" ThisKey="AdminID" OtherKey="ID" Type="Admin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[User]" Member="Users">
+    <Type Name="User">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Salt" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PassHash" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="User_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="UserID" Type="TrialBlock" />
+      <Association Name="User_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="UserID" Type="StudiesUser" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Admin" Member="Admins">
+    <Type Name="Admin">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Salt" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PassHash" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="Admin_StudiesAdmin" Member="StudiesAdmins" ThisKey="ID" OtherKey="AdminID" Type="StudiesAdmin" />
     </Type>
   </Table>
 </Database>

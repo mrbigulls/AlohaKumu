@@ -4,13 +4,46 @@ using System.Linq;
 using System.Web;
 using AlohaKumu.Models;
 using TestApp.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace AlohaKumu.Models
 {
     public class DataAccessor
     {
+        private static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+
+        private static HashAlgorithm hasher = new SHA256Managed();
+
+        private static ASCIIEncoding encoder = new ASCIIEncoding();
+
+        private static StringBuilder stringer = new StringBuilder();
+
         private static readonly DataClasses1DataContext database = new DataClasses1DataContext();
 
+        private static String hashPass(String password, String salt)
+        {
+            StringBuilder stringer = new StringBuilder();
+            byte[] hashed = hasher.ComputeHash(encoder.GetBytes(password + salt));
+            for (int i = 0; i < hashed.Length; i++)
+            {
+                stringer.Append(hashed[i].ToString("x2"));
+            }
+            return stringer.ToString();
+        }
+
+        public static String getSalt()
+        {
+            byte[] salt = new byte[32];
+            rng.GetNonZeroBytes(salt);
+            StringBuilder stringer = new StringBuilder();
+            for (int i = 0; i < salt.Length; i++)
+            {
+                stringer.Append(salt[i].ToString("x2"));
+            }
+            return stringer.ToString();
+        }
+        
         public static void recordTrialBlock(TrialBlockData results)
         {
             TrialBlock newBlock = new TrialBlock();
@@ -76,12 +109,12 @@ namespace AlohaKumu.Models
             int lastSublist = subkeys.Max();
             int lastType = typekeys.Max();
 
-            if (u.WordSublistID < lastSublist && u.Mix)
+            if ((u.WordSublistID < lastSublist) && u.Mix)
             {
                 u.WordSublist = getSublistByID(u.WordSublistID + 1);
                 u.Mix = false;
             }
-            else if (u.WordSublistID < lastSublist)
+            else if (!u.Mix)
             {
                 u.Mix = true;
             }
@@ -133,7 +166,8 @@ namespace AlohaKumu.Models
             User requested = (from u in database.Users
                               where (u.Username == name)
                               select u).Single();
-            if (requested == null || requested.Password != pass) return null;
+            if (requested == null) return null;
+            if (requested.PassHash != hashPass(pass, requested.Salt)) return null;
             return requested;
         }
 
@@ -142,7 +176,8 @@ namespace AlohaKumu.Models
             Admin requested = (from u in database.Admins
                               where (u.Username == name)
                               select u).Single();
-            if (requested == null || requested.Password != pass) return null;
+            if (requested == null) return null;
+            if (requested.PassHash != hashPass(pass, requested.Salt)) return null;
             return requested;
         }
 
