@@ -100,6 +100,8 @@ namespace AlohaKumu.Models
 
         public static void advanceUserInStudy(StudiesUser u)
         {
+            StudyUserGroup g = u.StudyUserGroup;
+
             var subkeys = (from s in database.WordSublists
                            select s.ID);
             var typekeys = (from s in database.TrialTypes
@@ -107,7 +109,9 @@ namespace AlohaKumu.Models
 
             int firstSublist = subkeys.Min();
             int lastSublist = subkeys.Max();
+            int firstType = typekeys.Min();
             int lastType = typekeys.Max();
+            
 
             if ((u.WordSublistID < lastSublist) && u.Mix)
             {
@@ -123,6 +127,16 @@ namespace AlohaKumu.Models
                 u.WordSublist = getSublistByID(firstSublist);
                 u.TrialType = getTrialTypeByID(u.TrialTypeID + 1);
                 u.Mix = false;
+            }
+            else if (u.WordListID == g.FirstListID)
+            {
+                u.WordListID = g.SecondListID;
+                u.WordSublist = getSublistByID(firstSublist);
+                u.TrialType = getTrialTypeByID(firstType);
+            }
+            else
+            {
+                u.Complete = true;
             }
             database.SubmitChanges();
         }
@@ -293,7 +307,11 @@ namespace AlohaKumu.Models
 
         public static bool currentlyControlGroup(User current)
         {
-            return studiesUserFromUser(current).ControlGroup;
+            StudiesUser su = studiesUserFromUser(current);
+            bool startControl = su.StudyUserGroup.StartControl;
+            if (su.StudyUserGroup.FirstListID == su.WordListID)
+                return startControl;
+            else return !startControl;
         }
 
         public static Study studyFromID(int sid)
