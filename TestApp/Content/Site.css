@@ -1,4 +1,93 @@
-﻿#feedback
+﻿.selectedTab
+{
+    background-color: #c0c0ff !important;
+}
+
+.listHeader
+{
+    background-color: coral;
+}
+
+.sublistHeader
+{
+    background-color: lightblue;
+}
+
+.timeBox
+{
+    width: 12px;
+}
+
+.trialsBox
+{
+    width: 25px;
+}
+
+.tab
+{
+    position: relative;
+    background-color: aquamarine;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 0px;
+	float: left;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.tab:hover
+{
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.dataRow
+{
+    font-size: small;
+}
+
+.goodGuess
+{
+    color: #159624;
+}
+
+.badGuess
+{
+    color: #CF2929;
+}
+
+.dataDisplay
+{
+    width: 100%;
+    border: 1px solid black;
+}
+
+.tableTitle
+{
+    font-size: small;
+    color: black;
+    background-color: #1C93BA;
+}
+
+.tableLabels
+{
+    font-size: xx-small;
+    background-color: #6CCBEB;
+}
+
+.subpanel
+{
+    position: relative;
+    left: 0px;
+    top: 5px;
+    padding: 5px 5px 5px 5px;
+    margin: 0px 0px 0px 0px;
+    text-align: left;
+    background-color: #c0c0ff;
+}
+
+#feedback
 {
     position: absolute;
     left: 0;
@@ -475,19 +564,9 @@ label.checkbox {
     display: inline;
 }
 
-input, textarea {
-    border: 1px solid #e2e2e2;
-    background: #fff;
-    color: #333;
-    font-size: 1.2em;
-    margin: 5px 0 6px 0;
-    padding: 5px;
-    width: 300px;
-}
-
 textarea {
     font-family: inherit;
-    width: 500px;
+    width: 175px;
 }
 
     input:focus, textarea:focus {

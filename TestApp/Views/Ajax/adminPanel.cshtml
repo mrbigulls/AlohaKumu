@@ -1,0 +1,75 @@
+﻿@using TestApp.Models;
+@using AlohaKumu.Models;
+@model List<TrialBlock>
+<div id="dataView">
+@if (Model.Count == 0)
+{
+    List<StudiesUser> studies = DataAccessor.allStudiesFromUserID((int)ViewData["UserID"]);
+    bool found = false;
+    foreach (StudiesUser su in studies)
+    {
+        if(su.StudyID == (int)ViewData["StudyID"])
+        {
+            <p>This user has not yet partcipated in this study.</p>   
+            found = true;
+        }
+    }
+    if(!found)
+    {
+        <p>This not a particpant of this study.</p>
+    }
+}
+else
+{
+foreach( TrialBlock tb in Model )
+{
+    <table class="dataDisplay">
+        <tr class="tableTitle">
+            <td colspan="2">TrialBlockID: @tb.ID</td><td colspan="2">@tb.TrialType.Name</td><td colspan="2">List: @tb.WordList.Name (@tb.WordSublist.Name)</td><td colspan="4">Time: @tb.StartTime</td><td colspan="2"></td>
+        </tr>
+        <tr class="tableLabels">
+            <td>Trial ID</td>
+            <td>Option 1</td>
+            <td>Option 2</td>
+            <td>Option 3</td>
+            <td>Selection</td>
+            <td>Correct</td>
+            <td>ID 1 Shown</td>
+            <td>ID 1 Clicked</td>
+            <td>ID 2 Clicked</td>
+            <td>ID 2 Shown</td>
+            <td>Options Shown</td>
+            <td>Option Clicked</td>
+        </tr>
+    @foreach (Trial t in tb.Trials.ToList())
+    {
+        Word guess = DataAccessor.getWord(t.OptionIDClicked);
+        Word correct = DataAccessor.getWord(t.WordID);
+        String guessclass = "";
+        if (guess.ID == correct.ID)
+        {
+            guessclass = "goodGuess";
+        }
+        else
+        {
+            guessclass = "badGuess";
+        }
+        <tr class="dataRow">
+            <td>@t.ID</td>
+            <td>@DataAccessor.getWord(t.Option1ID).English</td>
+            <td>@DataAccessor.getWord(t.Option2ID).English</td>
+            <td>@DataAccessor.getWord(t.Option3ID).English</td>
+            <td class="@guessclass">@guess.English</td>
+            <td>@correct.English</td>
+            <td>@(t.TimeFirstIDpresented/1000.0)</td>
+            <td>@(t.TimeFirstIDclicked/1000.0)</td>
+            <td>@(t.TimeSecondIDclicked/1000.0)</td>
+            <td>@(t.TimeSecondIDpresented/1000.0)</td>
+            <td>@(t.TimeOptionsPresented/1000.0)</td>
+            <td>@(t.TimeOptionClicked/1000.0)</td>
+        </tr>
+    }
+    </table>
+}
+}
+</div>

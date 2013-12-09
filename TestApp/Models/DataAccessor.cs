@@ -21,6 +21,17 @@ namespace AlohaKumu.Models
 
         private static readonly DataClasses1DataContext database = new DataClasses1DataContext();
 
+        public static bool validStudyAndUserIDs(int sid, int uid)
+        {
+            return (((from s in database.Studies
+                        where (s.ID == sid)
+                        select s).Count() > 0 )
+                        &&
+                    ((from u in database.Users
+                      where (u.ID == uid)
+                      select u).Count() > 0 ));
+        }
+
         private static String hashPass(String password, String salt)
         {
             StringBuilder stringer = new StringBuilder();
@@ -46,11 +57,16 @@ namespace AlohaKumu.Models
         
         public static void recordTrialBlock(TrialBlockData results)
         {
+            StudiesUser x = (from su in database.StudiesUsers
+                             where su.StudyID == results.studyID && su.UserID == results.userID
+                             select su).Single();
             TrialBlock newBlock = new TrialBlock();
             newBlock.StudyID = results.studyID;
             newBlock.StartTime = results.taken;
             newBlock.UserID = results.userID;
             newBlock.TrialTypeID = results.typeID;
+            newBlock.WordListID = x.WordListID;
+            newBlock.WordSublistID = x.WordSublistID;
             database.TrialBlocks.InsertOnSubmit(newBlock);
             database.SubmitChanges();
             int trialcount = results.clickID1s.Length;
@@ -202,6 +218,13 @@ namespace AlohaKumu.Models
                     select t).ToList();
         }
 
+        public static List<TrialBlock> userStudyBlocks(int uid, int sid)
+        {
+            return (from t in database.TrialBlocks
+                    where (t.UserID == uid && t.StudyID == sid)
+                    select t).ToList();
+        }
+
         public static bool? allowTrial(User current)
         {
             StudiesUser currentStudy = studiesUserFromUser(current);
@@ -283,6 +306,13 @@ namespace AlohaKumu.Models
                     select su).Single();
         }
 
+        public static List<StudiesUser> allStudiesFromUserID(int uid)
+        {
+            return (from su in database.StudiesUsers
+                    where su.UserID == uid
+                    select su).ToList();
+        }
+
         public static int studyIDFromUser(User requested)
         {
             return (from su in requested.StudiesUsers
@@ -340,6 +370,12 @@ namespace AlohaKumu.Models
         {
             return (from wl in database.WordSublists
                     select wl).ToList();
+        }
+
+        public static List<StudyUserGroup> getUserGroups()
+        {
+            return (from sug in database.StudyUserGroups
+                    select sug).ToList();
         }
     }
 }

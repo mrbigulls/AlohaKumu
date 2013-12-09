@@ -7,6 +7,10 @@
     <div class="overlay" id="checkScript">You're browser version/settings are not sufficient to use this website.  Please change your browser settings to enable JavaScript.  If this still doesn't work, you may need to upgrade your browser.</div>
     <div class="content-wrapper">
         @if (Session["User"] == null) { Html.RenderPartial("_LoginPartial", "Log in to participate."); }
+        else if (Session["User"].GetType() == typeof(Admin))
+        {
+            Html.RenderPartial("Admin");
+        }
         else
         {
             bool? allow = DataAccessor.allowTrial( (User)Session["User"]);

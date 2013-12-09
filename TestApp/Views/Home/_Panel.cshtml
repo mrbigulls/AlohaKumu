@@ -6,76 +6,175 @@
     List<User> users = DataAccessor.getUsers().ToList();
     List<WordList> wordLists = DataAccessor.getWordLists();
     List<WordSublist> wordSublists = DataAccessor.getWordSublists();
-
-    <p>Studies</p>
-    <table>
-        <tr>
-            <td>Name</td>
-            <td>Target Words/Minute</td>
-            <td>Active</td>
-            <td>Wait Hours</td>
-            <td>Wait Mins</td>
-            <td>Wait Secs</td>
-            <td>See Instructions</td>
-            <td>Hear Instructions</td>
-            <td>Trials per Word per Session</td>
-        </tr>
-        @foreach (Study s in studiesRun)
-        {
+    List<StudyUserGroup> userGroups = DataAccessor.getUserGroups();
+    
+    <script src="/Scripts/admin.js"></script>
+    <div class="tab" id="usersTab">Users</div>
+    <div class="tab" id="settingsTab">Study Settings</div>
+    <div class="tab" id="wordsTab">Word Lists</div>
+    <div class="tab" id="resultsTab">Results</div>
+    <br />
+    <div class="subpanel" id="user_controls">
+        <br />
+        <table>
             <tr>
-                <td>@s.Name</td>
-                <td>@s.TargetWordsPerMinute</td>
-                <td>@s.Active</td>
-                <td>@s.WaitHours</td>
-                <td>@s.WaitMins</td>
-                <td>@s.WaitSecs</td>
-                <td>@s.SeeInstructions</td>
-                <td>@s.HearInstructions</td>
-                <td>@s.WordTrialsPerBlock</td>
+                <td>ID</td><td>Username</td><td>Active</td><td>Password</td><td>Study</td><td>Group</td><td></td>
             </tr>
-        }
-    </table>
-    <p>Users</p>
-    <table>
-        <tr>
-            <td>Username</td>
-            <td>Active</td>
-        </tr>
         @foreach (User u in users)
         {
+            string textid = "passBox" + u.ID.ToString();
+            string studyid = "studyForUser" + u.ID.ToString();
+            string groupid = "groupForUser" + u.ID.ToString();
+            string activeid = "activeForUser" + u.ID.ToString();
+            string changeButtonid = "changeButton" + u.ID.ToString();
+            StudiesUser su = DataAccessor.studiesUserFromUser(u);
+            int studyKey = su.StudyID;
             <tr>
+                <td>@u.ID</td>
                 <td>@u.Username</td>
-                <td>@u.Active</td>
+                <td>
+                    <select id="@activeid">
+                        @if(u.Active)
+                        {
+                            <option value="True" selected >True</option>
+                            <option value="False" >False</option>
+                        }
+                        else
+                        {
+                            <option value="True">True</option>
+                            <option value="False" selected >False</option>
+                        }
+                    </select>
+                </td>
+                <td><input type="text" id="@textid" /></td>
+                <td>
+                    <select id="@studyid">
+                        @foreach (Study s in studiesRun)
+                        {
+                            if(s.ID == studyKey)
+                            {
+                                <option value="@s.ID" selected>@s.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@s.ID">@s.Name</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <select id="@groupid">
+                        @foreach (StudyUserGroup s in userGroups)
+                        {
+                            if(s.ID == su.UserGroupID)
+                            {
+                                <option value="@s.ID" selected>@s.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@s.ID">@s.Name</option>
+                            }
+                        }
+                    </select>
+                </td>
+                <td>
+                    <button id="@changeButtonid">Update</button>
+                </td>
             </tr>
         }
-    </table>
-    <p>Word Lists</p>
-    <table>
-        @foreach (WordList wl in wordLists)
-        {
-            foreach (WordSublist sl in wordSublists)
+        </table>
+    </div>
+    <div class="subpanel" id="settings_controls">
+        <table>
+            <tr>
+                <td>ID</td><td>Name</td><td>Hear Instructions</td><td>See Instructions</td><td>Wait Time H:M:S</td><td>Trials/Block</td><td>Fluency Aim</td><td></td>
+            </tr>
+            @foreach (Study s in studiesRun)
             {
-                List<Word> words = DataAccessor.getWordList(wl.ID, sl.ID, false);
-
+                string hoursID = "hours" + s.ID.ToString();
+                string minutesID = "minutes" + s.ID.ToString();
+                string secondsID = "seconds" + s.ID.ToString();
+                string hI_ID = "hearI" + s.ID.ToString();
+                string sI_ID = "seeI" + s.ID.ToString();
+                string trialsID = "trials" + s.ID.ToString();
+                string fluencyID = "fluency" + s.ID.ToString();
+                string changeButtonid = "changeButton" + s.ID.ToString();
                 <tr>
-                    <td colspan="4">@wl.Name@sl.Name</td>
+                    <td>@s.ID</td>
+                    <td>@s.Name</td>
+                    <td><textarea rows="4" cols="10" id="@hI_ID"">@s.HearInstructions</textarea></td>
+                    <td><textarea rows="4" cols="10" id="@sI_ID"">@s.SeeInstructions</textarea></td>
+                    <td><input type="text" value="@s.WaitHours" id="@hoursID" class="timeBox" /><input type="text" value="@s.WaitMins" id="@minutesID" class="timeBox" /><input type="text" value="@s.WaitSecs" id="@secondsID" class="timeBox" /></td>
+                    <td><input type="text" value="@s.WordTrialsPerBlock" id="@trialsID" class="trialsBox" /></td>
+                    <td><input type="text" value="@s.TargetWordsPerMinute" id="@fluencyID" class="trialsBox" /></td>
+                    <td><button id="@changeButtonid">Update</button></td>
                 </tr>
-                <tr>
-                    <td>English</td>
-                    <td>Hawaiian</td>
-                    <td>Picture</td>
-                    <td>Sound</td>
-                </tr>
-                foreach (Word w in words)
-                {
-                    <tr>
-                        <td>@w.English</td>
-                        <td>@w.Hawaiian</td>
-                        <td>THUMBNAIL HERE</td>
-                        <td>SOUND PLAY HERE</td>
-                    </tr>    
-                }
             }
+        </table>
+    </div>
+    <div class="subpanel" id="words_controls">
+        <br />
+        @foreach (WordList l in wordLists)
+        {
+            <table>
+                <tr class="listHeader">
+                    <td>List ID: @l.ID</td>
+                    <td>List Name: @l.Name</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                @foreach (WordSublist sl in wordSublists)
+                {
+                    List<Word> words = DataAccessor.getWordList(l.ID, sl.ID, false);
+                    <tr class="sublistHeader">
+                        <td>Sublist ID: @sl.ID</td>
+                        <td>Sublist Name: @sl.Name</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr class="sublistHeader">
+                        <td>ID</td>
+                        <td>English</td>
+                        <td>Hawaiian</td>
+                        <td>Filename</td>
+                        <td>Picture</td>
+                    </tr>
+                    foreach (Word w in words)
+                    {
+                        <tr>
+                            <td>@w.ID</td>
+                            <td>@w.English</td>
+                            <td>@w.Hawaiian</td>
+                            <td>@w.Consequence.Filename</td>
+                            <td>@w.Picture</td>
+                        </tr>
+                    }
+                }
+            </table>
         }
-    </table>
+    </div>
+    <div class="subpanel" id="results_controls">
+        <br />
+        Study: 
+        <select id="studyResultsPanel">
+            <option value="n/a">-</option>
+            @foreach (Study s in studiesRun)
+            {
+                <option value="@s.ID">@s.Name</option>
+            }
+        </select>
+        User: 
+        <select id="userResultsPanel">
+            <option value="n/a">-</option>
+            @foreach (User u in users)
+            {
+                <option value="@u.ID">@u.Username</option>
+            }
+        </select>
+        <div class="subpanel" id="dataView">
+            @{ Html.RenderPartial("~/Views/Ajax/SelectSomething.cshtml"); }
+        </div>
+    </div>
 }

@@ -8,6 +8,7 @@
       <Association Name="WordList_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="WordListID" Type="StudiesUser" />
       <Association Name="WordList_StudyUserGroup" Member="StudyUserGroups" ThisKey="ID" OtherKey="FirstListID" Type="StudyUserGroup" />
       <Association Name="WordList_StudyUserGroup1" Member="StudyUserGroups1" ThisKey="ID" OtherKey="SecondListID" Type="StudyUserGroup" />
+      <Association Name="WordList_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="WordListID" Type="TrialBlock" />
     </Type>
   </Table>
   <Table Name="dbo.WordSublist" Member="WordSublists">
@@ -16,6 +17,7 @@
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Association Name="WordSublist_Word" Member="Words" ThisKey="ID" OtherKey="WordSublistID" Type="Word" />
       <Association Name="WordSublist_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="WordSublistID" Type="StudiesUser" />
+      <Association Name="WordSublist_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="WordSublistID" Type="TrialBlock" />
     </Type>
   </Table>
   <Table Name="dbo.Consequence" Member="Consequences">
@@ -48,8 +50,8 @@
     <Type Name="TrialType">
       <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Association Name="TrialType_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="TrialTypeID" Type="TrialBlock" />
       <Association Name="TrialType_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="TrialTypeID" Type="StudiesUser" />
+      <Association Name="TrialType_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="TrialTypeID" Type="TrialBlock" />
     </Type>
   </Table>
   <Table Name="dbo.Trial" Member="Trials">
@@ -75,20 +77,6 @@
       <Association Name="TrialBlock_Trial" Member="TrialBlock" ThisKey="TrialBlockID" OtherKey="ID" Type="TrialBlock" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.TrialBlock" Member="TrialBlocks">
-    <Type Name="TrialBlock">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="StudyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="TrialTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="TrialBlock_Trial" Member="Trials" ThisKey="ID" OtherKey="TrialBlockID" Type="Trial" />
-      <Association Name="TrialType_TrialBlock" Member="TrialType" ThisKey="TrialTypeID" OtherKey="ID" Type="TrialType" IsForeignKey="true" />
-      <Association Name="User_TrialBlock" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
-      <Association Name="Study_TrialBlock" Member="Study" ThisKey="StudyID" OtherKey="ID" Type="Study" IsForeignKey="true" />
-      <Association Name="StudiesUser_TrialBlock" Member="StudiesUser" ThisKey="StudyID,UserID" OtherKey="StudyID,UserID" Type="StudiesUser" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.StudiesAdmins" Member="StudiesAdmins">
     <Type Name="StudiesAdmin">
       <Column Name="StudyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -104,8 +92,8 @@
       <Column Name="Active" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Salt" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="PassHash" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="User_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="UserID" Type="TrialBlock" />
       <Association Name="User_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="UserID" Type="StudiesUser" />
+      <Association Name="User_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="UserID" Type="TrialBlock" />
     </Type>
   </Table>
   <Table Name="dbo.Admin" Member="Admins">
@@ -129,9 +117,9 @@
       <Column Name="SeeInstructions" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="HearInstructions" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Column Name="WordTrialsPerBlock" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Study_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="StudyID" Type="TrialBlock" />
       <Association Name="Study_StudiesAdmin" Member="StudiesAdmins" ThisKey="ID" OtherKey="StudyID" Type="StudiesAdmin" />
       <Association Name="Study_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="StudyID" Type="StudiesUser" />
+      <Association Name="Study_TrialBlock" Member="TrialBlocks" ThisKey="ID" OtherKey="StudyID" Type="TrialBlock" />
     </Type>
   </Table>
   <Table Name="dbo.StudiesUsers" Member="StudiesUsers">
@@ -163,6 +151,24 @@
       <Association Name="StudyUserGroup_StudiesUser" Member="StudiesUsers" ThisKey="ID" OtherKey="UserGroupID" Type="StudiesUser" />
       <Association Name="WordList_StudyUserGroup" Member="WordList" ThisKey="FirstListID" OtherKey="ID" Type="WordList" IsForeignKey="true" />
       <Association Name="WordList_StudyUserGroup1" Member="WordList1" ThisKey="SecondListID" OtherKey="ID" Type="WordList" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TrialBlock" Member="TrialBlocks">
+    <Type Name="TrialBlock">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StudyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TrialTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WordListID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WordSublistID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="TrialBlock_Trial" Member="Trials" ThisKey="ID" OtherKey="TrialBlockID" Type="Trial" />
+      <Association Name="StudiesUser_TrialBlock" Member="StudiesUser" ThisKey="StudyID,UserID" OtherKey="StudyID,UserID" Type="StudiesUser" IsForeignKey="true" />
+      <Association Name="Study_TrialBlock" Member="Study" ThisKey="StudyID" OtherKey="ID" Type="Study" IsForeignKey="true" />
+      <Association Name="TrialType_TrialBlock" Member="TrialType" ThisKey="TrialTypeID" OtherKey="ID" Type="TrialType" IsForeignKey="true" />
+      <Association Name="User_TrialBlock" Member="User" ThisKey="UserID" OtherKey="ID" Type="User" IsForeignKey="true" />
+      <Association Name="WordList_TrialBlock" Member="WordList" ThisKey="WordListID" OtherKey="ID" Type="WordList" IsForeignKey="true" />
+      <Association Name="WordSublist_TrialBlock" Member="WordSublist" ThisKey="WordSublistID" OtherKey="ID" Type="WordSublist" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

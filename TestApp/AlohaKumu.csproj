@@ -319,6 +319,7 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Scripts\admin.js" />
     <Content Include="Scripts\complete_code.js" />
     <Content Include="Scripts\hear_code.js" />
     <Content Include="Scripts\see_code.js" />
@@ -391,7 +392,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
     <Content Include="Images\heroAccent.png" />
@@ -462,6 +462,8 @@
     <Content Include="Views\Home\_Completed.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <Content Include="Views\Home\_Panel.cshtml" />
+    <Content Include="Views\Ajax\adminPanel.cshtml" />
+    <Content Include="Views\Ajax\SelectSomething.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
