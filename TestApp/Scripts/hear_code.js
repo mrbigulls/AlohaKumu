@@ -89,9 +89,9 @@ function () {
     function stepFive(correct) {
         if (correct) {
             if (!controlUser) { document.getElementById('sound-' + trialIndex).play(); }
-            displayMessage('Correct!', 3000, stepSix);
+            displayMessage(' ', 3000, stepSix);
         }
-        else displayMessage('Wrong!', 3000, stepSix);
+        else displayMessage(' ', 3000, stepSix);
     }
 
     function stepSix() {
