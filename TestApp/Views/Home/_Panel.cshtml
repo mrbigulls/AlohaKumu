@@ -22,13 +22,16 @@
             </tr>
         @foreach (User u in users)
         {
+            bool movable = DataAccessor.userEligibileToMove(u.ID);
             string textid = "passBox" + u.ID.ToString();
             string studyid = "studyForUser" + u.ID.ToString();
             string groupid = "groupForUser" + u.ID.ToString();
             string activeid = "activeForUser" + u.ID.ToString();
-            string changeButtonid = "changeButton" + u.ID.ToString();
+            string changeButtonid = "userChangeButton" + u.ID.ToString();
             StudiesUser su = DataAccessor.studiesUserFromUser(u);
             int studyKey = su.StudyID;
+            string disableClass = "";
+            if (!movable) { disableClass = "disable"; }
             <tr>
                 <td>@u.ID</td>
                 <td>@u.Username</td>
@@ -46,9 +49,9 @@
                         }
                     </select>
                 </td>
-                <td><input type="text" id="@textid" /></td>
+                <td><input type="text" id="@textid" class="userPasswords" /></td>
                 <td>
-                    <select id="@studyid">
+                    <select id="@studyid" class="@disableClass">
                         @foreach (Study s in studiesRun)
                         {
                             if(s.ID == studyKey)
@@ -63,7 +66,7 @@
                     </select>
                 </td>
                 <td>
-                    <select id="@groupid">
+                    <select id="@groupid" class="@disableClass">
                         @foreach (StudyUserGroup s in userGroups)
                         {
                             if(s.ID == su.UserGroupID)
@@ -78,7 +81,7 @@
                     </select>
                 </td>
                 <td>
-                    <button id="@changeButtonid">Update</button>
+                    <button class="userUpdateButton" id="@changeButtonid">Update</button>
                 </td>
             </tr>
         }
@@ -98,7 +101,7 @@
                 string sI_ID = "seeI" + s.ID.ToString();
                 string trialsID = "trials" + s.ID.ToString();
                 string fluencyID = "fluency" + s.ID.ToString();
-                string changeButtonid = "changeButton" + s.ID.ToString();
+                string changeButtonid = "studyChangeButton" + s.ID.ToString();
                 <tr>
                     <td>@s.ID</td>
                     <td>@s.Name</td>
@@ -107,7 +110,7 @@
                     <td><input type="text" value="@s.WaitHours" id="@hoursID" class="timeBox" /><input type="text" value="@s.WaitMins" id="@minutesID" class="timeBox" /><input type="text" value="@s.WaitSecs" id="@secondsID" class="timeBox" /></td>
                     <td><input type="text" value="@s.WordTrialsPerBlock" id="@trialsID" class="trialsBox" /></td>
                     <td><input type="text" value="@s.TargetWordsPerMinute" id="@fluencyID" class="trialsBox" /></td>
-                    <td><button id="@changeButtonid">Update</button></td>
+                    <td><button class="studyUpdateButton" id="@changeButtonid">Update</button></td>
                 </tr>
             }
         </table>

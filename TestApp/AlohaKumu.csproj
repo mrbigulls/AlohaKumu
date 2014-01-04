@@ -320,7 +320,6 @@
     </Content>
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\admin.js" />
-    <Content Include="Scripts\complete_code.js" />
     <Content Include="Scripts\hear_code.js" />
     <Content Include="Scripts\see_code.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />

@@ -377,5 +377,78 @@ namespace AlohaKumu.Models
             return (from sug in database.StudyUserGroups
                     select sug).ToList();
         }
+
+        public static User getUserByID(int uid)
+        {
+            return (from u in database.Users
+                    where u.ID == uid
+                    select u).Single();
+        }
+
+        public static StudyUserGroup getStudyUserGroupByID(int sugid)
+        {
+            return (from sug in database.StudyUserGroups
+                    where sug.ID == sugid
+                    select sug).Single();
+        }
+
+        public static void updateUser(int userID, bool userActive, string userPassword)
+        {
+            User u = getUserByID(userID);
+            u.Active = userActive;
+            if( userPassword != "" ) u.PassHash = hashPass(userPassword, u.Salt);
+            database.SubmitChanges();
+        }
+
+        public static void updateStudiesUser(int userID, int studyID, int studyUserGroupID)
+        {
+            StudiesUser current_su = studiesUserFromUser(getUserByID(userID));
+            
+            if (current_su != null)
+            {
+                database.StudiesUsers.DeleteOnSubmit(current_su);
+                database.SubmitChanges();
+            }
+
+            StudiesUser nsu = new StudiesUser();
+            nsu.UserID = userID;
+            nsu.StudyID = studyID;
+            nsu.UserGroupID = studyUserGroupID;
+            nsu.Complete = false;
+            nsu.Mix = false;
+            nsu.TrialTypeID = 1;
+            nsu.WordListID = 1;
+            nsu.WordSublistID = 1;
+            database.StudiesUsers.InsertOnSubmit(nsu);
+            database.SubmitChanges();
+        }
+
+        public static bool userEligibileToMove(int userID)
+        {
+            List<StudiesUser> studies = DataAccessor.allStudiesFromUserID(userID);
+            bool eligibileToMove = true;
+            foreach (StudiesUser su in studies)
+            {
+                List<TrialBlock> tb = DataAccessor.userStudyBlocks(userID, su.StudyID);
+                if (!su.Complete && tb.Count > 0)
+                {
+                    eligibileToMove = false;
+                }
+            }
+            return eligibileToMove;
+        }
+
+        public static void updateStudy(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int fluency)
+        {
+            Study s = studyFromID(studyID);
+            s.HearInstructions = hearIn;
+            s.SeeInstructions = seeIn;
+            s.WaitHours = hours;
+            s.WaitMins = minutes;
+            s.WaitSecs = seconds;
+            s.WordTrialsPerBlock = trials;
+            s.TargetWordsPerMinute = fluency;
+            database.SubmitChanges();
+        }
     }
 }
