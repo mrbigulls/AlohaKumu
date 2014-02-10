@@ -10,7 +10,8 @@
     
     <script src="/Scripts/admin.js"></script>
     <div class="tab" id="usersTab">Users</div>
-    <div class="tab" id="settingsTab">Study Settings</div>
+    <div class="tab" id="groupsTab">Groups</div>
+    <div class="tab" id="settingsTab">Studies</div>
     <div class="tab" id="wordsTab">Word Lists</div>
     <div class="tab" id="resultsTab">Results</div>
     <br />
@@ -85,6 +86,53 @@
                 </td>
             </tr>
         }
+        <tr>
+            <td>NEW:</td>
+            <td><input type="text" id="newuser_name" /></td>
+            <td>
+                <select id="newuser_active">
+                    <option value="True" selected >True</option>
+                    <option value="False" >False</option>
+                </select>
+            </td>
+            <td><input type="text" id="newuser_password" /></td>
+            <td>
+                <select id="newuser_study">
+                    @foreach (Study s in studiesRun)
+                        {
+                            <option value="@s.ID">@s.Name</option>
+                        }
+                </select>
+            </td>
+            <td>
+                <select id="newuser_group">
+                    @foreach (StudyUserGroup s in userGroups)
+                    {
+                        <option value="@s.ID">@s.Name</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <button class="userCreateButton" id="newuser_createButton">Create</button>
+            </td>
+        </tr>
+        </table>
+    </div>
+    <div class="subpanel" id="group_controls">
+        <table>
+            <tr class="tableTitle">
+                <td>Name</td>
+                <td>First List</td>
+                <td>Start with sound</td>
+            </tr>
+            @foreach(StudyUserGroup sug in userGroups)
+            {
+                <tr>
+                    <td>@sug.Name</td>
+                    <td>@sug.WordList.Name</td>
+                    <td>@sug.StartControl</td>
+                </tr>
+            }
         </table>
     </div>
     <div class="subpanel" id="settings_controls">
@@ -105,14 +153,24 @@
                 <tr>
                     <td>@s.ID</td>
                     <td>@s.Name</td>
-                    <td><textarea rows="4" cols="10" id="@hI_ID"">@s.HearInstructions</textarea></td>
-                    <td><textarea rows="4" cols="10" id="@sI_ID"">@s.SeeInstructions</textarea></td>
+                    <td><textarea rows="4" cols="10" id="@hI_ID">@s.HearInstructions</textarea></td>
+                    <td><textarea rows="4" cols="10" id="@sI_ID">@s.SeeInstructions</textarea></td>
                     <td><input type="text" value="@s.WaitHours" id="@hoursID" class="timeBox" /><input type="text" value="@s.WaitMins" id="@minutesID" class="timeBox" /><input type="text" value="@s.WaitSecs" id="@secondsID" class="timeBox" /></td>
                     <td><input type="text" value="@s.WordTrialsPerBlock" id="@trialsID" class="trialsBox" /></td>
                     <td><input type="text" value="@s.TargetWordsPerMinute" id="@fluencyID" class="trialsBox" /></td>
                     <td><button class="studyUpdateButton" id="@changeButtonid">Update</button></td>
                 </tr>
             }
+            <tr>
+                <td>NEW:</td>
+                <td><input type="text" id="newstudy_name" class="studyNameBox" /></td>
+                <td><textarea rows="4" cols="10" id="newstudy_hear"></textarea></td>
+                <td><textarea rows="4" cols="10" id="newstudy_see"></textarea></td>
+                <td><input type="text" value="0" id="newstudy_hours" class="timeBox" /><input type="text" value="0" id="newstudy_minutes" class="timeBox" /><input type="text" value="0" id="newstudy_seconds" class="timeBox" /></td>
+                <td><input type="text" value="0" id="newstudy_trials" class="trialsBox" /></td>
+                <td><input type="text" value="0" id="newstudy_target" class="trialsBox" /></td>
+                <td><button class="studyCreateButton" id="newstudy_button">Create</button></td>
+            </tr>
         </table>
     </div>
     <div class="subpanel" id="words_controls">

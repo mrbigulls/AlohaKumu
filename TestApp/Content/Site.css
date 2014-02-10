@@ -15,7 +15,16 @@
 
 .timeBox
 {
-    width: 12px;
+    width: 7px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.studyNameBox
+{
+    width: 80px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .trialsBox
@@ -68,6 +77,13 @@
     font-size: small;
     color: black;
     background-color: #1C93BA;
+}
+
+.tableSummary
+{
+    font-size: small;
+    color: black;
+    background-color: #50ADA4;    
 }
 
 .tableLabels

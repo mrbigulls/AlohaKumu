@@ -18,7 +18,8 @@ function () {
     var trialSize = $('#trialSize').val();
     var study = $('#sid').val();
     var trialType = $('#trialTypeKey').val();
-    var controlUser = $('#userInControlGroup').val();
+    var playSounds = $('#playSounds').val();
+    var results;
 
     $('#feedback').hide();
     $('#gobutton').click(start);
@@ -86,8 +87,8 @@ function () {
 
     function stepFive(correct) {
         if (correct) {
-            if (!controlUser) { document.getElementById('sound-' + trialIndex).play(); }
-            displayMessage(' ', 3000, stepSix);
+            if (playSounds) { document.getElementById('sound-' + trialIndex).play(); displayMessage(' ', 3000, stepSix); }
+            else { displayMessage('Correct.', 3000, stepSix); }
         }
         else displayMessage(' ', 3000, stepSix);
     }
@@ -126,15 +127,15 @@ function () {
 
         console.log(block);
 
-        $.ajax({
+        results = $.ajax({
             type: "POST",
             url: "/Ajax/saveTrialBlock/",
             dataType: "json",
             data: block,
-            success: function (msg) {
-                displayMessage('Finished reporting performance to server!', 3000);
-            }
-        });
+            async: false        
+        }).responseText;
+
+        displayMessage(results, 300000);
     }
 
     function markTime() {

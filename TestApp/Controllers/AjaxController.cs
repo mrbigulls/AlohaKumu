@@ -39,10 +39,12 @@ namespace TestApp.Controllers
         }
 
         [HttpPost]
-        public void saveTrialBlock(TrialBlockData results)
+        public string saveTrialBlock(TrialBlockData results)
         {
             results.parseStrings();
-            DataAccessor.recordTrialBlock(results);
+            bool complete = DataAccessor.recordTrialBlock(results);
+            if (complete) return "You have now completed the study.  Thank you for participating.";
+            return "Thank you for your continuing participation.";
         }
 
         [HttpPost]
@@ -73,10 +75,27 @@ namespace TestApp.Controllers
         }
 
         [HttpPost]
+        public string userCreate(string userName, bool userActive, string userPassword, int studyID, int studyUserGroupID)
+        {
+            //this should be a transaction, but I'm not being that careful.
+            User u = DataAccessor.createUser(userName, userActive, userPassword);
+            StudiesUser su = DataAccessor.createStudiesUsers(u.ID, studyID, studyUserGroupID);
+            return (u.Username + " is now part of " + su.Study.Name + ".");
+        }
+
+        [HttpPost]
         public string studyUpdate(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int fluency)
         {
             DataAccessor.updateStudy(studyID, hearIn, seeIn, hours, minutes, seconds, trials, fluency);
             return "Update successful.";
+        }
+
+        [HttpPost]
+        public string studyCreate(string studyName, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int target, int adminID)
+        {
+            Study s = DataAccessor.createStudy(studyName, hearIn, seeIn, hours, minutes, seconds, trials, target);
+            StudiesAdmin sa = DataAccessor.createStudiesAdmin(s.ID, adminID);
+            return ("Created " + s.Name + " with admin " + sa.Admin.Username + ".");
         }
     }
 }

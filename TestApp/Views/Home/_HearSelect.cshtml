@@ -5,7 +5,7 @@
     User loggedIn = (User)Session["User"];
     int studyID = DataAccessor.studyIDFromUser(loggedIn);
     Study thisStudy = DataAccessor.studyFromID(studyID);
-    <input type="hidden" id="userID" value="@loggedIn.ID" />
+    @* <input type="hidden" id="userID" value="@loggedIn.ID" /> *@
     <div id="instructions" class="overlay">
         @thisStudy.HearInstructions
         <br />
@@ -25,7 +25,7 @@
     Random random = new Random();
     int trialCount = Model.Count * thisStudy.WordTrialsPerBlock;
     <input type="hidden" id="trialSize" value="@trialCount" />
-    <input type="hidden" id="userInControlGroup" value="@DataAccessor.currentlyControlGroup(loggedIn)" />
+    <input type="hidden" id="playSounds" value="@DataAccessor.receiveSoundFeedback(loggedIn)" />
     <div id="feedback"></div>
     for (int i = 0; i < thisStudy.WordTrialsPerBlock; i++)
     {

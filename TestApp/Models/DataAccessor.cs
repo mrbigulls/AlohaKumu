@@ -55,7 +55,7 @@ namespace AlohaKumu.Models
             return stringer.ToString();
         }
         
-        public static void recordTrialBlock(TrialBlockData results)
+        public static bool recordTrialBlock(TrialBlockData results)
         {
             StudiesUser x = (from su in database.StudiesUsers
                              where su.StudyID == results.studyID && su.UserID == results.userID
@@ -88,10 +88,10 @@ namespace AlohaKumu.Models
                 database.Trials.InsertOnSubmit(newTrial);
                 database.SubmitChanges();
             }
-            evalPerformance(newBlock);
+            return evalPerformance(newBlock);
         }
 
-        public static void evalPerformance(TrialBlock test)
+        public static bool evalPerformance(TrialBlock test)
         {
             double target = test.Study.TargetWordsPerMinute;
             List<Trial> trials = blockTrials(test);
@@ -103,7 +103,8 @@ namespace AlohaKumu.Models
             double finish = trials[trials.Count - 1].TimeOptionClicked / 60000; //milliseconds to minutes
             double rate = 0;
             if(correct > 0) rate = correct / finish;
-            if(rate >= target) advanceUserInStudy(studiesUserFromUser(test.User));
+            if(rate >= target) return advanceUserInStudy(studiesUserFromUser(test.User));
+            return false;
         }
 
         public static List<Trial> blockTrials(TrialBlock block)
@@ -114,7 +115,7 @@ namespace AlohaKumu.Models
             return trials.OrderBy(x => x.TimeOptionClicked).ToList();
         }
 
-        public static void advanceUserInStudy(StudiesUser u)
+        public static bool advanceUserInStudy(StudiesUser u)
         {
             StudyUserGroup g = u.StudyUserGroup;
 
@@ -155,6 +156,7 @@ namespace AlohaKumu.Models
                 u.Complete = true;
             }
             database.SubmitChanges();
+            return u.Complete;
         }
 
         public static WordSublist getSublistByID(int id)
@@ -335,7 +337,7 @@ namespace AlohaKumu.Models
                     select t.Name).ToList();
         }
 
-        public static bool currentlyControlGroup(User current)
+        public static bool receiveSoundFeedback(User current)
         {
             StudiesUser su = studiesUserFromUser(current);
             bool startControl = su.StudyUserGroup.StartControl;
@@ -449,6 +451,75 @@ namespace AlohaKumu.Models
             s.WordTrialsPerBlock = trials;
             s.TargetWordsPerMinute = fluency;
             database.SubmitChanges();
+        }
+
+        public static User createUser(string userName, bool userActive, string userPassword)
+        {
+            User newUser = new User();
+            newUser.Username = userName;
+            newUser.Salt = getSalt();
+            newUser.PassHash = hashPass(userPassword, newUser.Salt);
+            newUser.Active = userActive;
+            database.Users.InsertOnSubmit(newUser);
+            database.SubmitChanges();
+            return newUser;
+        }
+
+        public static int StudyUserGroupStartListKey(int sugID)
+        {
+            StudyUserGroup sug = (from s in database.StudyUserGroups
+                                  where (s.ID == sugID)
+                                  select s).Single();
+            return sug.FirstListID;
+        }
+
+        public static StudiesUser createStudiesUsers(int userID, int studyID, int studyUserGroupID)
+        {
+            StudiesUser su = new StudiesUser();
+            su.StudyID = studyID;
+            su.Complete = false;
+            su.Mix = false;
+            su.UserGroupID = studyUserGroupID;
+            su.UserID = userID;
+            su.WordSublistID = 1;
+
+            /*
+             * Ugly, but I designed the database wrong on this point.
+             * StudyUserGroups.StartControl is a bool but should be a FK to TrialType
+             * For now, use "True" as meaning "See Select" (1) and "False" as "Hear Select" (2)
+             */
+
+            su.WordListID = StudyUserGroupStartListKey(studyUserGroupID);
+            su.TrialTypeID = 1;
+            database.StudiesUsers.InsertOnSubmit(su);
+            database.SubmitChanges();
+            return su;
+        }
+        
+        public static Study createStudy(string studyName, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int target)
+        {
+            Study s = new Study();
+            s.Name = studyName;
+            s.HearInstructions = hearIn;
+            s.SeeInstructions = seeIn;
+            s.WaitHours = hours;
+            s.WaitMins = minutes;
+            s.WaitSecs = seconds;
+            s.WordTrialsPerBlock = trials;
+            s.TargetWordsPerMinute = target;
+            database.Studies.InsertOnSubmit(s);
+            database.SubmitChanges();
+            return s;
+        }
+
+        public static StudiesAdmin createStudiesAdmin(int sid, int aid)
+        {
+            StudiesAdmin sa = new StudiesAdmin();
+            sa.AdminID = aid;
+            sa.StudyID = sid;
+            database.StudiesAdmins.InsertOnSubmit(sa);
+            database.SubmitChanges();
+            return sa;
         }
     }
 }
