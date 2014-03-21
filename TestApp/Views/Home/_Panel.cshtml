@@ -3,6 +3,7 @@
 @{
     Admin loggedIn = (Admin)Session["User"];
     List<Study> studiesRun = DataAccessor.getStudiesByAdminID(loggedIn.ID);
+    List<Study> studies = DataAccessor.getAllStudies();
     List<User> users = DataAccessor.getUsers().ToList();
     List<WordList> wordLists = DataAccessor.getWordLists();
     List<WordSublist> wordSublists = DataAccessor.getWordSublists();
@@ -53,7 +54,7 @@
                 <td><input type="text" id="@textid" class="userPasswords" /></td>
                 <td>
                     <select id="@studyid" class="@disableClass">
-                        @foreach (Study s in studiesRun)
+                        @foreach (Study s in studies)
                         {
                             if(s.ID == studyKey)
                             {

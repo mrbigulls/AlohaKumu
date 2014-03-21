@@ -101,9 +101,8 @@ namespace AlohaKumu.Models
                 if (t.OptionIDClicked == t.WordID) correct++;
             }
             double finish = trials[trials.Count - 1].TimeOptionClicked / 60000; //milliseconds to minutes
-            double rate = 0;
-            if(correct > 0) rate = correct / finish;
-            if(rate >= target) return advanceUserInStudy(studiesUserFromUser(test.User));
+            double rate = trials.Count / finish;
+            if (rate >= target && correct == trials.Count) return advanceUserInStudy(studiesUserFromUser(test.User));
             return false;
         }
 
@@ -362,6 +361,12 @@ namespace AlohaKumu.Models
                     select s).ToList();
         }
 
+        public static List<Study> getAllStudies()
+        {
+            return (from s in database.Studies
+                    select s).ToList();
+        }
+
         public static List<WordList> getWordLists()
         {
             return (from wl in database.WordLists
@@ -507,6 +512,7 @@ namespace AlohaKumu.Models
             s.WaitSecs = seconds;
             s.WordTrialsPerBlock = trials;
             s.TargetWordsPerMinute = target;
+            s.Active = true;
             database.Studies.InsertOnSubmit(s);
             database.SubmitChanges();
             return s;
