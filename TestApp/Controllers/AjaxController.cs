@@ -44,7 +44,10 @@ namespace TestApp.Controllers
             results.parseStrings();
             bool complete = DataAccessor.recordTrialBlock(results);
             if (complete) return "You have now completed the study.  Thank you for participating.";
-            return "Thank you for your continuing participation.";
+            bool? offerAnother = DataAccessor.allowTrial(DataAccessor.getUserByID(results.userID));
+            if (offerAnother == null) return "You have now completed the study.  Thank you for participating.";
+            else if (offerAnother == true) return "Your results have been recorded.  Please participate again today. <INPUT TYPE=\"button\" onClick=\"history.go(0)\" VALUE=\"Go again now.\">";
+            return "Thank you for your continuing participation.  That will be all for today.";
         }
 
         [HttpPost]

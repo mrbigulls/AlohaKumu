@@ -230,18 +230,27 @@ namespace AlohaKumu.Models
         {
             StudiesUser currentStudy = studiesUserFromUser(current);
             if (currentStudy.TrialType.Name == "Completed") return null;
-            return true; //for rapid testing
-            /*
+            //return true; //for rapid testing
+
+            DateTime today = DateTime.Now.Date;
+
             List<TrialBlock> blocks = userBlocks(current);
             TrialBlock last = null;
+            if (blocks.Count > 0) last = blocks[0];
+            List<TrialBlock> todaysBlocks = new List<TrialBlock>();
             foreach (TrialBlock t in blocks)
             {
-                if (last == null) last = t;
-                else if ( DateTime.Compare(t.StartTime, last.StartTime) > 0 ) last = t;
+                if (today == t.StartTime.Date) todaysBlocks.Add(t);
+                if (DateTime.Compare(t.StartTime, last.StartTime) > 0) last = t;
             }
-            if (last == null || (DateTime.Compare(DateTime.Now.Date, last.StartTime.Date) > 0) || (DateTime.Now - last.StartTime) > currentStudy.Study.getWaitTime() ) return true;
+            //none performed yet
+            if (last == null) return true;
+            //none today, and less than min wait since the last
+            if ( (DateTime.Compare(today, last.StartTime.Date) > 0) && ((DateTime.Now - last.StartTime) > currentStudy.Study.getWaitTime())) return true;
+            //fewer than 2 today
+            if ( todaysBlocks.Count < 2) return true;
+            //otherwise two have been performed today or not enough time since previous day
             return false;
-            */
         }
 
         public static List<Word> getWordList(int listKey, int subListKey, bool mixed)
@@ -303,7 +312,7 @@ namespace AlohaKumu.Models
             return (from su in database.StudiesUsers
                     join s in database.Studies
                     on su.StudyID equals s.ID
-                    where (su.UserID == requested.ID) && (s.Active)
+                    where (su.UserID == requested.ID)
                     select su).Single();
         }
 
@@ -319,7 +328,6 @@ namespace AlohaKumu.Models
             return (from su in requested.StudiesUsers
                     join st in database.Studies
                     on su.StudyID equals st.ID
-                    where st.Active
                     select st.ID).Single();
         }
 
@@ -455,6 +463,7 @@ namespace AlohaKumu.Models
             s.WaitSecs = seconds;
             s.WordTrialsPerBlock = trials;
             s.TargetWordsPerMinute = fluency;
+            s.Active = true;
             database.SubmitChanges();
         }
 
