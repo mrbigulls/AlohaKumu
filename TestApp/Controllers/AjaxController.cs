@@ -87,7 +87,7 @@ namespace TestApp.Controllers
         }
 
         [HttpPost]
-        public string studyUpdate(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int fluency)
+        public string studyUpdate(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, double fluency)
         {
             DataAccessor.updateStudy(studyID, hearIn, seeIn, hours, minutes, seconds, trials, fluency);
             return "Update successful.";

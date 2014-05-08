@@ -453,7 +453,7 @@ namespace AlohaKumu.Models
             return eligibileToMove;
         }
 
-        public static void updateStudy(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int fluency)
+        public static void updateStudy(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, double fluency)
         {
             Study s = studyFromID(studyID);
             s.HearInstructions = hearIn;
