@@ -6,22 +6,25 @@ using AlohaKumu.Models;
 using TestApp.Models;
 using System.Security.Cryptography;
 using System.Text;
+using System.Data.Linq;
 
 namespace AlohaKumu.Models
 {
     public class DataAccessor
     {
-        private static RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+        private RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
 
-        private static HashAlgorithm hasher = new SHA256Managed();
+        private HashAlgorithm hasher = new SHA256Managed();
 
-        private static ASCIIEncoding encoder = new ASCIIEncoding();
+        private ASCIIEncoding encoder = new ASCIIEncoding();
 
-        private static StringBuilder stringer = new StringBuilder();
+        private StringBuilder stringer = new StringBuilder();
 
-        private static readonly DataClasses1DataContext database = new DataClasses1DataContext();
+        private readonly DataClasses1DataContext database = new DataClasses1DataContext();
 
-        public static bool validStudyAndUserIDs(int sid, int uid)
+        private RefreshMode refresh_mode = RefreshMode.OverwriteCurrentValues;
+
+        public bool validStudyAndUserIDs(int sid, int uid)
         {
             return (((from s in database.Studies
                         where (s.ID == sid)
@@ -32,7 +35,7 @@ namespace AlohaKumu.Models
                       select u).Count() > 0 ));
         }
 
-        private static String hashPass(String password, String salt)
+        private String hashPass(String password, String salt)
         {
             StringBuilder stringer = new StringBuilder();
             byte[] hashed = hasher.ComputeHash(encoder.GetBytes(password + salt));
@@ -43,7 +46,7 @@ namespace AlohaKumu.Models
             return stringer.ToString();
         }
 
-        public static String getSalt()
+        public String getSalt()
         {
             byte[] salt = new byte[32];
             rng.GetNonZeroBytes(salt);
@@ -55,7 +58,7 @@ namespace AlohaKumu.Models
             return stringer.ToString();
         }
         
-        public static bool recordTrialBlock(TrialBlockData results)
+        public bool recordTrialBlock(TrialBlockData results)
         {
             StudiesUser x = (from su in database.StudiesUsers
                              where su.StudyID == results.studyID && su.UserID == results.userID
@@ -91,7 +94,7 @@ namespace AlohaKumu.Models
             return evalPerformance(newBlock);
         }
 
-        public static bool evalPerformance(TrialBlock test)
+        public bool evalPerformance(TrialBlock test)
         {
             double target = test.Study.TargetWordsPerMinute;
             List<Trial> trials = blockTrials(test);
@@ -106,17 +109,20 @@ namespace AlohaKumu.Models
             return false;
         }
 
-        public static List<Trial> blockTrials(TrialBlock block)
+        public List<Trial> blockTrials(TrialBlock block)
         {
+            //database.Refresh(refresh_mode, block);
             List<Trial> trials = (from t in database.Trials
                                   where t.TrialBlockID == block.ID
                                   select t).ToList();
             return trials.OrderBy(x => x.TimeOptionClicked).ToList();
         }
 
-        public static bool advanceUserInStudy(StudiesUser u)
+        public bool advanceUserInStudy(StudiesUser u)
         {
+            //database.Refresh(refresh_mode, new Object[] {u, database.WordSublists, database.TrialTypes});
             StudyUserGroup g = u.StudyUserGroup;
+            //database.Refresh(refresh_mode, g);
 
             var subkeys = (from s in database.WordSublists
                            select s.ID);
@@ -158,21 +164,21 @@ namespace AlohaKumu.Models
             return u.Complete;
         }
 
-        public static WordSublist getSublistByID(int id)
+        public WordSublist getSublistByID(int id)
         {
             return (from sl in database.WordSublists
                     where sl.ID == id
                     select sl).Single();
         }
 
-        public static TrialType getTrialTypeByID(int id)
+        public TrialType getTrialTypeByID(int id)
         {
             return (from tt in database.TrialTypes
                     where tt.ID == id
                     select tt).Single();
         }
 
-        public static bool isUser(String name)
+        public bool isUser(String name)
         {
             IQueryable<User> users = getUsers();
             foreach (User u in users)
@@ -182,7 +188,7 @@ namespace AlohaKumu.Models
             return false;
         }
 
-        public static bool isAdmin(String name)
+        public bool isAdmin(String name)
         {
             IQueryable<Admin> admins = getAdmins();
             foreach (Admin a in admins)
@@ -192,7 +198,7 @@ namespace AlohaKumu.Models
             return false;
         }
 
-        public static User login(String name, String pass)
+        public User login(String name, String pass)
         {
             User requested = (from u in database.Users
                               where (u.Username == name)
@@ -202,7 +208,7 @@ namespace AlohaKumu.Models
             return requested;
         }
 
-        public static Admin loginAdmin(String name, String pass)
+        public Admin loginAdmin(String name, String pass)
         {
             Admin requested = (from u in database.Admins
                               where (u.Username == name)
@@ -212,26 +218,31 @@ namespace AlohaKumu.Models
             return requested;
         }
 
-        public static List<TrialBlock> userBlocks(User current)
+        public List<TrialBlock> userBlocks(User current)
         {
+            //database.Refresh(refresh_mode, current);
+            //database.Refresh(refresh_mode, database.TrialBlocks);
             return (from t in database.TrialBlocks
                     where (t.UserID == current.ID)
                     select t).ToList();
         }
 
-        public static List<TrialBlock> userStudyBlocks(int uid, int sid)
+        public List<TrialBlock> userStudyBlocks(int uid, int sid)
         {
+            //database.Refresh(refresh_mode, database.TrialBlocks);
+            //database.Refresh(refresh_mode, database.Trials);
             return (from t in database.TrialBlocks
                     where (t.UserID == uid && t.StudyID == sid)
                     select t).ToList();
         }
 
-        public static bool? allowTrial(User current)
+        public bool? allowTrial(User current)
         {
+            //database.Refresh(refresh_mode, current);
             StudiesUser currentStudy = studiesUserFromUser(current);
             if (currentStudy.TrialType.Name == "Completed") return null;
-            //return true; //for rapid testing
-
+            return true; //for rapid testing
+            /*
             DateTime today = DateTime.Now.Date;
 
             List<TrialBlock> blocks = userBlocks(current);
@@ -251,9 +262,10 @@ namespace AlohaKumu.Models
             if ( todaysBlocks.Count < 2) return true;
             //otherwise two have been performed today or not enough time since previous day
             return false;
+            */
         }
 
-        public static List<Word> getWordList(int listKey, int subListKey, bool mixed)
+        public List<Word> getWordList(int listKey, int subListKey, bool mixed)
         {
             List<Word> fullList = Enumerable.Empty<Word>().ToList();
             List<Word> subList;
@@ -276,39 +288,42 @@ namespace AlohaKumu.Models
             return fullList;
         }
 
-        public static Word getWord(int key)
+        public Word getWord(int key)
         {
             return (from w in database.Words
                     where (w.ID == key)
                     select w).Single();
         }
 
-        public static IQueryable<User> getUsers()
+        public IQueryable<User> getUsers()
         {
             return (from n in database.Users
                     select n);
         }
 
-        public static IQueryable<Admin> getAdmins()
+        public IQueryable<Admin> getAdmins()
         {
             return (from n in database.Admins
                     select n);
         }
 
-        public static List<Word> testList(User requested)
+        public List<Word> testList(User requested)
         {
+            //database.Refresh(refresh_mode, requested);
             StudiesUser current = studiesUserFromUser(requested);
             List<Word> list = getWordList(current.WordListID, current.WordSublistID, current.Mix);
             return list;
         }
 
-        public static String testType(User requested)
+        public String testType(User requested)
         {
+            //database.Refresh(refresh_mode, requested);
             return studiesUserFromUser(requested).TrialType.Name;
         }
 
-        public static StudiesUser studiesUserFromUser(User requested)
+        public StudiesUser studiesUserFromUser(User requested)
         {
+            //database.Refresh(refresh_mode, requested);
             return (from su in database.StudiesUsers
                     join s in database.Studies
                     on su.StudyID equals s.ID
@@ -316,36 +331,38 @@ namespace AlohaKumu.Models
                     select su).Single();
         }
 
-        public static List<StudiesUser> allStudiesFromUserID(int uid)
+        public List<StudiesUser> allStudiesFromUserID(int uid)
         {
             return (from su in database.StudiesUsers
                     where su.UserID == uid
                     select su).ToList();
         }
 
-        public static int studyIDFromUser(User requested)
+        public int studyIDFromUser(User requested)
         {
+            //database.Refresh(refresh_mode, requested);
             return (from su in requested.StudiesUsers
                     join st in database.Studies
                     on su.StudyID equals st.ID
                     select st.ID).Single();
         }
 
-        public static int getTrialTypeKeyFromName(String name)
+        public int getTrialTypeKeyFromName(String name)
         {
             return (from t in database.TrialTypes
                     where (t.Name == name)
                     select t.ID).Single();
         }
 
-        public static List<String> getTrialTypeNames()
+        public List<String> getTrialTypeNames()
         {
             return (from t in database.TrialTypes
                     select t.Name).ToList();
         }
 
-        public static bool receiveSoundFeedback(User current)
+        public bool receiveSoundFeedback(User current)
         {
+            //database.Refresh(refresh_mode, current);
             StudiesUser su = studiesUserFromUser(current);
             bool startControl = su.StudyUserGroup.StartControl;
             if (su.StudyUserGroup.FirstListID == su.WordListID)
@@ -353,14 +370,14 @@ namespace AlohaKumu.Models
             else return !startControl;
         }
 
-        public static Study studyFromID(int sid)
+        public Study studyFromID(int sid)
         {
             return (from s in database.Studies
                     where (s.ID == sid)
                     select s).Single();
         }
 
-        public static List<Study> getStudiesByAdminID(int aid)
+        public List<Study> getStudiesByAdminID(int aid)
         {
             return (from sa in database.StudiesAdmins
                     join s in database.Studies
@@ -369,45 +386,45 @@ namespace AlohaKumu.Models
                     select s).ToList();
         }
 
-        public static List<Study> getAllStudies()
+        public List<Study> getAllStudies()
         {
             return (from s in database.Studies
                     select s).ToList();
         }
 
-        public static List<WordList> getWordLists()
+        public List<WordList> getWordLists()
         {
             return (from wl in database.WordLists
                     select wl).ToList();
         }
 
-        public static List<WordSublist> getWordSublists()
+        public List<WordSublist> getWordSublists()
         {
             return (from wl in database.WordSublists
                     select wl).ToList();
         }
 
-        public static List<StudyUserGroup> getUserGroups()
+        public List<StudyUserGroup> getUserGroups()
         {
             return (from sug in database.StudyUserGroups
                     select sug).ToList();
         }
 
-        public static User getUserByID(int uid)
+        public User getUserByID(int uid)
         {
             return (from u in database.Users
                     where u.ID == uid
                     select u).Single();
         }
 
-        public static StudyUserGroup getStudyUserGroupByID(int sugid)
+        public StudyUserGroup getStudyUserGroupByID(int sugid)
         {
             return (from sug in database.StudyUserGroups
                     where sug.ID == sugid
                     select sug).Single();
         }
 
-        public static void updateUser(int userID, bool userActive, string userPassword)
+        public void updateUser(int userID, bool userActive, string userPassword)
         {
             User u = getUserByID(userID);
             u.Active = userActive;
@@ -415,7 +432,7 @@ namespace AlohaKumu.Models
             database.SubmitChanges();
         }
 
-        public static void updateStudiesUser(int userID, int studyID, int studyUserGroupID)
+        public void updateStudiesUser(int userID, int studyID, int studyUserGroupID)
         {
             StudiesUser current_su = studiesUserFromUser(getUserByID(userID));
             
@@ -438,13 +455,13 @@ namespace AlohaKumu.Models
             database.SubmitChanges();
         }
 
-        public static bool userEligibileToMove(int userID)
+        public bool userEligibileToMove(int userID)
         {
-            List<StudiesUser> studies = DataAccessor.allStudiesFromUserID(userID);
+            List<StudiesUser> studies = allStudiesFromUserID(userID);
             bool eligibileToMove = true;
             foreach (StudiesUser su in studies)
             {
-                List<TrialBlock> tb = DataAccessor.userStudyBlocks(userID, su.StudyID);
+                List<TrialBlock> tb = userStudyBlocks(userID, su.StudyID);
                 if (!su.Complete && tb.Count > 0)
                 {
                     eligibileToMove = false;
@@ -453,7 +470,7 @@ namespace AlohaKumu.Models
             return eligibileToMove;
         }
 
-        public static void updateStudy(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, double fluency)
+        public void updateStudy(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, double fluency)
         {
             Study s = studyFromID(studyID);
             s.HearInstructions = hearIn;
@@ -467,7 +484,7 @@ namespace AlohaKumu.Models
             database.SubmitChanges();
         }
 
-        public static User createUser(string userName, bool userActive, string userPassword)
+        public User createUser(string userName, bool userActive, string userPassword)
         {
             User newUser = new User();
             newUser.Username = userName;
@@ -479,7 +496,7 @@ namespace AlohaKumu.Models
             return newUser;
         }
 
-        public static int StudyUserGroupStartListKey(int sugID)
+        public int StudyUserGroupStartListKey(int sugID)
         {
             StudyUserGroup sug = (from s in database.StudyUserGroups
                                   where (s.ID == sugID)
@@ -487,7 +504,7 @@ namespace AlohaKumu.Models
             return sug.FirstListID;
         }
 
-        public static StudiesUser createStudiesUsers(int userID, int studyID, int studyUserGroupID)
+        public StudiesUser createStudiesUsers(int userID, int studyID, int studyUserGroupID)
         {
             StudiesUser su = new StudiesUser();
             su.StudyID = studyID;
@@ -510,7 +527,7 @@ namespace AlohaKumu.Models
             return su;
         }
         
-        public static Study createStudy(string studyName, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int target)
+        public Study createStudy(string studyName, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int target)
         {
             Study s = new Study();
             s.Name = studyName;
@@ -527,7 +544,7 @@ namespace AlohaKumu.Models
             return s;
         }
 
-        public static StudiesAdmin createStudiesAdmin(int sid, int aid)
+        public StudiesAdmin createStudiesAdmin(int sid, int aid)
         {
             StudiesAdmin sa = new StudiesAdmin();
             sa.AdminID = aid;

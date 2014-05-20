@@ -1,6 +1,6 @@
 ﻿@using AlohaKumu.Models;
 @using TestApp.Models;
-
+@{DataAccessor data = new DataAccessor();
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="Scripts/checkScript.js"></script>
 <section class="featured">
@@ -13,13 +13,14 @@
         }
         else
         {
-            bool? allow = DataAccessor.allowTrial( (User)Session["User"]);
+            bool? allow = data.allowTrial( (User)Session["User"]);
             if ( allow == null ) { Html.RenderPartial("_Completed", null); }
             else if (allow == true)
             {
-                Html.RenderPartial("_" + DataAccessor.testType((User)Session["User"]), DataAccessor.testList((User)Session["User"]));
+                Html.RenderPartial("_" + data.testType((User)Session["User"]), data.testList((User)Session["User"]));
             }
             else { Html.RenderPartial("_tooSoon"); }
         }
     </div>
 </section>
+}

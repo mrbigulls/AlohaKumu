@@ -18,14 +18,15 @@ namespace AlohaKumu.Controllers
         [HttpPost]
         public ActionResult Index( FormCollection form )
         {
+            DataAccessor data = new DataAccessor();
             String username = form["username"];
             String password = form["password"];
-            if (!DataAccessor.isUser(username))
+            if (!data.isUser(username))
             {
                 Session["Error"] = "No such user: " + username;
                 return RedirectToAction("Error");
             }
-            User current = DataAccessor.login(username, password);
+            User current = data.login(username, password);
             if (current == null)
             {
                 Session["Error"] = "Invalid password";
@@ -43,14 +44,15 @@ namespace AlohaKumu.Controllers
         [HttpPost]
         public ActionResult Admin(FormCollection form)
         {
+            DataAccessor data = new DataAccessor();
             String username = form["username"];
             String password = form["password"];
-            if (!DataAccessor.isAdmin(username))
+            if (!data.isAdmin(username))
             {
                 Session["Error"] = "No such user: " + username;
                 return RedirectToAction("Error");
             }
-            Admin current = DataAccessor.loginAdmin(username, password);
+            Admin current = data.loginAdmin(username, password);
             if (current == null)
             {
                 Session["Error"] = "Invalid password";

@@ -1,13 +1,14 @@
 ﻿@using AlohaKumu.Models;
 @using TestApp.Models;
 @{
+    DataAccessor data = new DataAccessor();
     Admin loggedIn = (Admin)Session["User"];
-    List<Study> studiesRun = DataAccessor.getStudiesByAdminID(loggedIn.ID);
-    List<Study> studies = DataAccessor.getAllStudies();
-    List<User> users = DataAccessor.getUsers().ToList();
-    List<WordList> wordLists = DataAccessor.getWordLists();
-    List<WordSublist> wordSublists = DataAccessor.getWordSublists();
-    List<StudyUserGroup> userGroups = DataAccessor.getUserGroups();
+    List<Study> studiesRun = data.getStudiesByAdminID(loggedIn.ID);
+    List<Study> studies = data.getAllStudies();
+    List<User> users = data.getUsers().ToList();
+    List<WordList> wordLists = data.getWordLists();
+    List<WordSublist> wordSublists = data.getWordSublists();
+    List<StudyUserGroup> userGroups = data.getUserGroups();
     
     <script src="/Scripts/admin.js"></script>
     <div class="tab" id="usersTab">Users</div>
@@ -24,13 +25,13 @@
             </tr>
         @foreach (User u in users)
         {
-            bool movable = DataAccessor.userEligibileToMove(u.ID);
+            bool movable = data.userEligibileToMove(u.ID);
             string textid = "passBox" + u.ID.ToString();
             string studyid = "studyForUser" + u.ID.ToString();
             string groupid = "groupForUser" + u.ID.ToString();
             string activeid = "activeForUser" + u.ID.ToString();
             string changeButtonid = "userChangeButton" + u.ID.ToString();
-            StudiesUser su = DataAccessor.studiesUserFromUser(u);
+            StudiesUser su = data.studiesUserFromUser(u);
             int studyKey = su.StudyID;
             string disableClass = "";
             if (!movable) { disableClass = "disable"; }
@@ -188,7 +189,7 @@
                 </tr>
                 @foreach (WordSublist sl in wordSublists)
                 {
-                    List<Word> words = DataAccessor.getWordList(l.ID, sl.ID, false);
+                    List<Word> words = data.getWordList(l.ID, sl.ID, false);
                     <tr class="sublistHeader">
                         <td>Sublist ID: @sl.ID</td>
                         <td>Sublist Name: @sl.Name</td>
@@ -200,17 +201,25 @@
                         <td>ID</td>
                         <td>English</td>
                         <td>Hawaiian</td>
-                        <td>Filename</td>
+                        <td>Sound</td>
                         <td>Picture</td>
                     </tr>
                     foreach (Word w in words)
                     {
+                        string audiopath1 = "/Sounds/" + w.Consequence.Filename + ".mp3";
+                        string audiopath2 = "/Sounds/" + w.Consequence.Filename + ".ogg";
+                        string imagepath = Settings.ImagePath + w.Picture;
                         <tr>
                             <td>@w.ID</td>
                             <td>@w.English</td>
                             <td>@w.Hawaiian</td>
-                            <td>@w.Consequence.Filename</td>
-                            <td>@w.Picture</td>
+                            <td>@w.Consequence.Filename<br />
+                                <audio controls>
+                                    <source src="@audiopath1" type="audio/mpeg"/>
+                                    <source src="@audiopath2" type="audio/ogg"/>
+                                </audio>
+                            </td>
+                            <td><img src="@imagepath"  style="max-height: 100px; max-width: 100px;"/></td>
                         </tr>
                     }
                 }

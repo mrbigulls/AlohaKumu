@@ -2,9 +2,10 @@
 @using TestApp.Models;
 @model List<Word>
 @{
+    DataAccessor data = new DataAccessor();
     User loggedIn = (User)Session["User"];
-    int studyID = DataAccessor.studyIDFromUser(loggedIn);
-    Study thisStudy = DataAccessor.studyFromID(studyID);
+    int studyID = data.studyIDFromUser(loggedIn);
+    Study thisStudy = data.studyFromID(studyID);
     @* <input type="hidden" id="userID" value="@loggedIn.ID" /> *@
     <div id="instructions" class="overlay">
         @thisStudy.HearInstructions
@@ -19,13 +20,13 @@
         <br />
         <button id="gobutton">Go</button>
     </div>
-    <input type="hidden" id="sid" value="@DataAccessor.studyIDFromUser(loggedIn)" />
+    <input type="hidden" id="sid" value="@data.studyIDFromUser(loggedIn)" />
     <script src='Scripts/hear_code.js'></script>
-    <input type="hidden" id="trialTypeKey" value="@DataAccessor.getTrialTypeKeyFromName("HearSelect")" />
+    <input type="hidden" id="trialTypeKey" value="@data.getTrialTypeKeyFromName("HearSelect")" />
     Random random = new Random();
     int trialCount = Model.Count * thisStudy.WordTrialsPerBlock;
     <input type="hidden" id="trialSize" value="@trialCount" />
-    <input type="hidden" id="playSounds" value="@DataAccessor.receiveSoundFeedback(loggedIn)" />
+    <input type="hidden" id="playSounds" value="@data.receiveSoundFeedback(loggedIn)" />
     <div id="feedback"></div>
     for (int i = 0; i < thisStudy.WordTrialsPerBlock; i++)
     {

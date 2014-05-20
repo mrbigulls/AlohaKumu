@@ -2,10 +2,11 @@
 @using AlohaKumu.Models;
 @using System;
 @model List<TrialBlock>
+@{DataAccessor data = new DataAccessor();
 <div id="dataView">
 @if (Model.Count == 0)
 {
-    List<StudiesUser> studies = DataAccessor.allStudiesFromUserID((int)ViewData["UserID"]);
+    List<StudiesUser> studies = data.allStudiesFromUserID((int)ViewData["UserID"]);
     bool found = false;
     foreach (StudiesUser su in studies)
     {
@@ -62,8 +63,8 @@ foreach( TrialBlock tb in Model )
         </tr>
     @foreach (Trial t in tb.Trials.ToList())
     {
-        Word guess = DataAccessor.getWord(t.OptionIDClicked);
-        Word correct = DataAccessor.getWord(t.WordID);
+        Word guess = data.getWord(t.OptionIDClicked);
+        Word correct = data.getWord(t.WordID);
         String guessclass = "";
         if (guess.ID == correct.ID)
         {
@@ -75,9 +76,9 @@ foreach( TrialBlock tb in Model )
         }
         <tr class="dataRow">
             <td>@t.ID</td>
-            <td>@DataAccessor.getWord(t.Option1ID).English</td>
-            <td>@DataAccessor.getWord(t.Option2ID).English</td>
-            <td>@DataAccessor.getWord(t.Option3ID).English</td>
+            <td>@data.getWord(t.Option1ID).English</td>
+            <td>@data.getWord(t.Option2ID).English</td>
+            <td>@data.getWord(t.Option3ID).English</td>
             <td class="@guessclass">@guess.English</td>
             <td>@correct.English</td>
             <td>@(t.TimeFirstIDpresented/1000.0)</td>
@@ -92,3 +93,4 @@ foreach( TrialBlock tb in Model )
 }
 }
 </div>
+}
