@@ -1,4 +1,9 @@
-﻿.selectedTab
+﻿#newuser_name
+{
+    width: 100px;
+}
+
+.selectedTab
 {
     background-color: #c0c0ff !important;
 }

@@ -7,6 +7,7 @@ using TestApp.Models;
 using System.Security.Cryptography;
 using System.Text;
 using System.Data.Linq;
+using System.Transactions;
 
 namespace AlohaKumu.Models
 {
@@ -20,12 +21,11 @@ namespace AlohaKumu.Models
 
         private StringBuilder stringer = new StringBuilder();
 
-        private readonly DataClasses1DataContext database = new DataClasses1DataContext();
-
         private RefreshMode refresh_mode = RefreshMode.OverwriteCurrentValues;
 
         public bool validStudyAndUserIDs(int sid, int uid)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (((from s in database.Studies
                         where (s.ID == sid)
                         select s).Count() > 0 )
@@ -60,6 +60,7 @@ namespace AlohaKumu.Models
         
         public bool recordTrialBlock(TrialBlockData results)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             StudiesUser x = (from su in database.StudiesUsers
                              where su.StudyID == results.studyID && su.UserID == results.userID
                              select su).Single();
@@ -111,7 +112,7 @@ namespace AlohaKumu.Models
 
         public List<Trial> blockTrials(TrialBlock block)
         {
-            //database.Refresh(refresh_mode, block);
+            DataClasses1DataContext database = new DataClasses1DataContext();
             List<Trial> trials = (from t in database.Trials
                                   where t.TrialBlockID == block.ID
                                   select t).ToList();
@@ -120,6 +121,7 @@ namespace AlohaKumu.Models
 
         public bool advanceUserInStudy(StudiesUser u)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             //database.Refresh(refresh_mode, new Object[] {u, database.WordSublists, database.TrialTypes});
             StudyUserGroup g = u.StudyUserGroup;
             //database.Refresh(refresh_mode, g);
@@ -166,6 +168,7 @@ namespace AlohaKumu.Models
 
         public WordSublist getSublistByID(int id)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from sl in database.WordSublists
                     where sl.ID == id
                     select sl).Single();
@@ -173,6 +176,7 @@ namespace AlohaKumu.Models
 
         public TrialType getTrialTypeByID(int id)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from tt in database.TrialTypes
                     where tt.ID == id
                     select tt).Single();
@@ -200,6 +204,7 @@ namespace AlohaKumu.Models
 
         public User login(String name, String pass)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             User requested = (from u in database.Users
                               where (u.Username == name)
                               select u).Single();
@@ -210,6 +215,7 @@ namespace AlohaKumu.Models
 
         public Admin loginAdmin(String name, String pass)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             Admin requested = (from u in database.Admins
                               where (u.Username == name)
                               select u).Single();
@@ -220,8 +226,7 @@ namespace AlohaKumu.Models
 
         public List<TrialBlock> userBlocks(User current)
         {
-            //database.Refresh(refresh_mode, current);
-            //database.Refresh(refresh_mode, database.TrialBlocks);
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from t in database.TrialBlocks
                     where (t.UserID == current.ID)
                     select t).ToList();
@@ -229,8 +234,7 @@ namespace AlohaKumu.Models
 
         public List<TrialBlock> userStudyBlocks(int uid, int sid)
         {
-            //database.Refresh(refresh_mode, database.TrialBlocks);
-            //database.Refresh(refresh_mode, database.Trials);
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from t in database.TrialBlocks
                     where (t.UserID == uid && t.StudyID == sid)
                     select t).ToList();
@@ -267,6 +271,7 @@ namespace AlohaKumu.Models
 
         public List<Word> getWordList(int listKey, int subListKey, bool mixed)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             List<Word> fullList = Enumerable.Empty<Word>().ToList();
             List<Word> subList;
             if (mixed)
@@ -290,6 +295,7 @@ namespace AlohaKumu.Models
 
         public Word getWord(int key)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from w in database.Words
                     where (w.ID == key)
                     select w).Single();
@@ -297,12 +303,14 @@ namespace AlohaKumu.Models
 
         public IQueryable<User> getUsers()
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from n in database.Users
                     select n);
         }
 
         public IQueryable<Admin> getAdmins()
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from n in database.Admins
                     select n);
         }
@@ -323,16 +331,17 @@ namespace AlohaKumu.Models
 
         public StudiesUser studiesUserFromUser(User requested)
         {
-            //database.Refresh(refresh_mode, requested);
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from su in database.StudiesUsers
                     join s in database.Studies
                     on su.StudyID equals s.ID
                     where (su.UserID == requested.ID)
-                    select su).Single();
+                    select su).SingleOrDefault();
         }
 
         public List<StudiesUser> allStudiesFromUserID(int uid)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from su in database.StudiesUsers
                     where su.UserID == uid
                     select su).ToList();
@@ -340,7 +349,7 @@ namespace AlohaKumu.Models
 
         public int studyIDFromUser(User requested)
         {
-            //database.Refresh(refresh_mode, requested);
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from su in requested.StudiesUsers
                     join st in database.Studies
                     on su.StudyID equals st.ID
@@ -349,6 +358,7 @@ namespace AlohaKumu.Models
 
         public int getTrialTypeKeyFromName(String name)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from t in database.TrialTypes
                     where (t.Name == name)
                     select t.ID).Single();
@@ -356,6 +366,7 @@ namespace AlohaKumu.Models
 
         public List<String> getTrialTypeNames()
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from t in database.TrialTypes
                     select t.Name).ToList();
         }
@@ -372,6 +383,7 @@ namespace AlohaKumu.Models
 
         public Study studyFromID(int sid)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from s in database.Studies
                     where (s.ID == sid)
                     select s).Single();
@@ -379,6 +391,7 @@ namespace AlohaKumu.Models
 
         public List<Study> getStudiesByAdminID(int aid)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from sa in database.StudiesAdmins
                     join s in database.Studies
                     on sa.StudyID equals s.ID
@@ -388,37 +401,51 @@ namespace AlohaKumu.Models
 
         public List<Study> getAllStudies()
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from s in database.Studies
                     select s).ToList();
         }
 
         public List<WordList> getWordLists()
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from wl in database.WordLists
                     select wl).ToList();
         }
 
         public List<WordSublist> getWordSublists()
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from wl in database.WordSublists
                     select wl).ToList();
         }
 
         public List<StudyUserGroup> getUserGroups()
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from sug in database.StudyUserGroups
                     select sug).ToList();
         }
 
         public User getUserByID(int uid)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from u in database.Users
                     where u.ID == uid
                     select u).Single();
         }
 
+        public Study getStudyByID(int sid)
+        {
+            DataClasses1DataContext database = new DataClasses1DataContext();
+            return (from s in database.Studies
+                    where s.ID == sid
+                    select s).Single();
+        }
+
         public StudyUserGroup getStudyUserGroupByID(int sugid)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             return (from sug in database.StudyUserGroups
                     where sug.ID == sugid
                     select sug).Single();
@@ -426,6 +453,7 @@ namespace AlohaKumu.Models
 
         public void updateUser(int userID, bool userActive, string userPassword)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             User u = getUserByID(userID);
             u.Active = userActive;
             if( userPassword != "" ) u.PassHash = hashPass(userPassword, u.Salt);
@@ -434,6 +462,7 @@ namespace AlohaKumu.Models
 
         public void updateStudiesUser(int userID, int studyID, int studyUserGroupID)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             StudiesUser current_su = studiesUserFromUser(getUserByID(userID));
             
             if (current_su != null)
@@ -472,6 +501,7 @@ namespace AlohaKumu.Models
 
         public void updateStudy(int studyID, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, double fluency)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             Study s = studyFromID(studyID);
             s.HearInstructions = hearIn;
             s.SeeInstructions = seeIn;
@@ -486,6 +516,7 @@ namespace AlohaKumu.Models
 
         public User createUser(string userName, bool userActive, string userPassword)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             User newUser = new User();
             newUser.Username = userName;
             newUser.Salt = getSalt();
@@ -498,6 +529,7 @@ namespace AlohaKumu.Models
 
         public int StudyUserGroupStartListKey(int sugID)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             StudyUserGroup sug = (from s in database.StudyUserGroups
                                   where (s.ID == sugID)
                                   select s).Single();
@@ -506,6 +538,7 @@ namespace AlohaKumu.Models
 
         public StudiesUser createStudiesUsers(int userID, int studyID, int studyUserGroupID)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             StudiesUser su = new StudiesUser();
             su.StudyID = studyID;
             su.Complete = false;
@@ -529,6 +562,7 @@ namespace AlohaKumu.Models
         
         public Study createStudy(string studyName, string hearIn, string seeIn, int hours, int minutes, int seconds, int trials, int target)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             Study s = new Study();
             s.Name = studyName;
             s.HearInstructions = hearIn;
@@ -546,12 +580,61 @@ namespace AlohaKumu.Models
 
         public StudiesAdmin createStudiesAdmin(int sid, int aid)
         {
+            DataClasses1DataContext database = new DataClasses1DataContext();
             StudiesAdmin sa = new StudiesAdmin();
             sa.AdminID = aid;
             sa.StudyID = sid;
             database.StudiesAdmins.InsertOnSubmit(sa);
             database.SubmitChanges();
             return sa;
+        }
+
+        public bool deleteUser(int doomedID)
+        {
+            DataClasses1DataContext database = new DataClasses1DataContext();
+            using (var transaction = new TransactionScope())
+            {
+                User doomed = (from u in database.Users
+                               where u.ID == doomedID
+                               select u).Single();
+                foreach(TrialBlock tb in doomed.TrialBlocks)
+                {
+                    database.Trials.DeleteAllOnSubmit(tb.Trials);
+                }
+                database.TrialBlocks.DeleteAllOnSubmit(doomed.TrialBlocks);
+                database.StudiesUsers.DeleteAllOnSubmit(doomed.StudiesUsers);
+                database.Users.DeleteOnSubmit(doomed);
+                database.SubmitChanges();
+                transaction.Complete();
+            }
+            return true;
+        }
+
+        public bool deleteStudy(int doomedID)
+        {
+            DataClasses1DataContext database = new DataClasses1DataContext();
+            using (var transaction = new TransactionScope())
+            {
+                Study doomed = (from d in database.Studies
+                                where d.ID == doomedID
+                                select d).Single();
+                foreach (TrialBlock tb in doomed.TrialBlocks)
+                {
+                    database.Trials.DeleteAllOnSubmit(tb.Trials);
+                }
+                database.TrialBlocks.DeleteAllOnSubmit(doomed.TrialBlocks);
+                IEnumerable<User> users = (from u in database.Users
+                                    join su in database.StudiesUsers on u.ID equals su.UserID
+                                    where su.StudyID == doomedID
+                                    select u);
+                database.StudiesUsers.DeleteAllOnSubmit(doomed.StudiesUsers);
+                database.Users.DeleteAllOnSubmit(users);
+                database.StudiesAdmins.DeleteAllOnSubmit(doomed.StudiesAdmins);
+                database.Studies.DeleteOnSubmit(doomed);
+                database.SubmitChanges();
+                transaction.Complete();
+            }
+            return true;
         }
     }
 }

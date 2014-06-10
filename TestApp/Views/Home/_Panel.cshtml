@@ -11,6 +11,7 @@
     List<StudyUserGroup> userGroups = data.getUserGroups();
     
     <script src="/Scripts/admin.js"></script>
+    <script src="/Scripts/jquery-ui-1.8.20.min.js"></script>
     <div class="tab" id="usersTab">Users</div>
     <div class="tab" id="groupsTab">Groups</div>
     <div class="tab" id="settingsTab">Studies</div>
@@ -26,18 +27,25 @@
         @foreach (User u in users)
         {
             bool movable = data.userEligibileToMove(u.ID);
+            string userNameID = "username" + u.ID.ToString();
             string textid = "passBox" + u.ID.ToString();
             string studyid = "studyForUser" + u.ID.ToString();
             string groupid = "groupForUser" + u.ID.ToString();
             string activeid = "activeForUser" + u.ID.ToString();
             string changeButtonid = "userChangeButton" + u.ID.ToString();
+            string deleteButtonid = "userDeleteButton" + u.ID.ToString();
+            string deleteButtonConfirmid = "userDeleteButtonConfirm" + u.ID.ToString();
             StudiesUser su = data.studiesUserFromUser(u);
-            int studyKey = su.StudyID;
+            int studyKey = -1;
+            if(su != null)
+            {
+                studyKey = su.StudyID;
+            }
             string disableClass = "";
             if (!movable) { disableClass = "disable"; }
             <tr>
                 <td>@u.ID</td>
-                <td>@u.Username</td>
+                <td id="@userNameID">@u.Username</td>
                 <td>
                     <select id="@activeid">
                         @if(u.Active)
@@ -85,6 +93,7 @@
                 </td>
                 <td>
                     <button class="userUpdateButton" id="@changeButtonid">Update</button>
+                    <button class="userDeleteButton" id="@deleteButtonid">Delete</button>
                 </td>
             </tr>
         }
@@ -144,23 +153,29 @@
             </tr>
             @foreach (Study s in studiesRun)
             {
-                string hoursID = "hours" + s.ID.ToString();
-                string minutesID = "minutes" + s.ID.ToString();
-                string secondsID = "seconds" + s.ID.ToString();
-                string hI_ID = "hearI" + s.ID.ToString();
-                string sI_ID = "seeI" + s.ID.ToString();
-                string trialsID = "trials" + s.ID.ToString();
-                string fluencyID = "fluency" + s.ID.ToString();
-                string changeButtonid = "studyChangeButton" + s.ID.ToString();
+                string ID = s.ID.ToString();
+                string studyNameID = "study" + ID;
+                string hoursID = "hours" + ID;
+                string minutesID = "minutes" + ID;
+                string secondsID = "seconds" + ID;
+                string hI_ID = "hearI" + ID;
+                string sI_ID = "seeI" + ID;
+                string trialsID = "trials" + ID;
+                string fluencyID = "fluency" + ID;
+                string changeButtonid = "studyChangeButton" + ID;
+                string deleteButtonid = "deleteStudy" + ID;
                 <tr>
                     <td>@s.ID</td>
-                    <td>@s.Name</td>
+                    <td id="@studyNameID">@s.Name</td>
                     <td><textarea rows="4" cols="10" id="@hI_ID">@s.HearInstructions</textarea></td>
                     <td><textarea rows="4" cols="10" id="@sI_ID">@s.SeeInstructions</textarea></td>
                     <td><input type="text" value="@s.WaitHours" id="@hoursID" class="timeBox" /><input type="text" value="@s.WaitMins" id="@minutesID" class="timeBox" /><input type="text" value="@s.WaitSecs" id="@secondsID" class="timeBox" /></td>
                     <td><input type="text" value="@s.WordTrialsPerBlock" id="@trialsID" class="trialsBox" /></td>
                     <td><input type="text" value="@s.TargetWordsPerMinute" id="@fluencyID" class="trialsBox" /></td>
-                    <td><button class="studyUpdateButton" id="@changeButtonid">Update</button></td>
+                    <td>
+                        <button class="studyUpdateButton" id="@changeButtonid">Update</button>
+                        <button class="studyDeleteButton" id="@deleteButtonid">Delete</button>
+                    </td>
                 </tr>
             }
             <tr>

@@ -84,6 +84,32 @@ namespace TestApp.Controllers
         }
 
         [HttpPost]
+        public string userDelete(int userID)
+        {
+            DataAccessor database = new DataAccessor();
+            User u = database.getUserByID(userID);
+            string username = u.Username;
+            if (database.deleteUser(userID))
+            {
+                return username + " was successfully deleted.";
+            }
+            return "Error.";
+        }
+
+        [HttpPost]
+        public string studyDelete(int studyID)
+        {
+            DataAccessor database = new DataAccessor();
+            Study s = database.getStudyByID(studyID);
+            string name = s.Name;
+            if (database.deleteStudy(studyID))
+            {
+                return name + " was successfully deleted.";
+            }
+            return "Error.";
+        }
+
+        [HttpPost]
         public string userCreate(string userName, bool userActive, string userPassword, int studyID, int studyUserGroupID)
         {
             DataAccessor database = new DataAccessor();
