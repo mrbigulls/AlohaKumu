@@ -98,15 +98,20 @@ namespace AlohaKumu.Models
         public bool evalPerformance(TrialBlock test)
         {
             double target = test.Study.TargetWordsPerMinute;
+            double latency = 0.0;
             List<Trial> trials = blockTrials(test);
             int correct = 0;
             foreach (Trial t in trials)
             {
-                if (t.OptionIDClicked == t.WordID) correct++;
+                latency = latency + (t.TimeOptionClicked - t.TimeSecondIDclicked);
+                if (t.OptionIDClicked == t.WordID)
+                {
+                    correct++;
+                }
             }
-            double finish = trials[trials.Count - 1].TimeOptionClicked / 60000; //milliseconds to minutes
-            double rate = trials.Count / finish;
-            if (rate >= target && correct == trials.Count) return advanceUserInStudy(studiesUserFromUser(test.User));
+            //double finish = trials[trials.Count - 1].TimeOptionClicked / 60000; //milliseconds to minutes
+            //double rate = trials.Count / finish;
+            if (latency >= target && correct == trials.Count) return advanceUserInStudy(studiesUserFromUser(test.User));
             return false;
         }
 
