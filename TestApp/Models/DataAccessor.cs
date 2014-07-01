@@ -111,7 +111,7 @@ namespace AlohaKumu.Models
             }
             //double finish = trials[trials.Count - 1].TimeOptionClicked / 60000; //milliseconds to minutes
             //double rate = trials.Count / finish;
-            if (latency >= target && correct == trials.Count) return advanceUserInStudy(studiesUserFromUser(test.User));
+            if (latency <= target && correct == trials.Count) return advanceUserInStudy(studiesUserFromUser(test.User));
             return false;
         }
 
