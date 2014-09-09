@@ -28,14 +28,16 @@ foreach( TrialBlock tb in Model )
     List <Trial> trials = tb.Trials.ToList();
     int corrects = 0;
     int incorrects = 0;
-    double time = 0;
+    double time = 0.0;
+    double latency = 0.0;
     foreach (Trial t in trials)
     {
         if (t.OptionIDClicked == t.Word.ID) { corrects++; }
         else { incorrects++; }
+        latency += (t.TimeOptionClicked - t.TimeSecondIDclicked);
         time = t.TimeOptionClicked;
     }
-    double fluency = Math.Round(corrects / (time / 60000), 3);
+    double fluency = Math.Round(corrects / (latency / 60000), 3);
     <table class="dataDisplay">
         <tr class="tableTitle">
             <td colspan="2">TrialBlockID: @tb.ID</td><td colspan="2">@tb.TrialType.Name</td><td colspan="2">List: @tb.WordList.Name (@tb.WordSublist.Name)</td><td colspan="4">Time: @tb.StartTime</td><td colspan="2"></td>
@@ -44,8 +46,9 @@ foreach( TrialBlock tb in Model )
             <td colspan="2">Total Trials: @tb.Trials.Count</td>
             <td colspan="2">Total Correct: @corrects</td>
             <td colspan="2">Total Incorrect: @incorrects</td>
-            <td colspan="2">Total Time (seconds): @(time/1000)</td>
-            <td colspan="4">Corrects/minute: @fluency</td>
+            <td colspan="2">Total Time (secs): @(time/1000)</td>
+            <td colspan="2">Total latency (secs): @(latency/1000)</td>
+            <td colspan="2">Corrects/minute: @fluency</td>
         </tr>
         <tr class="tableLabels">
             <td>Trial ID</td>
