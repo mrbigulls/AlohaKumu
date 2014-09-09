@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using AlohaKumu.Models;
 using TestApp.Models;
-using System.Transactions;
 
 namespace TestApp.Controllers
 {
@@ -115,10 +114,29 @@ namespace TestApp.Controllers
             DataAccessor database = new DataAccessor();
             User u;
             StudiesUser su;
-            using (var transaction = new TransactionScope())
+            try
             {
                 u = database.createUser(userName, userActive, userPassword);
+            }
+            catch (Exception e)
+            {
+                return "Error attemping to create " + userName + ": " + e.Message;
+            }
+            try
+            {
                 su = database.createStudiesUsers(u.ID, studyID, studyUserGroupID);
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    database.deleteUser(u.ID);
+                }
+                catch (Exception ohshit)
+                {
+                    return "Failed to associate user with study, cannot delete user.";
+                }
+                return "Error attemping to associate " + userName + " with StudyID[" + studyID.ToString() + "] StudyUserGroupID[" + studyUserGroupID.ToString() + "]: " + e.Message;
             }
             return (u.Username + " is now part of " + su.Study.Name + ".");
         }
