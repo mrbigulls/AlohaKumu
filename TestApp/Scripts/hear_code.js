@@ -50,11 +50,15 @@ function () {
         clickID1s.push(markTime());
         $('#id1-' + trialIndex).hide();
         $('#id1-' + trialIndex).off('click');
-        $('#id2-' + trialIndex).show();
         showID2s.push(markTime());
         document.getElementById('trial-' + trialIndex + '-spoken').play();
-        displayMessage('', 3000, stepThree);
+        displayMessage('', 3000, stepTwoAndAHalf);
         //$('#id2-' + trialIndex).click(stepThree);
+    }
+
+    function stepTwoAndAHalf() {
+        $('#id2-' + trialIndex).show();
+        $('#id2-' + trialIndex).click(stepThree);
     }
 
     function stepThree() {
