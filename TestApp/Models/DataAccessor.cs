@@ -97,7 +97,6 @@ namespace AlohaKumu.Models
 
         public bool evalPerformance(TrialBlock test)
         {
-            double lastClicked = 0.0;
             double target = test.Study.TargetWordsPerMinute;
             double latency = 0.0;
             List<Trial> trials = blockTrials(test);
@@ -109,12 +108,8 @@ namespace AlohaKumu.Models
                 {
                     correct++;
                 }
-                if (t.TimeOptionClicked > lastClicked)
-                {
-                    lastClicked = t.TimeOptionClicked;
-                }
             }
-            if (lastClicked/trials.Count >= target && correct == trials.Count) return advanceUserInStudy(studiesUserFromUser(test.User));
+            if ( (trials.Count/(latency/60000)) >= target && correct == trials.Count ) return advanceUserInStudy(studiesUserFromUser(test.User));
             return false;
         }
 
