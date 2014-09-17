@@ -109,7 +109,10 @@ namespace AlohaKumu.Models
                     correct++;
                 }
             }
-            if ( (trials.Count/(latency/60000)) >= target && correct == trials.Count ) return advanceUserInStudy(studiesUserFromUser(test.User));
+            if ((trials.Count / (latency / 60000)) >= target && correct == trials.Count)
+            {
+                return advanceUserInStudy(studiesUserFromUser(test.User));
+            }
             return false;
         }
 
@@ -147,7 +150,14 @@ namespace AlohaKumu.Models
             }
             else if (!u.Mix)
             {
-                u.Mix = true;
+                if (u.WordSublistID == firstSublist) //nothing to mix at the beginning
+                {
+                    u.WordSublistID++;
+                }
+                else
+                {
+                    u.Mix = true;
+                }
             }
             else if (u.TrialTypeID < lastType)
             {
