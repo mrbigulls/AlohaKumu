@@ -125,9 +125,12 @@ namespace AlohaKumu.Models
             return trials.OrderBy(x => x.TimeOptionClicked).ToList();
         }
 
-        public bool advanceUserInStudy(StudiesUser u)
+        public bool advanceUserInStudy(StudiesUser su)
         {
             DataClasses1DataContext database = new DataClasses1DataContext();
+            StudiesUser u = (from user in database.StudiesUsers
+                             where user.StudyID == su.StudyID && user.UserID == su.UserID
+                             select user).Single();
             //database.Refresh(refresh_mode, new Object[] {u, database.WordSublists, database.TrialTypes});
             StudyUserGroup g = u.StudyUserGroup;
             //database.Refresh(refresh_mode, g);
