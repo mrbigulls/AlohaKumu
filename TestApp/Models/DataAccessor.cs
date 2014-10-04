@@ -109,7 +109,7 @@ namespace AlohaKumu.Models
                     correct++;
                 }
             }
-            if ((trials.Count / (latency / 60000)) >= target && correct == trials.Count)
+            if ( ((trials.Count / (latency / 60000)) >= target) && (correct == trials.Count))
             {
                 return advanceUserInStudy(studiesUserFromUser(test.User));
             }
