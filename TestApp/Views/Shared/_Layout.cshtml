@@ -27,13 +27,13 @@
                             {
                                 User current = (User)Session["User"];
                                 <input type="hidden" id="userID" value="@current.ID" />
-                                @Html.ActionLink("Log Off " + current.Username, "LogOff");
+                                @Html.ActionLink("Log Off " + current.Username, "LogOff", "Home");
                             }
                             else if ((Session["User"] as Admin) != null)
                             {
                                 Admin current = (Admin)Session["User"];
                                 <input type="hidden" id="userID" value="@current.ID" />
-                                @Html.ActionLink("Log Off " + current.Username, "LogOff");
+                                @Html.ActionLink("Log Off " + current.Username, "LogOff", "Home");
                             }
                         }
                     </section>
