@@ -2864,7 +2864,18 @@ namespace TestApp.Models
 		private EntityRef<WordSublist> _WordSublist;
 		
 		private EntityRef<StudyUserGroup> _StudyUserGroup;
-		
+
+        public void DetachRefs()
+        {
+            this._TrialBlocks = default(EntitySet<TrialBlock>);
+            this._Study = default(EntityRef<Study>);
+            this._TrialType = default(EntityRef<TrialType>);
+            this._User = default(EntityRef<User>);
+            this._WordList = default(EntityRef<WordList>);
+            this._WordSublist = default(EntityRef<WordSublist>);
+            this._StudyUserGroup = default(EntityRef<StudyUserGroup>);
+        }
+
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);

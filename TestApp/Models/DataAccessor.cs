@@ -92,14 +92,16 @@ namespace AlohaKumu.Models
                 database.Trials.InsertOnSubmit(newTrial);
                 database.SubmitChanges();
             }
-            return evalPerformance(newBlock);
+            return evalPerformance(database, newBlock.ID, newBlock.Study.TargetWordsPerMinute, results.studyID, results.userID);
         }
 
-        public bool evalPerformance(TrialBlock test)
+        public bool evalPerformance(DataClasses1DataContext database, int blockID, double target, int SID, int UID)
         {
-            double target = test.Study.TargetWordsPerMinute;
+            //double target = test.Study.TargetWordsPerMinute;
             double latency = 0.0;
-            List<Trial> trials = blockTrials(test);
+            List<Trial> trials = (from t in database.Trials
+                                  where t.TrialBlockID == blockID
+                                  select t).OrderBy(x => x.TimeOptionClicked).ToList();
             int correct = 0;
             foreach (Trial t in trials)
             {
@@ -111,7 +113,9 @@ namespace AlohaKumu.Models
             }
             if ( ((trials.Count / (latency / 60000)) >= target) && (correct == trials.Count))
             {
-                return advanceUserInStudy(studiesUserFromUser(test.User));
+                //return advanceUserInStudy(database, SID, UID);
+                database.Dispose();
+                return advanceUserInStudy(SID, UID);
             }
             return false;
         }
@@ -125,11 +129,12 @@ namespace AlohaKumu.Models
             return trials.OrderBy(x => x.TimeOptionClicked).ToList();
         }
 
-        public bool advanceUserInStudy(StudiesUser su)
+        //public bool advanceUserInStudy(DataClasses1DataContext database, int SID, int UID)
+        public bool advanceUserInStudy(int SID, int UID)
         {
             DataClasses1DataContext database = new DataClasses1DataContext();
             StudiesUser u = (from user in database.StudiesUsers
-                             where user.StudyID == su.StudyID && user.UserID == su.UserID
+                             where user.StudyID == SID && user.UserID == UID
                              select user).Single();
             //database.Refresh(refresh_mode, new Object[] {u, database.WordSublists, database.TrialTypes});
             StudyUserGroup g = u.StudyUserGroup;
@@ -148,7 +153,7 @@ namespace AlohaKumu.Models
 
             if ((u.WordSublistID < lastSublist) && u.Mix)
             {
-                u.WordSublist = getSublistByID(u.WordSublistID + 1);
+                u.WordSublistID++;
                 u.Mix = false;
             }
             else if (!u.Mix)
@@ -164,15 +169,15 @@ namespace AlohaKumu.Models
             }
             else if (u.TrialTypeID < lastType)
             {
-                u.WordSublist = getSublistByID(firstSublist);
-                u.TrialType = getTrialTypeByID(u.TrialTypeID + 1);
+                u.WordSublistID = firstSublist;
+                u.TrialTypeID++;
                 u.Mix = false;
             }
             else if (u.WordListID == g.FirstListID)
             {
                 u.WordListID = g.SecondListID;
-                u.WordSublist = getSublistByID(firstSublist);
-                u.TrialType = getTrialTypeByID(firstType);
+                u.WordSublistID = firstSublist;
+                u.TrialTypeID = firstType;
             }
             else
             {
