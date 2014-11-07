@@ -87,7 +87,7 @@ function () {
 
     function stepFive(correct) {
         if (correct) {
-            if (playSounds) { document.getElementById('sound-' + trialIndex).play(); displayMessage(' ', 3000, stepSix); }
+            if (playSounds) { document.getElementById('sound-' + trialIndex).play(); displayMessage('Correct.', 3000, stepSix); }
             else { displayMessage('Correct.', 3000, stepSix); }
         }
         else displayMessage(' ', 3000, stepSix);

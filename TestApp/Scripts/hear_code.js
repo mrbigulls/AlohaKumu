@@ -94,7 +94,7 @@ function () {
     function stepFive(correct) {
         if (correct) {
             if (playSounds) { document.getElementById('sound-' + trialIndex).play(); }
-            displayMessage(' ', 3000, stepSix);
+            displayMessage('Correct.', 3000, stepSix);
         }
         else displayMessage(' ', 3000, stepSix);
     }
