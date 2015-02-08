@@ -20,7 +20,7 @@
         <br />
         <button id="gobutton">Go</button>
     </div>
-    <input type="hidden" id="sid" value="@studyID" />
+    <input type="hidden" id="sid" value="@data.studyIDFromUser(loggedIn)" />
     <script src='Scripts/see_code.js'></script>
     <input type="hidden" id="trialTypeKey" value="@data.getTrialTypeKeyFromName("SeeSelect")" />
     Random random = new Random();

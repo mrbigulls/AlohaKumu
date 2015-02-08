@@ -85,13 +85,31 @@ function () {
         stepFive($(this).data('correct'));
     }
 
-    function stepFive(correct) {
-        if (correct) {
+    function stepFive(correct)
+    {
+        console.log('Entering step five.');
+        if (correct)
+        {
             //if (playSounds) { document.getElementById('sound-' + trialIndex).play(); displayMessage('Correct', 3000, stepSix); }
-            if (playSounds) { document.getElementById('sound-' + trialIndex).play(); displayMessage('', 3000, stepSix); }
-            else { displayMessage('Correct.', 3000, stepSix); }
+            console.log('Correct answer');
+            console.log('Play sounds = ' + playSounds);
+            if (playSounds)
+            {
+                console.log('Playing sound, displaying nothing');
+                document.getElementById('sound-' + trialIndex).play();
+                displayMessage(' ', 3000, stepSix);
+            }
+            else
+            {
+                console.log('Playing nothing, displaying correct');
+                displayMessage('Correct.', 3000, stepSix);
+            }
         }
-        else displayMessage(' ', 3000, stepSix);
+        else
+        {
+            console.log('Incorrect answer');
+            displayMessage(' ', 3000, stepSix);
+        }
     }
 
     function stepSix() {
