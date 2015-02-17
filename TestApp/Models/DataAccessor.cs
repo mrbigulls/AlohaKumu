@@ -266,8 +266,7 @@ namespace AlohaKumu.Models
             //database.Refresh(refresh_mode, current);
             StudiesUser currentStudy = studiesUserFromUser(current);
             if (currentStudy.TrialType.Name == "Completed") return null;
-            return true; //for rapid testing
-            /*
+            
             DateTime today = DateTime.Now.Date;
 
             List<TrialBlock> blocks = userBlocks(current);
@@ -287,7 +286,6 @@ namespace AlohaKumu.Models
             if ( todaysBlocks.Count < 2) return true;
             //otherwise two have been performed today or not enough time since previous day
             return false;
-            */
         }
 
         public List<Word> getWordList(int listKey, int subListKey, bool mixed)
